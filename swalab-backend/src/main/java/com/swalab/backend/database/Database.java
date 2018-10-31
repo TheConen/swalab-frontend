@@ -10,9 +10,25 @@ import java.util.List;
 public class Database {
 
     private List<Customer> customers = new ArrayList<>();
+    private List<AbstractTaskAndNote> taskAndNoteList = new ArrayList<>();
+    private Technican technican;
 
     @Autowired
     public Database() {
+        initTechnican();
+        initCustomers();
+        initNotes();
+    }
+
+    private void initTechnican() {
+        technican = new Technican("technican@web.de", "technican name", "password", "01234567");
+    }
+
+    private void initNotes() {
+        taskAndNoteList.add(new Note("note title", "note description", Status.OPEN, new Date(System.currentTimeMillis()), technican));
+    }
+
+    private void initCustomers() {
         Part part = new Part("part name", "part description");
         Bom bom = new Bom(part, 42, "kg");
         List<Bom> bomList = new ArrayList<>();
@@ -20,7 +36,6 @@ public class Database {
         ServiceProduct serviceProduct = new ServiceProduct("serviceProduct name", "description blah", 678, new Date(System.currentTimeMillis()), "documents.com", bomList);
         List<ServiceProduct> serviceProductList = new ArrayList<>();
         serviceProductList.add(serviceProduct);
-        Technican technican = new Technican("technican@web.de", "technican name", "password", "01234567");
         List<AbstractPartAndService> plannedPartsAndServices = new ArrayList<>();
         plannedPartsAndServices.add(part);
         ServiceOrder serviceOrder = new ServiceOrder("serviceOrder description", technican, serviceProduct, new Date(System.currentTimeMillis()), plannedPartsAndServices, new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), Status.IN_PROGRESS);
@@ -34,4 +49,11 @@ public class Database {
         return customers;
     }
 
+    public List<AbstractTaskAndNote> getTaskAndNoteList() {
+        return taskAndNoteList;
+    }
+
+    public Technican getTechnican() {
+        return technican;
+    }
 }
