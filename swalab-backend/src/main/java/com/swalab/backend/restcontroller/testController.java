@@ -1,4 +1,4 @@
-package com.swalab.restcontroller;
+package com.swalab.backend.restcontroller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
