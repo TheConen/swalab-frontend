@@ -7,16 +7,14 @@ public class ServiceProduct {
 
     private String name;
     private String description;
-    private Customer customer;
     private long serialNumber;
     private Date purchaseDate;
     private String documents;
     private List<Bom> bom;
 
-    public ServiceProduct(String name, String description, Customer customer, long serialNumber, Date purchaseDate, String documents, List<Bom> bom) {
+    public ServiceProduct(String name, String description, long serialNumber, Date purchaseDate, String documents, List<Bom> bom) {
         this.name = name;
         this.description = description;
-        this.customer = customer;
         this.serialNumber = serialNumber;
         this.purchaseDate = purchaseDate;
         this.documents = documents;
@@ -37,14 +35,6 @@ public class ServiceProduct {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
     }
 
     public long getSerialNumber() {
