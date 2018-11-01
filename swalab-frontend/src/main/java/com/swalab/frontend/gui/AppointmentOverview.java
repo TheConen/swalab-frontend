@@ -7,14 +7,14 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-public class OverviewPaneContent extends AbstractPaneContent<INamedArtefact> {
+public class AppointmentOverview extends AbstractPaneContent<INamedArtefact> {
 
     @Override
     public Parent getMainWindowContent() {
         BorderPane pane = new BorderPane();
         pane.setPrefWidth(200);
         pane.setBorder(createBorder());
-        // what kind of elements should be shown here? please specify or change it
+        // what kind of elements should be shown here? please specify or set
         ListView<?> listView = createListView();
         pane.setCenter(listView);
         return pane;
@@ -23,7 +23,7 @@ public class OverviewPaneContent extends AbstractPaneContent<INamedArtefact> {
     @Override
     public Parent getDescriptionWindowContent() {
         VBox box = new VBox();
-        Label label = new Label("MAIN - description");
+        Label label = new Label("CUSTOMER - description");
         box.getChildren().add(label);
         return box;
     }
@@ -32,5 +32,4 @@ public class OverviewPaneContent extends AbstractPaneContent<INamedArtefact> {
     protected void updateDescriptionContent(INamedArtefact item) {
 
     }
-
 }

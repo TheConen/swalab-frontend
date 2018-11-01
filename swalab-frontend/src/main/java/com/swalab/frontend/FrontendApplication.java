@@ -1,9 +1,6 @@
 package com.swalab.frontend;
 
-import com.swalab.frontend.gui.AbstractPaneContent;
-import com.swalab.frontend.gui.CustomerPaneContent;
-import com.swalab.frontend.gui.OverviewPaneContent;
-import com.swalab.frontend.gui.TaskPaneContent;
+import com.swalab.frontend.gui.*;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,6 +20,8 @@ public class FrontendApplication extends Application {
     private AbstractPaneContent _overviewPaneContent;
     private AbstractPaneContent _taskPaneContent;
     private AbstractPaneContent _customerPaneContent;
+    private AbstractPaneContent _appointmentPaneContent;
+    private OrdersAndPartsPaneContent _ordersAndPartPaneContent;
 
     @Override
     public void init() throws Exception {
@@ -55,7 +54,8 @@ public class FrontendApplication extends Application {
         overviewButton.setOnAction(ae -> changeContent(pane, _overviewPaneContent));
 
         Button appointmentsButton = new Button("Appointments");
-        appointmentsButton.setDisable(true);
+        _appointmentPaneContent = new AppointmentOverview();
+        appointmentsButton.setOnAction(ae -> changeContent(pane, _appointmentPaneContent));
 
         Button taskButton = new Button("Tasks");
         _taskPaneContent = new TaskPaneContent();
@@ -66,7 +66,8 @@ public class FrontendApplication extends Application {
         customerButton.setOnAction(ae -> changeContent(pane, _customerPaneContent));
 
         Button ordersAndPartsButton = new Button("Borders and Parts");
-        ordersAndPartsButton.setDisable(true);
+        _ordersAndPartPaneContent = new OrdersAndPartsPaneContent();
+        ordersAndPartsButton.setOnAction(ae -> changeContent(pane, _ordersAndPartPaneContent));
 
         navigationBox.getChildren().addAll(overviewButton, appointmentsButton, taskButton, customerButton, ordersAndPartsButton);
 

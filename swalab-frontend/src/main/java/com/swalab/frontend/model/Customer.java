@@ -1,8 +1,10 @@
 package com.swalab.frontend.model;
 
+import com.swalab.frontend.INamedArtefact;
+
 import java.util.List;
 
-public class Customer {
+public class Customer implements INamedArtefact {
 
     private String name;
     private String geolocation;

@@ -1,8 +1,10 @@
 package com.swalab.frontend.model;
 
+import com.swalab.frontend.INamedArtefact;
+
 import java.util.Date;
 
-public abstract class AbstractTaskAndNote {
+public abstract class AbstractTaskAndNote implements INamedArtefact {
 
     private String title;
     private String description;
@@ -16,6 +18,11 @@ public abstract class AbstractTaskAndNote {
         this.status = status;
         this.creationDate = creationDate;
         this.technican = technican;
+    }
+
+    @Override
+    public String getName() {
+        return getTitle();
     }
 
     public String getTitle() {
