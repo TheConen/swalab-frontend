@@ -8,7 +8,6 @@ public class ServiceOrder {
     private String description;
     private Technican technican;
     private ServiceProduct serviceProduct;
-    private Customer customer;
     private Date plannedTime;
     private List<AbstractPartAndService> plannedPartsAndServices;
     private Date creationDate;
@@ -20,11 +19,10 @@ public class ServiceOrder {
     private Date realDateFrom;
     private Date realDateTo;
 
-    public ServiceOrder(String description, Technican technican, ServiceProduct serviceProduct, Customer customer, Date plannedTime, List<AbstractPartAndService> plannedPartsAndServices, Date creationDate, Date dateTimeFrom, Date dateTimeTo, Status status) {
+    public ServiceOrder(String description, Technican technican, ServiceProduct serviceProduct, Date plannedTime, List<AbstractPartAndService> plannedPartsAndServices, Date creationDate, Date dateTimeFrom, Date dateTimeTo, Status status) {
         this.description = description;
         this.technican = technican;
         this.serviceProduct = serviceProduct;
-        this.customer = customer;
         this.plannedTime = plannedTime;
         this.plannedPartsAndServices = plannedPartsAndServices;
         this.creationDate = creationDate;
@@ -55,14 +53,6 @@ public class ServiceOrder {
 
     public void setServiceProduct(ServiceProduct serviceProduct) {
         this.serviceProduct = serviceProduct;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
     }
 
     public Date getPlannedTime() {
