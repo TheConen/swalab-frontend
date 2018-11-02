@@ -1,4 +1,4 @@
-package com.swalab;
+package com.swalab.backend;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,7 +1,7 @@
 package com.swalab.backend.restcontroller;
 
 import com.swalab.backend.database.Database;
-import com.swalab.backend.model.*;
+import com.swalab.backend.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
