@@ -65,7 +65,7 @@ public class FrontendApplication extends Application {
         _customerPaneContent = new CustomerPaneContent();
         customerButton.setOnAction(ae -> changeContent(pane, _customerPaneContent));
 
-        Button ordersAndPartsButton = new Button("Borders and Parts");
+        Button ordersAndPartsButton = new Button("Orders and Parts");
         _ordersAndPartPaneContent = new OrdersAndPartsPaneContent();
         ordersAndPartsButton.setOnAction(ae -> changeContent(pane, _ordersAndPartPaneContent));
 
