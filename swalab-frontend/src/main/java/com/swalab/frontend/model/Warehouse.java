@@ -1,8 +1,17 @@
 package com.swalab.frontend.model;
 
+import java.util.List;
+
 public class Warehouse {
 
-    private String name;
-    private String description;
-    private Technican technican;
+
+    private List<WarehouseOrder> parts;
+
+    public List<WarehouseOrder> getParts() {
+        return parts;
+    }
+
+    public void setParts(List<WarehouseOrder> parts) {
+        this.parts = parts;
+    }
 }
