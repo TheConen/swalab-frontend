@@ -45,11 +45,12 @@ public class FrontendApplication extends Application {
         BorderPane pane = new BorderPane();
 
         // create button navigation for the top
+        // Taps
         HBox navigationBox = new HBox(5);
         pane.setTop(navigationBox);
         navigationBox.setBorder(createBorder());
 
-        Button overviewButton = new Button("Home");
+        Button overviewButton = new Button("Home"); // = Appointments
         _overviewPaneContent = new OverviewPaneContent();
         overviewButton.setOnAction(ae -> changeContent(pane, _overviewPaneContent));
 
@@ -97,6 +98,7 @@ public class FrontendApplication extends Application {
     @Override
     public void stop() throws Exception {
         springContext.stop();
+        System.exit(0);
     }
 
 
