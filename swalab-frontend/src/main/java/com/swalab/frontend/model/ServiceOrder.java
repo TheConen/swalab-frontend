@@ -1,9 +1,11 @@
 package com.swalab.frontend.model;
 
+import com.swalab.frontend.INamedArtefact;
+
 import java.util.Date;
 import java.util.List;
 
-public class ServiceOrder {
+public class ServiceOrder implements INamedArtefact {
 
     private String description;
     private Technican technican;
@@ -133,5 +135,10 @@ public class ServiceOrder {
 
     public void setRealDateTo(Date realDateTo) {
         this.realDateTo = realDateTo;
+    }
+
+    @Override
+    public String getName() {
+        return "What's the name?";
     }
 }

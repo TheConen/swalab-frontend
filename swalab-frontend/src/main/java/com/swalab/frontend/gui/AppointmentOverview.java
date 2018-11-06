@@ -1,21 +1,21 @@
 package com.swalab.frontend.gui;
 
 import com.swalab.frontend.INamedArtefact;
+import com.swalab.frontend.model.ServiceOrder;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-public class AppointmentOverview extends AbstractPaneContent<INamedArtefact> {
+public class AppointmentOverview extends AbstractPaneContent<ServiceOrder> {
 
     @Override
     public Parent getMainWindowContent() {
         BorderPane pane = new BorderPane();
         pane.setPrefWidth(200);
         pane.setBorder(createBorder());
-        // what kind of elements should be shown here? please specify or set
-        ListView<?> listView = createListView();
+        ListView<ServiceOrder> listView = createListView();
         pane.setCenter(listView);
         return pane;
     }
@@ -29,7 +29,7 @@ public class AppointmentOverview extends AbstractPaneContent<INamedArtefact> {
     }
 
     @Override
-    protected void updateDescriptionContent(INamedArtefact item) {
+    protected void updateDescriptionContent(ServiceOrder item) {
 
     }
 }
