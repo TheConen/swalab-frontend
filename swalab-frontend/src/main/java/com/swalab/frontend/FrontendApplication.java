@@ -18,7 +18,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class FrontendApplication extends Application {
 
     private ConfigurableApplicationContext springContext;
-    private AbstractPaneContent _overviewPaneContent;
     private AbstractPaneContent _taskPaneContent;
     private AbstractPaneContent _customerPaneContent;
     private AbstractPaneContent _appointmentPaneContent;
@@ -27,9 +26,6 @@ public class FrontendApplication extends Application {
     @Override
     public void init() throws Exception {
         springContext = SpringApplication.run(FrontendApplication.class);
-        //FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("sample.fxml"));
-        //fxmlLoader.setControllerFactory(springContext::getBean);
-        //root = fxmlLoader.load();
     }
 
     @Override
