@@ -25,7 +25,7 @@ public class Database {
     }
 
     private void initNotes() {
-        taskAndNoteList.add(new Note("note title", "note description", Status.OPEN, new Date(System.currentTimeMillis()), technican));
+        taskAndNoteList.add(new Task("note title", "note description", Status.OPEN, new Date(System.currentTimeMillis()), technican));
     }
 
     private void initCustomers() {

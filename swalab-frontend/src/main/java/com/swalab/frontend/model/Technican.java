@@ -83,5 +83,5 @@ public class Technican {
     public void setParts(Warehouse parts) {
         this.parts = parts;
     }
-    
+
 }
