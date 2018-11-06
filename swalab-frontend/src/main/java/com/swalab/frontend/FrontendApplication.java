@@ -71,8 +71,7 @@ public class FrontendApplication extends Application {
         navigationBox.getChildren().addAll(appointmentsButton, taskButton, customerButton, ordersAndPartsButton);
 
         // start screen content
-        changeContent(pane, _taskPaneContent);
-        //changeContent(pane, _appointmentPaneContent);
+        changeContent(pane, _appointmentPaneContent);
 
         // just further information at the bottom line
         HBox footline = new HBox(2);
