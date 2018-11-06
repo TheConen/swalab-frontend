@@ -2,6 +2,7 @@ package com.swalab.frontend;
 
 import com.swalab.frontend.gui.*;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -47,12 +48,9 @@ public class FrontendApplication extends Application {
         // create button navigation for the top
         // Taps
         HBox navigationBox = new HBox(5);
+        navigationBox.setPadding(new Insets(3,3,3,3));
         pane.setTop(navigationBox);
         navigationBox.setBorder(createBorder());
-
-        Button overviewButton = new Button("Home"); // = Appointments
-        _overviewPaneContent = new OverviewPaneContent();
-        overviewButton.setOnAction(ae -> changeContent(pane, _overviewPaneContent));
 
         Button appointmentsButton = new Button("Appointments");
         _appointmentPaneContent = new AppointmentOverview();
@@ -70,10 +68,11 @@ public class FrontendApplication extends Application {
         _ordersAndPartPaneContent = new OrdersAndPartsPaneContent();
         ordersAndPartsButton.setOnAction(ae -> changeContent(pane, _ordersAndPartPaneContent));
 
-        navigationBox.getChildren().addAll(overviewButton, appointmentsButton, taskButton, customerButton, ordersAndPartsButton);
+        navigationBox.getChildren().addAll(appointmentsButton, taskButton, customerButton, ordersAndPartsButton);
 
         // start screen content
-        changeContent(pane, _overviewPaneContent);
+        changeContent(pane, _taskPaneContent);
+        //changeContent(pane, _appointmentPaneContent);
 
         // just further information at the bottom line
         HBox footline = new HBox(2);
