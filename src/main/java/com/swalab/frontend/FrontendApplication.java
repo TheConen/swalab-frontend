@@ -30,7 +30,7 @@ public class FrontendApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("Task Overview");
         Parent parent = createWindowContent();
         Scene scene = new Scene(parent, 800, 600);
 
@@ -71,14 +71,17 @@ public class FrontendApplication extends Application {
         toggleGroup.selectToggle(appointmentsButton);
 
         // start screen content
-        //changeContent(pane, _appointmentPaneContent);
+        changeContent(pane, _appointmentPaneContent);
 
         // just further information at the bottom line
         HBox footline = new HBox(2);
         footline.setBorder(createBorder());
         pane.setBottom(footline);
-        Label user = new Label("Logged in as: Username");
-        footline.getChildren().add(user);
+        String user=System.getProperty("user.name");
+        Label userDescriptionLabel = new Label("Logged in as: ");
+        Label userLabel=new Label(user);
+         footline.getChildren().addAll(userDescriptionLabel,userLabel);
+
 
         return pane;
     }
