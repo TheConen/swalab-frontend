@@ -119,9 +119,9 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
 
         setEditorMode(false);
 
-        descriptionPane.addColumn(0, nameLabel, descriptionLabel, statusLabel, creationLabel, technicanLabel);
-        descriptionPane.addColumn(1, _nameLabel, _descriptionLabel, _statusLabel, _creationLabel, _technicianLabel);
-        descriptionPane.addColumn(2, _nameField, _descriptionField, _statusField, _creationField, _technicianField, creationButtonBox);
+        descriptionPane.addColumn(0, nameLabel, descriptionLabel, creationLabel, technicanLabel,statusLabel);
+        descriptionPane.addColumn(1, _nameLabel, _descriptionLabel,  _creationLabel, _technicianLabel,_statusLabel);
+        descriptionPane.addColumn(2, _nameField, _descriptionField,  _creationField, _technicianField, _statusField,creationButtonBox);
 
         return descriptionPane;
     }
