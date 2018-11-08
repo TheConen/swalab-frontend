@@ -8,8 +8,8 @@ public class Technican {
     private String name;
     private String password;
     private String phone;
-    private List<ServiceOrder> appointments;
-    private List<AbstractTaskAndNote> tasks;
+    private List<Appointment> appointments;
+    private List<AbstractTaskAndNote> taskAndNotes;
     private List<Customer> customers;
     private Warehouse parts;
 
@@ -52,20 +52,20 @@ public class Technican {
         this.phone = phone;
     }
 
-    public List<ServiceOrder> getAppointments() {
+    public List<Appointment> getAppointments() {
         return appointments;
     }
 
-    public void setAppointments(List<ServiceOrder> appointments) {
+    public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
     }
 
-    public List<AbstractTaskAndNote> getTasks() {
-        return tasks;
+    public List<AbstractTaskAndNote> getTaskAndNotes() {
+        return taskAndNotes;
     }
 
-    public void setTasks(List<AbstractTaskAndNote> tasks) {
-        this.tasks = tasks;
+    public void setTaskAndNotes(List<AbstractTaskAndNote> taskAndNotes) {
+        this.taskAndNotes = taskAndNotes;
     }
 
     public List<Customer> getCustomers() {

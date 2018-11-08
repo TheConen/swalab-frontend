@@ -3,7 +3,6 @@ package com.swalab.frontend.gui;
 import com.swalab.frontend.model.AbstractTaskAndNote;
 import com.swalab.frontend.model.Status;
 import com.swalab.frontend.model.Task;
-import com.swalab.frontend.model.Technican;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -26,12 +25,10 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
     private Label _descriptionLabel;
     private Label _statusLabel;
     private Label _creationLabel;
-    private Label _technicianLabel;
     private TextField _nameField;
     private TextField _descriptionField;
     private TextField _statusField;
     private TextField _creationField;
-    private TextField _technicianField;
     private Button _creationButton;
     private ListView<AbstractTaskAndNote> _listView;
     private Button _aboardButton;
@@ -39,8 +36,8 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
     @Override
     public Parent getMainWindowContent() {
         ObservableList<AbstractTaskAndNote> list = FXCollections.observableArrayList();
-        list.add(new Task("title", "description", null, null, null));
-        list.add(new Task("title2", "description", null, null, null));
+        list.add(new Task("title", "description", Status.OPEN, new Date(System.currentTimeMillis())));
+        list.add(new Task("title2", "description", Status.IN_PROGRESS, new Date(System.currentTimeMillis())));
 
         BorderPane pane = new BorderPane();
         pane.setPrefWidth(200);
@@ -81,29 +78,25 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         Label descriptionLabel = new Label("Description");
         Label statusLabel = new Label("Status");
         Label creationLabel = new Label("Creation date");
-        Label technicanLabel = new Label("Technican");
 
         _nameLabel = new Label();
         _descriptionLabel = new Label();
         _statusLabel = new Label();
         _creationLabel = new Label();
-        _technicianLabel = new Label();
 
         _nameField = new TextField();
         _descriptionField = new TextField();
         _statusField = new TextField();
         _creationField = new TextField();
-        _technicianField = new TextField("Change into combo box");
 
         _creationField.setDisable(true);
         _creationField.setText(getCurrentTime());
-        _technicianField.setDisable(true);
 
         _creationButton = new Button("Create");
         // TODO check: Is task = node?
         // TODO create object direct and send it to the server
         _creationButton.setOnAction(ae -> {
-            Task task = new Task(_nameField.getText(), _descriptionField.getText(), null, null, null);
+            Task task = new Task(_nameField.getText(), _descriptionField.getText(), null, null);
             setEditorMode(false);
             // temporary adding since ui doesn't have a connection to the backend
             _listView.getItems().add(task);
@@ -119,9 +112,9 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
 
         setEditorMode(false);
 
-        descriptionPane.addColumn(0, nameLabel, descriptionLabel, creationLabel, technicanLabel,statusLabel);
-        descriptionPane.addColumn(1, _nameLabel, _descriptionLabel,  _creationLabel, _technicianLabel,_statusLabel);
-        descriptionPane.addColumn(2, _nameField, _descriptionField,  _creationField, _technicianField, _statusField,creationButtonBox);
+        descriptionPane.addColumn(0, nameLabel, descriptionLabel, creationLabel, statusLabel);
+        descriptionPane.addColumn(1, _nameLabel, _descriptionLabel,  _creationLabel, _statusLabel);
+        descriptionPane.addColumn(2, _nameField, _descriptionField,  _creationField, _statusField, creationButtonBox);
 
         return descriptionPane;
     }
@@ -131,7 +124,6 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         _descriptionField.setVisible(isEditorActive);
         _statusField.setVisible(isEditorActive);
         _creationField.setVisible(isEditorActive);
-        _technicianField.setVisible(isEditorActive);
         _creationButton.setVisible(isEditorActive);
         _aboardButton.setVisible(isEditorActive);
 
@@ -139,7 +131,6 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         _descriptionLabel.setVisible(!isEditorActive);
         _statusLabel.setVisible(!isEditorActive);
         _creationLabel.setVisible(!isEditorActive);
-        _technicianLabel.setVisible(!isEditorActive);
     }
 
     private String getCurrentTime() {
@@ -160,7 +151,6 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
             _descriptionLabel.setText(null);
             _statusLabel.setText(null);
             _creationLabel.setText(null);
-            _technicianLabel.setText(null);
         } else {
             _nameLabel.setText(item.getName());
             _descriptionLabel.setText(item.getDescription());
@@ -168,8 +158,6 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
             _statusLabel.setText(status == null ? null : status.name());
             Date creationDate = item.getCreationDate();
             _creationLabel.setText(creationDate == null ? null : creationDate.toGMTString());
-            Technican technican = item.getTechnican();
-            _technicianLabel.setText(technican == null ? null : technican.getName());
         }
     }
 

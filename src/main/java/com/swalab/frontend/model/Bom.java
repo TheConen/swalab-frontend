@@ -1,23 +1,26 @@
 package com.swalab.frontend.model;
 
+/**
+ * Build of material: Item on lists containing a part, the quantity and an unit
+ */
 public class Bom {
 
-    private Part part;
+    private AvailablePart availablePart;
     private int quantity;
     private String unit;
 
-    public Bom(Part part, int quantity, String unit) {
-        this.part = part;
+    public Bom(AvailablePart availablePart, int quantity, String unit) {
+        this.availablePart = availablePart;
         this.quantity = quantity;
         this.unit = unit;
     }
 
-    public Part getPart() {
-        return part;
+    public AvailablePart getAvailablePart() {
+        return availablePart;
     }
 
-    public void setPart(Part part) {
-        this.part = part;
+    public void setAvailablePart(AvailablePart availablePart) {
+        this.availablePart = availablePart;
     }
 
     public int getQuantity() {

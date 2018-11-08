@@ -9,13 +9,11 @@ public abstract class AbstractTaskAndNote implements INamedArtefact {
     private String title;
     private String description;
     private Date creationDate;
-    private Technican technican;
 
-    public AbstractTaskAndNote(String title, String description, Date creationDate, Technican technican) {
+    public AbstractTaskAndNote(String title, String description, Date creationDate) {
         this.title = title;
         this.description = description;
         this.creationDate = creationDate;
-        this.technican = technican;
     }
 
     @Override
@@ -47,17 +45,12 @@ public abstract class AbstractTaskAndNote implements INamedArtefact {
         this.creationDate = creationDate;
     }
 
-    public Technican getTechnican() {
-        return technican;
-    }
-
-    public void setTechnican(Technican technican) {
-        this.technican = technican;
-    }
 
     /**
+     * TODO: delete
      * default implementation for easier handling in the ui. some subtypes may override this method for returning the correct status
      * @return the status of the object
      */
     public Status getStatus(){return null;}
+
 }

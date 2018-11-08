@@ -3,19 +3,19 @@ package com.swalab.frontend.model;
 import java.util.Date;
 import java.util.List;
 
-public class WarehouseOrder {
+public class WarehousePartAndOrder {
 
     private long orderNumber;
     private String description;
     private Date orderDate;
-    private List<Bom> parts;
+    private List<Bom> part;
     private Status status;
 
-    public WarehouseOrder(long orderNumber, String description, Date orderDate, List<Bom> parts, Status status) {
+    public WarehousePartAndOrder(long orderNumber, String description, Date orderDate, List<Bom> part, Status status) {
         this.orderNumber = orderNumber;
         this.description = description;
         this.orderDate = orderDate;
-        this.parts = parts;
+        this.part = part;
         this.status = status;
     }
 
@@ -43,12 +43,12 @@ public class WarehouseOrder {
         this.orderDate = orderDate;
     }
 
-    public List<Bom> getParts() {
-        return parts;
+    public List<Bom> getPart() {
+        return part;
     }
 
-    public void setParts(List<Bom> parts) {
-        this.parts = parts;
+    public void setPart(List<Bom> part) {
+        this.part = part;
     }
 
     public Status getStatus() {

@@ -1,11 +1,11 @@
 package com.swalab.frontend.model;
 
-public abstract class AbstractPartAndService {
+public class AvailablePart {
 
     private String name;
     private String description;
 
-    public AbstractPartAndService(String name, String description) {
+    public AvailablePart(String name, String description) {
         this.name = name;
         this.description = description;
     }

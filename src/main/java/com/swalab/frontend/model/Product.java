@@ -3,22 +3,25 @@ package com.swalab.frontend.model;
 import java.util.Date;
 import java.util.List;
 
-public class ServiceProduct {
+/**
+ * This is the machine from the customer which needs a service. Don't mix up with "Part" which is a component of a product.
+ */
+public class Product {
 
     private String name;
     private String description;
     private long serialNumber;
     private Date purchaseDate;
     private String documents;
-    private List<Bom> bom;
+    private List<Bom> productParts;
 
-    public ServiceProduct(String name, String description, long serialNumber, Date purchaseDate, String documents, List<Bom> bom) {
+    public Product(String name, String description, long serialNumber, Date purchaseDate, String documents, List<Bom> productParts) {
         this.name = name;
         this.description = description;
         this.serialNumber = serialNumber;
         this.purchaseDate = purchaseDate;
         this.documents = documents;
-        this.bom = bom;
+        this.productParts = productParts;
     }
 
     public String getName() {
@@ -61,11 +64,11 @@ public class ServiceProduct {
         this.documents = documents;
     }
 
-    public List<Bom> getBom() {
-        return bom;
+    public List<Bom> getProductParts() {
+        return productParts;
     }
 
-    public void setBom(List<Bom> bom) {
-        this.bom = bom;
+    public void setProductParts(List<Bom> productParts) {
+        this.productParts = productParts;
     }
 }

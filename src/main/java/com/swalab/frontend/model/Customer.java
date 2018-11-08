@@ -12,18 +12,18 @@ public class Customer implements INamedArtefact {
     private String mail;
     private String web;
     private String address;
-    private List<ServiceProduct> serviceProductList;
-    private List<ServiceOrder> serviceHistoryList;
+    private List<Product> products;
+    private List<Appointment> appointmentHistoryList;
 
-    public Customer(String name, String geolocation, String phone, String mail, String web, String address, List<ServiceProduct> serviceProductList, List<ServiceOrder> serviceHistoryList) {
+    public Customer(String name, String geolocation, String phone, String mail, String web, String address, List<Product> products, List<Appointment> appointmentHistoryList) {
         this.name = name;
         this.geolocation = geolocation;
         this.phone = phone;
         this.mail = mail;
         this.web = web;
         this.address = address;
-        this.serviceProductList = serviceProductList;
-        this.serviceHistoryList = serviceHistoryList;
+        this.products = products;
+        this.appointmentHistoryList = appointmentHistoryList;
     }
 
     public String getName() {
@@ -74,19 +74,19 @@ public class Customer implements INamedArtefact {
         this.address = address;
     }
 
-    public List<ServiceProduct> getServiceProductList() {
-        return serviceProductList;
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public void setServiceProductList(List<ServiceProduct> serviceProductList) {
-        this.serviceProductList = serviceProductList;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
-    public List<ServiceOrder> getServiceHistoryList() {
-        return serviceHistoryList;
+    public List<Appointment> getAppointmentHistoryList() {
+        return appointmentHistoryList;
     }
 
-    public void setServiceHistoryList(List<ServiceOrder> serviceHistoryList) {
-        this.serviceHistoryList = serviceHistoryList;
+    public void setAppointmentHistoryList(List<Appointment> appointmentHistoryList) {
+        this.appointmentHistoryList = appointmentHistoryList;
     }
 }

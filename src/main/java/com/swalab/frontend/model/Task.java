@@ -6,12 +6,11 @@ public class Task extends AbstractTaskAndNote {
 
     private Status status;
 
-    public Task(String title, String description, Status status, Date creationDate, Technican technican) {
-        super(title, description, creationDate, technican);
+    public Task(String title, String description, Status status, Date creationDate) {
+        super(title, description, creationDate);
         this.status = status;
     }
 
-    @Override
     public Status getStatus() {
         return status;
     }

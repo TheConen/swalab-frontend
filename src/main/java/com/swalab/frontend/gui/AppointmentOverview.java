@@ -1,21 +1,20 @@
 package com.swalab.frontend.gui;
 
-import com.swalab.frontend.INamedArtefact;
-import com.swalab.frontend.model.ServiceOrder;
+import com.swalab.frontend.model.Appointment;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-public class AppointmentOverview extends AbstractPaneContent<ServiceOrder> {
+public class AppointmentOverview extends AbstractPaneContent<Appointment> {
 
     @Override
     public Parent getMainWindowContent() {
         BorderPane pane = new BorderPane();
         pane.setPrefWidth(200);
         pane.setBorder(createBorder());
-        ListView<ServiceOrder> listView = createListView();
+        ListView<Appointment> listView = createListView();
         pane.setCenter(listView);
         return pane;
     }
@@ -29,7 +28,7 @@ public class AppointmentOverview extends AbstractPaneContent<ServiceOrder> {
     }
 
     @Override
-    protected void updateDescriptionContent(ServiceOrder item) {
+    protected void updateDescriptionContent(Appointment item) {
 
     }
 }
