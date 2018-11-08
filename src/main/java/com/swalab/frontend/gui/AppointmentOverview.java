@@ -28,7 +28,7 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
     }
 
     @Override
-    protected void updateDescriptionContent(Appointment item) {
+    protected void updateDescriptionContent(Appointment item,Class clazz) {
 
     }
 

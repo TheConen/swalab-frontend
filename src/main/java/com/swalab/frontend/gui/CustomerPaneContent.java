@@ -28,7 +28,7 @@ public class CustomerPaneContent extends  AbstractPaneContent<Customer> {
     }
 
     @Override
-    protected void updateDescriptionContent(Customer item) {
+    protected void updateDescriptionContent(Customer item,Class clazz) {
 
     }
 

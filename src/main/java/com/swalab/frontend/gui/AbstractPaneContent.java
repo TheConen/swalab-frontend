@@ -12,7 +12,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
 
-public abstract class AbstractPaneContent <T extends INamedArtefact>{
+public abstract class AbstractPaneContent<T extends INamedArtefact> {
 
     public abstract Parent getMainWindowContent();
 
@@ -23,13 +23,16 @@ public abstract class AbstractPaneContent <T extends INamedArtefact>{
         return new Border(stroke);
     }
 
-    protected   ListView<T> createListView() {
+    protected ListView<T> createListView() {
         ListView<T> listView = new ListView<>();
         listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         listView.setPlaceholder(new Label("No data available"));
         listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<T>() {
             @Override
-            public void changed(ObservableValue<? extends T> observableValue, T t, T t1) {updateDescriptionContent(t1);
+            public void changed(ObservableValue<? extends T> observableValue, T oldValue, T newValue) {
+                if (newValue != null) {
+                    updateDescriptionContent(newValue, newValue.getClass());
+                }
             }
         });
         listView.setCellFactory(new Callback<ListView<T>, ListCell<T>>() {
@@ -38,7 +41,7 @@ public abstract class AbstractPaneContent <T extends INamedArtefact>{
                 return new ListCell<T>() {
                     @Override
                     public void updateItem(T task, boolean isEmpty) {
-                        super.updateItem(task,isEmpty);
+                        super.updateItem(task, isEmpty);
                         if (task == null || isEmpty) {
                             setText(null);
                             setStyle("");
@@ -49,12 +52,13 @@ public abstract class AbstractPaneContent <T extends INamedArtefact>{
                 };
             }
         });
-        return listView;}
+        return listView;
+    }
 
     /**
      * called for changeing the content of the description window of the currently shown pane
      */
-    protected abstract void updateDescriptionContent(T item);
+    protected abstract void updateDescriptionContent(T item, Class clazz);
 
 
     /**
