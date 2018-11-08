@@ -8,10 +8,10 @@ public class WarehousePartAndOrder {
     private long orderNumber;
     private String description;
     private Date orderDate;
-    private List<Bom> part;
+    private Bom part;
     private Status status;
 
-    public WarehousePartAndOrder(long orderNumber, String description, Date orderDate, List<Bom> part, Status status) {
+    public WarehousePartAndOrder(long orderNumber, String description, Date orderDate, Bom part, Status status) {
         this.orderNumber = orderNumber;
         this.description = description;
         this.orderDate = orderDate;
@@ -43,11 +43,11 @@ public class WarehousePartAndOrder {
         this.orderDate = orderDate;
     }
 
-    public List<Bom> getPart() {
+    public Bom getPart() {
         return part;
     }
 
-    public void setPart(List<Bom> part) {
+    public void setPart(Bom part) {
         this.part = part;
     }
 
