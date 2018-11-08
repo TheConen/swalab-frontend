@@ -54,4 +54,10 @@ public abstract class AbstractTaskAndNote implements INamedArtefact {
     public void setTechnican(Technican technican) {
         this.technican = technican;
     }
+
+    /**
+     * default implementation for easier handling in the ui. some subtypes may override this method for returning the correct status
+     * @return the status of the object
+     */
+    public Status getStatus(){return null;}
 }

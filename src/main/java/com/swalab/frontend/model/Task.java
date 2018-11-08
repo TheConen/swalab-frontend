@@ -11,6 +11,7 @@ public class Task extends AbstractTaskAndNote {
         this.status = status;
     }
 
+    @Override
     public Status getStatus() {
         return status;
     }
