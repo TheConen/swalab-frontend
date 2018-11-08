@@ -8,6 +8,10 @@ public class Warehouse implements INamedArtefact {
     
     private List<WarehousePartAndOrder> partAndOrders;
 
+    public Warehouse(List<WarehousePartAndOrder> partAndOrders) {
+        this.partAndOrders = partAndOrders;
+    }
+
     public List<WarehousePartAndOrder> getPartAndOrders() {
         return partAndOrders;
     }

@@ -2,6 +2,7 @@ package com.swalab.frontend.model;
 
 import com.swalab.frontend.INamedArtefact;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Customer implements INamedArtefact {
@@ -13,9 +14,9 @@ public class Customer implements INamedArtefact {
     private String web;
     private String address;
     private List<Product> products;
-    private List<Appointment> appointmentHistoryList;
+    private List<Appointment> appointmentHistoryList = new ArrayList<>();
 
-    public Customer(String name, String geolocation, String phone, String mail, String web, String address, List<Product> products, List<Appointment> appointmentHistoryList) {
+    public Customer(String name, String geolocation, String phone, String mail, String web, String address, List<Product> products) {
         this.name = name;
         this.geolocation = geolocation;
         this.phone = phone;
@@ -23,7 +24,6 @@ public class Customer implements INamedArtefact {
         this.web = web;
         this.address = address;
         this.products = products;
-        this.appointmentHistoryList = appointmentHistoryList;
     }
 
     public String getName() {

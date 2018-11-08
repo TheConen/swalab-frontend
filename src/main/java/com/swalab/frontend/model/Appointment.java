@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Appointment implements INamedArtefact {
 
+    private Customer customer;
     private String description;
     private Product product;
     private Date creationDate;
@@ -19,7 +20,8 @@ public class Appointment implements INamedArtefact {
     private Date realDateFrom;
     private Date realDateTo;
 
-    public Appointment(String description, Product product, Date creationDate, Status status, List<Bom> plannedPartsAndServices, Date plannedDateTimeFrom, Date plannedDateTimeTo) {
+    public Appointment(Customer customer, String description, Product product, Date creationDate, Status status, List<Bom> plannedPartsAndServices, Date plannedDateTimeFrom, Date plannedDateTimeTo) {
+        this.customer = customer;
         this.description = description;
         this.product = product;
         this.creationDate = creationDate;
@@ -32,7 +34,8 @@ public class Appointment implements INamedArtefact {
         realDateTo = null;
     }
 
-    public Appointment(String description, Product product, Date creationDate, Status status, List<Bom> plannedPartsAndServices, Date plannedDateTimeFrom, Date plannedDateTimeTo, List<Bom> usedPartsAndServices, Date realDateFrom, Date realDateTo) {
+    public Appointment(Customer customer, String description, Product product, Date creationDate, Status status, List<Bom> plannedPartsAndServices, Date plannedDateTimeFrom, Date plannedDateTimeTo, List<Bom> usedPartsAndServices, Date realDateFrom, Date realDateTo) {
+        this.customer = customer;
         this.description = description;
         this.product = product;
         this.creationDate = creationDate;
@@ -48,6 +51,14 @@ public class Appointment implements INamedArtefact {
     @Override
     public String getName() {
         return product.getName();
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public String getDescription() {

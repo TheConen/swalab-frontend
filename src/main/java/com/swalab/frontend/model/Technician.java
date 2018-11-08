@@ -2,7 +2,7 @@ package com.swalab.frontend.model;
 
 import java.util.List;
 
-public class Technican {
+public class Technician {
 
     private String email;
     private String name;
@@ -13,11 +13,15 @@ public class Technican {
     private List<Customer> customers;
     private Warehouse parts;
 
-    public Technican(String email, String name, String password, String phone) {
+    public Technician(String email, String name, String password, String phone, List<Appointment> appointments, List<AbstractTaskAndNote> taskAndNotes, List<Customer> customers, Warehouse parts) {
         this.email = email;
         this.name = name;
         this.password = password;
         this.phone = phone;
+        this.appointments = appointments;
+        this.taskAndNotes = taskAndNotes;
+        this.customers = customers;
+        this.parts = parts;
     }
 
     public String getEmail() {
