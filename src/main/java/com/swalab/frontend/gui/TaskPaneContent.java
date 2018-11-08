@@ -98,12 +98,6 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         _statusLabel = new Label();
         _creationLabel = new Label();
 
-        _nameLabel.setBackground(new Background(new BackgroundFill(Color.color(1, 0, 0), null, null)));
-        _descriptionLabel.setBackground(new Background(new BackgroundFill(Color.color(1, 0, 0), null, null)));
-        _statusLabel.setBackground(new Background(new BackgroundFill(Color.color(1, 0, 0), null, null)));
-        _creationLabel.setBackground(new Background(new BackgroundFill(Color.color(1, 0, 0), null, null)));
-
-
         _nameField = new TextField();
         _descriptionField = new TextField();
         _statusField = new TextField();
@@ -162,12 +156,17 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         _aboardButton.setVisible(isEditorActive);
 
         _nameLabel.setVisible(!isEditorActive);
-        _nameLabel.setText("");
+
         _descriptionLabel.setVisible(!isEditorActive);
-        _descriptionLabel.setText("");
         _creationLabel.setVisible(!isEditorActive);
-        _creationLabel.setText("");
-        _statusLabel.setText("");
+
+        if (isEditorActive) {
+            _descriptionLabel.setText("");
+            _nameLabel.setText("");
+            _creationLabel.setText("");
+            _statusLabel.setText("");
+
+        }
 
         if (clazz.equals(Task.class)) {
             _statusDescriptionLabel.setVisible(true);
@@ -199,16 +198,19 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
             _statusLabel.setText(null);
             _creationLabel.setText(null);
         } else {
+            _nameLabel.setVisible(true);
             _nameLabel.setText(item.getName());
+            _descriptionLabel.setVisible(true);
             _descriptionLabel.setText(item.getDescription());
             Date creationDate = item.getCreationDate();
+            _creationLabel.setVisible(true);
             _creationLabel.setText(creationDate == null ? null : creationDate.toGMTString());
 
             if (clazz.equals(Task.class)) {
                 Task task = (Task) item;
                 Status status = task.getStatus();
-                _statusLabel.setText(status == null ? null : status.name());
                 _statusLabel.setVisible(true);
+                _statusLabel.setText(status == null ? null : status.name());
                 _statusDescriptionLabel.setVisible(true);
             } else {
                 _statusLabel.setVisible(false);
