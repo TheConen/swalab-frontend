@@ -1,6 +1,6 @@
 package com.swalab.frontend.gui;
 
-import com.swalab.frontend.INamedArtefact;
+import com.swalab.frontend.api.INamedArtefact;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Parent;

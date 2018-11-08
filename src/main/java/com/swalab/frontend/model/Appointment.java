@@ -1,6 +1,6 @@
 package com.swalab.frontend.model;
 
-import com.swalab.frontend.INamedArtefact;
+import com.swalab.frontend.api.INamedArtefact;
 
 import java.util.ArrayList;
 import java.util.Date;
