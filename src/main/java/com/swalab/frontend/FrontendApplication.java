@@ -2,11 +2,11 @@ package com.swalab.frontend;
 
 import com.swalab.frontend.gui.*;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -48,26 +48,30 @@ public class FrontendApplication extends Application {
         pane.setTop(navigationBox);
         navigationBox.setBorder(createBorder());
 
-        Button appointmentsButton = new Button("Appointments");
+        ToggleButton appointmentsButton = new ToggleButton("Appointments");
         _appointmentPaneContent = new AppointmentOverview();
         appointmentsButton.setOnAction(ae -> changeContent(pane, _appointmentPaneContent));
 
-        Button taskButton = new Button("Tasks");
+        ToggleButton taskButton = new ToggleButton("Tasks");
         _taskPaneContent = new TaskPaneContent();
         taskButton.setOnAction(ae -> changeContent(pane, _taskPaneContent));
 
-        Button customerButton = new Button("Customer");
+        ToggleButton customerButton = new ToggleButton("Customer");
         _customerPaneContent = new CustomerPaneContent();
         customerButton.setOnAction(ae -> changeContent(pane, _customerPaneContent));
 
-        Button ordersAndPartsButton = new Button("Orders and Parts");
+        ToggleButton ordersAndPartsButton = new ToggleButton("Orders and Parts");
         _ordersAndPartPaneContent = new OrdersAndPartsPaneContent();
         ordersAndPartsButton.setOnAction(ae -> changeContent(pane, _ordersAndPartPaneContent));
 
         navigationBox.getChildren().addAll(appointmentsButton, taskButton, customerButton, ordersAndPartsButton);
 
+        ToggleGroup toggleGroup=new ToggleGroup();
+        toggleGroup.getToggles().addAll(appointmentsButton,taskButton,customerButton,ordersAndPartsButton);
+        toggleGroup.selectToggle(appointmentsButton);
+
         // start screen content
-        changeContent(pane, _appointmentPaneContent);
+        //changeContent(pane, _appointmentPaneContent);
 
         // just further information at the bottom line
         HBox footline = new HBox(2);
