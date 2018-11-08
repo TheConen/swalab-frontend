@@ -3,6 +3,8 @@ package com.swalab.frontend.gui;
 import com.swalab.frontend.model.AbstractTaskAndNote;
 import com.swalab.frontend.model.Status;
 import com.swalab.frontend.model.Task;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -44,6 +46,14 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         pane.setBorder(createBorder());
         _listView = createListView();
         _listView.setItems(list);
+        _listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<AbstractTaskAndNote>() {
+            @Override
+            public void changed(ObservableValue<? extends AbstractTaskAndNote> observableValue, AbstractTaskAndNote oldValue, AbstractTaskAndNote newValue) {
+                if (oldValue == null && newValue != null) {
+                    setEditorMode(false);
+                }
+            }
+        });
 
         pane.setCenter(_listView);
 
@@ -113,8 +123,8 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         setEditorMode(false);
 
         descriptionPane.addColumn(0, nameLabel, descriptionLabel, creationLabel, statusLabel);
-        descriptionPane.addColumn(1, _nameLabel, _descriptionLabel,  _creationLabel, _statusLabel);
-        descriptionPane.addColumn(2, _nameField, _descriptionField,  _creationField, _statusField, creationButtonBox);
+        descriptionPane.addColumn(1, _nameLabel, _descriptionLabel, _creationLabel, _statusLabel);
+        descriptionPane.addColumn(2, _nameField, _descriptionField, _creationField, _statusField, creationButtonBox);
 
         return descriptionPane;
     }
@@ -159,6 +169,11 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
             Date creationDate = item.getCreationDate();
             _creationLabel.setText(creationDate == null ? null : creationDate.toGMTString());
         }
+    }
+
+    @Override
+    public void requestFocus() {
+        _listView.requestFocus();
     }
 
 

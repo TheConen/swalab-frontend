@@ -57,5 +57,8 @@ public abstract class AbstractPaneContent <T extends INamedArtefact>{
     protected abstract void updateDescriptionContent(T item);
 
 
-
+    /**
+     * requests the focus for the element which should have it right after this page is shown
+     */
+    public abstract void requestFocus();
 }

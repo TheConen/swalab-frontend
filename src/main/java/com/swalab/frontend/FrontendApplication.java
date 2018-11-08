@@ -94,6 +94,7 @@ public class FrontendApplication extends Application {
     private void changeContent(BorderPane pane, AbstractPaneContent content) {
         pane.setLeft(content.getMainWindowContent());
         pane.setCenter(content.getDescriptionWindowContent());
+        content.requestFocus();
     }
 
     @Override

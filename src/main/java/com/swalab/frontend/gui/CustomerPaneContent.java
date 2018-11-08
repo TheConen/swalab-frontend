@@ -31,4 +31,9 @@ public class CustomerPaneContent extends  AbstractPaneContent<Customer> {
     protected void updateDescriptionContent(Customer item) {
 
     }
+
+    @Override
+    public void requestFocus() {
+
+    }
 }

@@ -29,4 +29,9 @@ public class OrdersAndPartsPaneContent extends  AbstractPaneContent<Warehouse> {
     protected void updateDescriptionContent(Warehouse item) {
 
     }
+
+    @Override
+    public void requestFocus() {
+
+    }
 }

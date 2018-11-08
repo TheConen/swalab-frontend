@@ -31,4 +31,9 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
     protected void updateDescriptionContent(Appointment item) {
 
     }
+
+    @Override
+    public void requestFocus() {
+
+    }
 }
