@@ -6,6 +6,7 @@ import java.util.Date;
 
 public abstract class AbstractTaskAndNote implements INamedArtefact {
 
+    private Long id;
     private String title;
     private String description;
     private Date creationDate;
@@ -14,6 +15,9 @@ public abstract class AbstractTaskAndNote implements INamedArtefact {
         this.title = title;
         this.description = description;
         this.creationDate = creationDate;
+    }
+
+    public AbstractTaskAndNote() {
     }
 
     @Override

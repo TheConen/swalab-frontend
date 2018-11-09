@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Appointment implements INamedArtefact {
 
+    private Long id;
     private Customer customer;
     private String description;
     private Product product;
@@ -19,6 +20,9 @@ public class Appointment implements INamedArtefact {
     private List<Bom> usedPartsAndServices;
     private Date realDateFrom;
     private Date realDateTo;
+
+    public Appointment() {
+    }
 
     public Appointment(Customer customer, String description, Product product, Date creationDate, Status status, List<Bom> plannedPartsAndServices, Date plannedDateTimeFrom, Date plannedDateTimeTo) {
         this.customer = customer;

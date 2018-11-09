@@ -2,8 +2,12 @@ package com.swalab.frontend.model;
 
 public class AvailablePart {
 
+    private Long id;
     private String name;
     private String description;
+
+    public AvailablePart() {
+    }
 
     public AvailablePart(String name, String description) {
         this.name = name;

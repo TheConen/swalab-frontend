@@ -6,6 +6,10 @@ public class Task extends AbstractTaskAndNote {
 
     private Status status;
 
+    public Task() {
+        super();
+    }
+
     public Task(String title, String description, Status status, Date creationDate) {
         super(title, description, creationDate);
         this.status = status;

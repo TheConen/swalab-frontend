@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Customer implements INamedArtefact {
 
+    private Long id;
     private String name;
     private String geolocation;
     private String phone;
@@ -15,6 +16,9 @@ public class Customer implements INamedArtefact {
     private String address;
     private List<Product> products;
     private List<Appointment> appointmentHistoryList = new ArrayList<>();
+
+    public Customer() {
+    }
 
     public Customer(String name, String geolocation, String phone, String mail, String web, String address, List<Product> products) {
         this.name = name;

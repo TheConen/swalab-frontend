@@ -1,19 +1,19 @@
 package com.swalab.frontend.gui;
 
-import com.swalab.frontend.model.Warehouse;
+import com.swalab.frontend.model.WarehousePartAndOrder;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-public class OrdersAndPartsPaneContent extends  AbstractPaneContent<Warehouse> {
+public class OrdersAndPartsPaneContent extends  AbstractPaneContent<WarehousePartAndOrder> {
 
     public Parent getMainWindowContent(){
         BorderPane pane=new BorderPane();
         pane.setPrefWidth(200);
         pane.setBorder(createBorder());
-        ListView<Warehouse> listView = createListView();
+        ListView<WarehousePartAndOrder> listView = createListView();
         pane.setCenter(listView);
         return  pane;
     }
@@ -26,7 +26,7 @@ public class OrdersAndPartsPaneContent extends  AbstractPaneContent<Warehouse> {
     }
 
     @Override
-    protected void updateDescriptionContent(Warehouse item,Class clazz) {
+    protected void updateDescriptionContent(WarehousePartAndOrder item,Class clazz) {
 
     }
 

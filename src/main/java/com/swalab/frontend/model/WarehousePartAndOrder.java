@@ -1,15 +1,20 @@
 package com.swalab.frontend.model;
 
+import com.swalab.frontend.api.INamedArtefact;
+
 import java.util.Date;
-import java.util.List;
 
-public class WarehousePartAndOrder {
+public class WarehousePartAndOrder implements INamedArtefact {
 
+    private Long id;
     private long orderNumber;
     private String description;
     private Date orderDate;
     private Bom part;
     private Status status;
+
+    public WarehousePartAndOrder() {
+    }
 
     public WarehousePartAndOrder(long orderNumber, String description, Date orderDate, Bom part, Status status) {
         this.orderNumber = orderNumber;
@@ -17,6 +22,11 @@ public class WarehousePartAndOrder {
         this.orderDate = orderDate;
         this.part = part;
         this.status = status;
+    }
+
+    @Override
+    public String getName() {
+        return part.getAvailablePart().getName();
     }
 
     public long getOrderNumber() {
@@ -58,4 +68,5 @@ public class WarehousePartAndOrder {
     public void setStatus(Status status) {
         this.status = status;
     }
+
 }

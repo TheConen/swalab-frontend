@@ -5,9 +5,13 @@ package com.swalab.frontend.model;
  */
 public class Bom {
 
+    private Long id;
     private AvailablePart availablePart;
     private int quantity;
     private String unit;
+
+    public Bom() {
+    }
 
     public Bom(AvailablePart availablePart, int quantity, String unit) {
         this.availablePart = availablePart;

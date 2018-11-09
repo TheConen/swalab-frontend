@@ -8,12 +8,16 @@ import java.util.List;
  */
 public class Product {
 
+    private Long id;
     private String name;
     private String description;
     private long serialNumber;
     private Date purchaseDate;
     private String documents;
     private List<Bom> productParts;
+
+    public Product() {
+    }
 
     public Product(String name, String description, long serialNumber, Date purchaseDate, String documents, List<Bom> productParts) {
         this.name = name;
