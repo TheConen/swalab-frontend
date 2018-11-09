@@ -36,6 +36,9 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
     private ListView<AbstractTaskAndNote> _listView;
     private Button _aboardButton;
     private Label _statusDescriptionLabel;
+    private Button _editButton;
+    private Button _deleteButton;
+    private HBox _viewerButtonBox;
 
     @Override
     public Parent getMainWindowContent() {
@@ -88,6 +91,7 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         descriptionPane.setPadding(new Insets(5, 5, 5, 5));
         descriptionPane.setVgap(3);
         descriptionPane.setHgap(3);
+
         Label nameLabel = new Label("Name");
         Label descriptionLabel = new Label("Description");
 
@@ -126,16 +130,23 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         _aboardButton = new Button("Abort");
         _aboardButton.setOnAction(ae -> setEditorMode(false, Note.class));
 
-        HBox creationButtonBox = new HBox();
-        creationButtonBox.getChildren().addAll(_creationButton, _aboardButton);
-        creationButtonBox.setPadding(new Insets(5, 5, 5, 5));
-        creationButtonBox.setSpacing(3);
+        HBox editorButtonBox = new HBox();
+        editorButtonBox.getChildren().addAll(_creationButton, _aboardButton);
+        editorButtonBox.setPadding(new Insets(5, 5, 5, 5));
+        editorButtonBox.setSpacing(3);
+
+        _editButton = new Button("Edit");
+        _deleteButton = new Button("Delete");
+        _viewerButtonBox = new HBox();
+        _viewerButtonBox.getChildren().addAll(_editButton, _deleteButton);
+        _viewerButtonBox.setPadding(new Insets(5, 5, 5, 5));
+        _viewerButtonBox.setSpacing(3);
 
         setEditorMode(false, Note.class);
 
         descriptionPane.addColumn(0, nameLabel, descriptionLabel, creationLabel, _statusDescriptionLabel);
-        descriptionPane.addColumn(1, _nameLabel, _descriptionLabel, _creationLabel, _statusLabel);
-        descriptionPane.addColumn(2, _nameField, _descriptionField, _creationField, _statusField, creationButtonBox);
+        descriptionPane.addColumn(1, _nameLabel, _descriptionLabel, _creationLabel, _statusLabel, _viewerButtonBox);
+        descriptionPane.addColumn(2, _nameField, _descriptionField, _creationField, _statusField, editorButtonBox);
 
         return descriptionPane;
     }
@@ -156,6 +167,10 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         _creationButton.setVisible(isEditorActive);
         _aboardButton.setVisible(isEditorActive);
 
+        _deleteButton.setVisible(!isEditorActive);
+        _editButton.setVisible(!isEditorActive);
+        _viewerButtonBox.setVisible(!isEditorActive);
+
         _nameLabel.setVisible(!isEditorActive);
 
         _descriptionLabel.setVisible(!isEditorActive);
@@ -165,11 +180,16 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
             _descriptionLabel.setText("");
             _nameLabel.setText("");
             _creationLabel.setText("");
-            _statusLabel.setText("");
+            _statusLabel.setText(null);
 
         }
 
-        if (clazz.equals(Task.class)) {
+        boolean isTask=clazz.equals(Task.class);
+        _statusDescriptionLabel.setManaged(isTask);
+        _statusLabel.setManaged(isTask);
+        _statusField.setManaged(isTask);
+
+        if (isTask) {
             _statusDescriptionLabel.setVisible(true);
             _statusField.setVisible(isEditorActive);
             _statusLabel.setVisible(!isEditorActive);
@@ -207,7 +227,12 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
             _creationLabel.setVisible(true);
             _creationLabel.setText(creationDate == null ? null : creationDate.toGMTString());
 
-            if (clazz.equals(Task.class)) {
+            boolean isTask=clazz.equals(Task.class);
+            _statusDescriptionLabel.setManaged(isTask);
+            _statusLabel.setManaged(isTask);
+            _statusField.setManaged(isTask);
+
+            if (isTask) {
                 Task task = (Task) item;
                 Status status = task.getStatus();
                 _statusLabel.setVisible(true);
