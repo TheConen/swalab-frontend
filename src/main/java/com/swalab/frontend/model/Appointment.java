@@ -14,17 +14,17 @@ public class Appointment implements INamedArtefact {
     private Product product;
     private Date creationDate;
     private Status status;
-    private List<Bom> plannedPartsAndServices;
+    private List<PartWithQuantity> plannedPartsAndServices;
     private Date plannedDateTimeFrom;
     private Date plannedDateTimeTo;
-    private List<Bom> usedPartsAndServices;
+    private List<PartWithQuantity> usedPartsAndServices;
     private Date realDateFrom;
     private Date realDateTo;
 
     public Appointment() {
     }
 
-    public Appointment(Customer customer, String description, Product product, Date creationDate, Status status, List<Bom> plannedPartsAndServices, Date plannedDateTimeFrom, Date plannedDateTimeTo) {
+    public Appointment(Customer customer, String description, Product product, Date creationDate, Status status, List<PartWithQuantity> plannedPartsAndServices, Date plannedDateTimeFrom, Date plannedDateTimeTo) {
         this.customer = customer;
         this.description = description;
         this.product = product;
@@ -38,7 +38,7 @@ public class Appointment implements INamedArtefact {
         realDateTo = null;
     }
 
-    public Appointment(Customer customer, String description, Product product, Date creationDate, Status status, List<Bom> plannedPartsAndServices, Date plannedDateTimeFrom, Date plannedDateTimeTo, List<Bom> usedPartsAndServices, Date realDateFrom, Date realDateTo) {
+    public Appointment(Customer customer, String description, Product product, Date creationDate, Status status, List<PartWithQuantity> plannedPartsAndServices, Date plannedDateTimeFrom, Date plannedDateTimeTo, List<PartWithQuantity> usedPartsAndServices, Date realDateFrom, Date realDateTo) {
         this.customer = customer;
         this.description = description;
         this.product = product;
@@ -97,11 +97,11 @@ public class Appointment implements INamedArtefact {
         this.status = status;
     }
 
-    public List<Bom> getPlannedPartsAndServices() {
+    public List<PartWithQuantity> getPlannedPartsAndServices() {
         return plannedPartsAndServices;
     }
 
-    public void setPlannedPartsAndServices(List<Bom> plannedPartsAndServices) {
+    public void setPlannedPartsAndServices(List<PartWithQuantity> plannedPartsAndServices) {
         this.plannedPartsAndServices = plannedPartsAndServices;
     }
 
@@ -121,11 +121,11 @@ public class Appointment implements INamedArtefact {
         this.plannedDateTimeTo = plannedDateTimeTo;
     }
 
-    public List<Bom> getUsedPartsAndServices() {
+    public List<PartWithQuantity> getUsedPartsAndServices() {
         return usedPartsAndServices;
     }
 
-    public void setUsedPartsAndServices(List<Bom> usedPartsAndServices) {
+    public void setUsedPartsAndServices(List<PartWithQuantity> usedPartsAndServices) {
         this.usedPartsAndServices = usedPartsAndServices;
     }
 

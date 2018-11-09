@@ -3,17 +3,17 @@ package com.swalab.frontend.model;
 /**
  * Build of material: Item on lists containing a part, the quantity and an unit
  */
-public class Bom {
+public class PartWithQuantity {
 
     private Long id;
     private AvailablePart availablePart;
     private int quantity;
     private String unit;
 
-    public Bom() {
+    public PartWithQuantity() {
     }
 
-    public Bom(AvailablePart availablePart, int quantity, String unit) {
+    public PartWithQuantity(AvailablePart availablePart, int quantity, String unit) {
         this.availablePart = availablePart;
         this.quantity = quantity;
         this.unit = unit;

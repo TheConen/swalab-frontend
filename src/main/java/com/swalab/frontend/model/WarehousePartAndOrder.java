@@ -10,13 +10,13 @@ public class WarehousePartAndOrder implements INamedArtefact {
     private long orderNumber;
     private String description;
     private Date orderDate;
-    private Bom part;
+    private PartWithQuantity part;
     private Status status;
 
     public WarehousePartAndOrder() {
     }
 
-    public WarehousePartAndOrder(long orderNumber, String description, Date orderDate, Bom part, Status status) {
+    public WarehousePartAndOrder(long orderNumber, String description, Date orderDate, PartWithQuantity part, Status status) {
         this.orderNumber = orderNumber;
         this.description = description;
         this.orderDate = orderDate;
@@ -53,11 +53,11 @@ public class WarehousePartAndOrder implements INamedArtefact {
         this.orderDate = orderDate;
     }
 
-    public Bom getPart() {
+    public PartWithQuantity getPart() {
         return part;
     }
 
-    public void setPart(Bom part) {
+    public void setPart(PartWithQuantity part) {
         this.part = part;
     }
 
