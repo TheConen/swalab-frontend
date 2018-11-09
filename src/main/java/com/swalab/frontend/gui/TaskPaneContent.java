@@ -1,5 +1,7 @@
 package com.swalab.frontend.gui;
 
+import com.swalab.frontend.converter.ProgressStatusConverter;
+import com.swalab.frontend.gui.composites.StatusCombobox;
 import com.swalab.frontend.model.AbstractTaskAndNote;
 import com.swalab.frontend.model.Note;
 import com.swalab.frontend.model.Status;
@@ -10,10 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -30,7 +29,7 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
     private Label _creationLabel;
     private TextField _nameField;
     private TextField _descriptionField;
-    private TextField _statusField;
+    private ComboBox<Status> _statusBox;
     private TextField _creationField;
     private Button _creationButton;
     private ListView<AbstractTaskAndNote> _listView;
@@ -39,6 +38,7 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
     private Button _editButton;
     private Button _deleteButton;
     private HBox _viewerButtonBox;
+    private ProgressStatusConverter _statusConverter;
 
     @Override
     public Parent getMainWindowContent() {
@@ -58,6 +58,8 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
                 if (oldValue == null && newValue != null) {
                     setEditorMode(false, newValue.getClass());
                 }
+                _deleteButton.setDisable(newValue == null);
+                _editButton.setDisable(newValue == null);
             }
         });
 
@@ -92,6 +94,8 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         descriptionPane.setVgap(3);
         descriptionPane.setHgap(3);
 
+        _statusConverter = new ProgressStatusConverter();
+
         Label nameLabel = new Label("Name");
         Label descriptionLabel = new Label("Description");
 
@@ -105,7 +109,7 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
 
         _nameField = new TextField();
         _descriptionField = new TextField();
-        _statusField = new TextField();
+        _statusBox = new StatusCombobox(_statusConverter);
         _creationField = new TextField();
 
         _creationField.setDisable(true);
@@ -115,12 +119,12 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         _creationButton.setOnAction(ae -> {
 
             AbstractTaskAndNote element = null;
-            if (_statusField.isVisible()) {
+            if (_statusBox.isVisible()) {
                 element = createTask();
             } else {
                 element = createNode();
             }
-            Class clazz = _statusField.isVisible() ? Task.class : Note.class;
+            Class clazz = _statusBox.isVisible() ? Task.class : Note.class;
             setEditorMode(false, clazz);
             // temporary adding since ui doesn't have a connection to the backend
             _listView.getItems().add(element);
@@ -137,6 +141,23 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
 
         _editButton = new Button("Edit");
         _deleteButton = new Button("Delete");
+        _editButton.setDisable(true);
+        _editButton.setOnAction(ae -> {
+            throw new RuntimeException("Not implemented yet");
+        });
+        _deleteButton.setDisable(true);
+        _deleteButton.setOnAction(ae -> {
+            ObservableList<AbstractTaskAndNote> selectedItems = _listView.getSelectionModel().getSelectedItems();
+            if (selectedItems != null && !selectedItems.isEmpty()) {
+                _nameLabel.setText(null);
+                _creationLabel.setText(null);
+                _statusLabel.setText(null);
+                _descriptionLabel.setText(null);
+                AbstractTaskAndNote toDelete = selectedItems.get(0);
+                _listView.getItems().remove(toDelete);
+
+            }
+        });
         _viewerButtonBox = new HBox();
         _viewerButtonBox.getChildren().addAll(_editButton, _deleteButton);
         _viewerButtonBox.setPadding(new Insets(5, 5, 5, 5));
@@ -146,7 +167,7 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
 
         descriptionPane.addColumn(0, nameLabel, descriptionLabel, creationLabel, _statusDescriptionLabel);
         descriptionPane.addColumn(1, _nameLabel, _descriptionLabel, _creationLabel, _statusLabel, _viewerButtonBox);
-        descriptionPane.addColumn(2, _nameField, _descriptionField, _creationField, _statusField, editorButtonBox);
+        descriptionPane.addColumn(2, _nameField, _descriptionField, _creationField, _statusBox, editorButtonBox);
 
         return descriptionPane;
     }
@@ -170,6 +191,7 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         _deleteButton.setVisible(!isEditorActive);
         _editButton.setVisible(!isEditorActive);
         _viewerButtonBox.setVisible(!isEditorActive);
+        _viewerButtonBox.setManaged(!isEditorActive);
 
         _nameLabel.setVisible(!isEditorActive);
 
@@ -184,17 +206,17 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
 
         }
 
-        boolean isTask=clazz.equals(Task.class);
+        boolean isTask = clazz.equals(Task.class);
         _statusDescriptionLabel.setManaged(isTask);
         _statusLabel.setManaged(isTask);
-        _statusField.setManaged(isTask);
+        _statusBox.setManaged(isTask);
 
         if (isTask) {
             _statusDescriptionLabel.setVisible(true);
-            _statusField.setVisible(isEditorActive);
+            _statusBox.setVisible(isEditorActive);
             _statusLabel.setVisible(!isEditorActive);
         } else {
-            _statusField.setVisible(false);
+            _statusBox.setVisible(false);
             _statusLabel.setVisible(false);
             _statusDescriptionLabel.setVisible(false);
         }
@@ -227,21 +249,21 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
             _creationLabel.setVisible(true);
             _creationLabel.setText(creationDate == null ? null : creationDate.toGMTString());
 
-            boolean isTask=clazz.equals(Task.class);
+            boolean isTask = clazz.equals(Task.class);
             _statusDescriptionLabel.setManaged(isTask);
             _statusLabel.setManaged(isTask);
-            _statusField.setManaged(isTask);
+            _statusBox.setManaged(isTask);
 
             if (isTask) {
                 Task task = (Task) item;
                 Status status = task.getStatus();
                 _statusLabel.setVisible(true);
-                _statusLabel.setText(status == null ? null : status.name());
+                _statusLabel.setText(status == null ? null : _statusConverter.toString(status));
                 _statusDescriptionLabel.setVisible(true);
             } else {
                 _statusLabel.setVisible(false);
                 _statusDescriptionLabel.setVisible(false);
-                _statusField.setVisible(false);
+                _statusBox.setVisible(false);
             }
         }
 

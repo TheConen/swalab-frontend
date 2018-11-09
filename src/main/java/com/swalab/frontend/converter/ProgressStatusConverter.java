@@ -1,9 +1,10 @@
 package com.swalab.frontend.converter;
 
-import com.swalab.frontend.api.IStatusConverter;
+import com.swalab.frontend.api.IStatusConverterConstants;
 import com.swalab.frontend.model.Status;
+import javafx.util.StringConverter;
 
-public class ProgressStatusConverter implements IStatusConverter {
+public class ProgressStatusConverter extends StringConverter<Status> implements IStatusConverterConstants {
 
     private static final String OPEN = "Open";
     private static final String FINISHED = "Finished";
@@ -11,6 +12,9 @@ public class ProgressStatusConverter implements IStatusConverter {
 
     @Override
     public String toString(Status status) {
+        if(status==null){
+            return "Not set yet";
+        }
         switch (status) {
             case OPEN:
                 return OPEN;
@@ -24,7 +28,10 @@ public class ProgressStatusConverter implements IStatusConverter {
     }
 
     @Override
-    public Status toStatus(String string) {
+    public Status fromString(String string) {
+        if(string==null){
+            string=OPEN;
+        }
         switch (string) {
             case OPEN:
                 return Status.OPEN;
