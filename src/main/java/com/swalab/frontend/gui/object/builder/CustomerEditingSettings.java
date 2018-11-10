@@ -1,12 +1,12 @@
 package com.swalab.frontend.gui.object.builder;
 
-import com.swalab.frontend.api.IObjectBuilder;
+import com.swalab.frontend.api.IEditorSettings;
 import com.swalab.frontend.model.Customer;
 import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
 
-public class CustomerBuilder implements IObjectBuilder<Customer> {
+public class CustomerBuilder implements IEditorSettings<Customer> {
 
 
     private final TextField _nameField;
