@@ -1,6 +1,9 @@
 package com.swalab.frontend.gui.composites;
 
 import com.swalab.frontend.api.IEditorSettings;
+import com.swalab.frontend.model.AbstractTaskAndNote;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -86,26 +89,47 @@ public class InlineEditor<T> extends GridPane {
                 _listView.getItems().remove(selectedItem);
             }
         });
-        Button modifyButton = new Button("Modify");
-        modifyButton.setOnAction(ae -> setEditorMode(true));
-        viewerButtons.getChildren().addAll(deleteButton, modifyButton);
+        deleteButton.setDisable(true);
+        Button editButton = new Button("Edit");
+        editButton.setOnAction(ae -> setEditorMode(true));
+        editButton.setDisable(true);
+        viewerButtons.getChildren().addAll(editButton, deleteButton);
 
-        addViewerColumnNode(viewerButtons);
-
-        HBox editorButtons = new HBox();
-        Button aboardButton = new Button("Aboard");
-        aboardButton.setOnAction(ae -> setEditorMode(false));
-        Button saveButton = new Button("Save");
-        saveButton.setOnAction(ae -> {
-            // TODO check whether it's an update or a new creation
-            if (_objectBuilder.canObjectBeCreated()) {
-                T object = _objectBuilder.createObject();
-                _listView.getItems().add(object);
-                setEditorMode(false);
-                _listView.getSelectionModel().select(object);
+        _listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<T>() {
+            @Override
+            public void changed(ObservableValue<? extends T> observableValue, T oldValue, T newValue) {
+                if (oldValue == null && newValue != null) {
+                    setEditorMode(false);
+                }
+                deleteButton.setDisable(newValue == null);
+                editButton.setDisable(newValue == null);
             }
         });
-        editorButtons.getChildren().addAll(aboardButton, saveButton);
-        addEditorColumnNode(editorButtons);
-    }
+
+
+    addViewerColumnNode(viewerButtons);
+
+    HBox editorButtons = new HBox();
+    Button aboardButton = new Button("Aboard");
+        aboardButton.setOnAction(ae ->
+
+    setEditorMode(false));
+    Button saveButton = new Button("Save");
+        saveButton.setOnAction(ae ->
+
+    {
+        // TODO check whether it's an update or a new creation
+        if (_objectBuilder.canObjectBeCreated()) {
+            T object = _objectBuilder.createObject();
+            _listView.getItems().add(object);
+            setEditorMode(false);
+            _listView.getSelectionModel().select(object);
+        }
+    });
+        editorButtons.getChildren().
+
+    addAll(aboardButton, saveButton);
+
+    addEditorColumnNode(editorButtons);
+}
 }
