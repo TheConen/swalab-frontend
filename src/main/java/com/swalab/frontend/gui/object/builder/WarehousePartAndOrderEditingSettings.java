@@ -32,6 +32,7 @@ public class WarehousePartAndOrderEditingSettings implements IEditorSettings<War
         _descriptionField.setText(content == null ? null : content.getDescription());
         _orderDateField.setText(content == null ? null : content.getOrderDate().toGMTString());
         _statusComboBox.getSelectionModel().select(content == null ? null : content.getStatus());
+        _idField.setText(content==null?null:content.getID()+"");
     }
 
     @Override

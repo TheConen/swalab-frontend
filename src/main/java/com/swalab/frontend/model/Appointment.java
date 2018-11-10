@@ -144,4 +144,8 @@ public class Appointment implements INamedArtefact {
     public void setRealDateTo(Date realDateTo) {
         this.realDateTo = realDateTo;
     }
+
+    public long getID(){
+        return id;
+    }
 }

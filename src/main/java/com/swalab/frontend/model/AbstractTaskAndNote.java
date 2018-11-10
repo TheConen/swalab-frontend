@@ -49,6 +49,10 @@ public abstract class AbstractTaskAndNote implements INamedArtefact {
         this.creationDate = creationDate;
     }
 
+    public long getID(){
+        return id;
+    }
+
 
     /**
      * TODO: delete

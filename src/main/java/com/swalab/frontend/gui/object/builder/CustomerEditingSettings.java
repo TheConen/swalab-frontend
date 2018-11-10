@@ -40,6 +40,7 @@ public class CustomerEditingSettings implements IEditorSettings<Customer> {
         _mailField.setText(content==null?null:content.getMail());
         _webField.setText(content==null?null:content.getWeb());
         _addressField.setText(content==null?null:content.getAddress());
+        _idField.setText(content==null?null:content.getID()+"");
     }
 
     @Override

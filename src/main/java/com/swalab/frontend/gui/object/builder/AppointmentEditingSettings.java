@@ -34,6 +34,7 @@ public class AppointmentEditingSettings implements IEditorSettings<Appointment> 
         _creationDateField.setText(content == null ? null : content.getCreationDate().toGMTString());
         _plannedStartField.setText(content == null ? null : content.getPlannedDateTimeFrom().toGMTString());
         _plannedEndField.setText(content == null ? null : content.getPlannedDateTimeTo().toGMTString());
+        _idField.setText(content==null?null:content.getID()+"");
     }
 
     @Override

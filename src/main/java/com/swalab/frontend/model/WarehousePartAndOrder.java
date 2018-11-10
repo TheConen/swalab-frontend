@@ -69,4 +69,8 @@ public class WarehousePartAndOrder implements INamedArtefact {
         this.status = status;
     }
 
+    public long getID(){
+        return id;
+    }
+
 }

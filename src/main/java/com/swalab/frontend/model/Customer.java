@@ -93,4 +93,8 @@ public class Customer implements INamedArtefact {
     public void setAppointmentHistoryList(List<Appointment> appointmentHistoryList) {
         this.appointmentHistoryList = appointmentHistoryList;
     }
+
+    public long getID(){
+        return id;
+    }
 }
