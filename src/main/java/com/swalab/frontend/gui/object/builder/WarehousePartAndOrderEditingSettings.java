@@ -1,7 +1,6 @@
 package com.swalab.frontend.gui.object.builder;
 
 import com.swalab.frontend.api.IEditorSettings;
-import com.swalab.frontend.gui.composites.InlineEditor;
 import com.swalab.frontend.model.Status;
 import com.swalab.frontend.model.WarehousePartAndOrder;
 import javafx.scene.control.ComboBox;
@@ -13,11 +12,13 @@ public class WarehousePartAndOrderEditingSettings implements IEditorSettings<War
     private final TextField _descriptionField;
     private final Label _orderDateField;
     private final ComboBox<Status> _statusComboBox;
+    private final TextField _idField;
 
-    public WarehousePartAndOrderEditingSettings(TextField descriptionField, Label orderDateField, ComboBox<Status> statusComboBox) {
+    public WarehousePartAndOrderEditingSettings(TextField descriptionField, Label orderDateField, ComboBox<Status> statusComboBox, TextField idField) {
         _descriptionField = descriptionField;
         _orderDateField = orderDateField;
         _statusComboBox = statusComboBox;
+        _idField=idField;
     }
 
     @Override

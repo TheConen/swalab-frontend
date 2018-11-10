@@ -53,13 +53,14 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
         _orderDateField = new Label();
         _statusComboBox = new StatusCombobox(_statusStringConverter);
 
+        TextField idField=new TextField();
 
-
-        InlineEditor<WarehousePartAndOrder> editor = new InlineEditor<>(_listView, new WarehousePartAndOrderEditingSettings(_descriptionField, _orderDateField, _statusComboBox));
+        InlineEditor<WarehousePartAndOrder> editor = new InlineEditor<>(_listView, new WarehousePartAndOrderEditingSettings(_descriptionField, _orderDateField, _statusComboBox, idField));
         editor.addPermanentVisible(descriptionLabel, orderDateLabel, statusLabel);
         editor.addViewerColumnNode(_descriptionLabel, _orderDateLabel, _statusLabel);
         editor.addEditorColumnNode(_descriptionField, _orderDateField, _statusComboBox);
         editor.createAndAddDefaultButton();
+        editor.addIDField(idField);
         return editor;
     }
 

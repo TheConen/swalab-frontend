@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
@@ -20,6 +21,7 @@ public class InlineEditor<T> extends GridPane {
     private final List<Node> _editorColumnNodeList;
     private final ListView<T> _listView;
     private final IEditorSettings<T> _objectBuilder;
+    private TextField _idField;
 
     public InlineEditor(ListView<T> listView, IEditorSettings objectBuilder) {
         super();
@@ -28,6 +30,7 @@ public class InlineEditor<T> extends GridPane {
         _permanentVisibleNodeList = new ArrayList<Node>();
         _viewerColumnNodeList = new ArrayList<Node>();
         _editorColumnNodeList = new ArrayList<Node>();
+        _idField = null;
         setPadding(new Insets(5, 5, 5, 5));
         setHgap(3);
         setVgap(3);
@@ -66,6 +69,13 @@ public class InlineEditor<T> extends GridPane {
         add(node, 2, _editorColumnNodeList.size());
         node.setVisible(false);
         node.setManaged(false);
+    }
+
+    public void addIDField(TextField text) {
+        text.setVisible(false);
+        text.setManaged(false);
+        add(text, 3, 0);
+        _idField = text;
     }
 
     public void setEditorMode(boolean isEditorMode) {
@@ -120,16 +130,23 @@ public class InlineEditor<T> extends GridPane {
         saveButton.setOnAction(ae ->
 
         {
-            // TODO check whether it's an update or a new creation
-            if (_objectBuilder.canObjectBeCreated()) {
-                T object = _objectBuilder.createObject();
-                _listView.getItems().add(object);
-                setEditorMode(false);
-                _listView.getSelectionModel().select(object);
+            if (isObjectCreationRequiered()) {
+                if (_objectBuilder.canObjectBeCreated()) {
+                    T object = _objectBuilder.createObject();
+                    _listView.getItems().add(object);
+                    setEditorMode(false);
+                    _listView.getSelectionModel().select(object);
+                }
+            }else{
+                // TODO update existing data
             }
         });
-        editorButtons.getChildren().addAll(saveButton,aboardButton);
+        editorButtons.getChildren().addAll(saveButton, aboardButton);
 
         addEditorColumnNode(editorButtons);
+    }
+
+    private boolean isObjectCreationRequiered() {
+        return _idField == null || _idField.getText().isEmpty();
     }
 }

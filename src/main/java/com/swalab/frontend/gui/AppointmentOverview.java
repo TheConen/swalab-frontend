@@ -67,13 +67,16 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         _plannedEndField = new TextField();
         _statusComboBox = new StatusCombobox(_statusStringConverter);
 
+        TextField idField=new TextField();
+
         _creationDateField.setDisable(true);
 
-        InlineEditor<Appointment> editor = new InlineEditor<>(_listView, new AppointmentEditingSettings(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField));
+        InlineEditor<Appointment> editor = new InlineEditor<>(_listView, new AppointmentEditingSettings(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, idField));
         editor.addPermanentVisible(descriptionLabel, creationDateLabel, statusLabel, plannedStartLabel, plannedEndLabel);
         editor.addViewerColumnNode(_descriptionLabel, _creationDateLabel, _statusLabel, _plannedStartLabel, _plannedEndLabel);
         editor.addEditorColumnNode(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField);
         editor.createAndAddDefaultButton();
+        editor.addIDField(idField);
         return editor;
     }
 

@@ -11,12 +11,14 @@ public class AppointmentEditingSettings implements IEditorSettings<Appointment> 
     private final TextField _creationDateField;
     private final TextField _plannedStartField;
     private final TextField _plannedEndField;
+    private final TextField _idField;
 
-    public AppointmentEditingSettings(TextField descriptionField, TextField creationDateField, StatusCombobox statusComboBox, TextField plannedStartField, TextField plannedEndField) {
+    public AppointmentEditingSettings(TextField descriptionField, TextField creationDateField, StatusCombobox statusComboBox, TextField plannedStartField, TextField plannedEndField, TextField idField) {
         _descriptionField = descriptionField;
         _creationDateField = creationDateField;
         _plannedStartField = plannedStartField;
         _plannedEndField = plannedEndField;
+        _idField=idField;
     }
 
     @Override

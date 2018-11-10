@@ -80,15 +80,16 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
         _mailField = new TextField();
         _webField = new TextField();
         _addressField = new TextField();
+        TextField idField = new TextField();
 
 
-        CustomerEditingSettings customerBuilder = new CustomerEditingSettings(_nameField, _geolocationField, _phoneField, _mailField, _webField, _addressField);
+        CustomerEditingSettings customerBuilder = new CustomerEditingSettings(_nameField, _geolocationField, _phoneField, _mailField, _webField, _addressField, idField);
         _editor = new InlineEditor<>(_listView, customerBuilder);
 
         _editor.addPermanentVisible(nameLabel, geolocationLabel, phoneLabel, mailLabel, webLabel, addressLabel);
         _editor.addViewerColumnNode(_nameLabel, _geolocationLabel, _phoneLabel, _mailLabel, _webLabel, _addressLabel);
         _editor.addEditorColumnNode(_nameField, _geolocationField, _phoneField, _mailField, _webField, _addressField);
-
+        _editor.addIDField(idField);
         _editor.createAndAddDefaultButton();
 
 

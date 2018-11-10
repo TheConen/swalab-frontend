@@ -15,14 +15,16 @@ public class CustomerEditingSettings implements IEditorSettings<Customer> {
     private final TextField _mailField;
     private final TextField _webField;
     private final TextField _addressField;
+    private final TextField _idField;
 
-    public CustomerEditingSettings(TextField nameField, TextField geolocationField, TextField phoneField, TextField mailField, TextField webField, TextField addressField) {
+    public CustomerEditingSettings(TextField nameField, TextField geolocationField, TextField phoneField, TextField mailField, TextField webField, TextField addressField, TextField idField) {
         _nameField = nameField;
         _geolocationField = geolocationField;
         _phoneField = phoneField;
         _mailField = mailField;
         _webField = webField;
         _addressField = addressField;
+        _idField=idField;
     }
 
     @Override
