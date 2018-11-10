@@ -13,7 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.util.StringConverter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,6 +30,7 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
     private TextField _plannedStartField;
     private TextField _plannedEndField;
     private StatusCombobox _statusComboBox;
+    private ProgressStatusConverter _statusStringConverter;
 
     @Override
     public Parent getMainWindowContent() {
@@ -52,7 +52,7 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         Label plannedStartLabel = new Label("Planned begin");
         Label plannedEndLabel = new Label("Planned end");
 
-        StringConverter<Status> statusStringConverter = new ProgressStatusConverter();
+        _statusStringConverter = new ProgressStatusConverter();
 
 
         _descriptionLabel = new Label();
@@ -65,25 +65,37 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         _creationDateField = new TextField();
         _plannedStartField = new TextField();
         _plannedEndField = new TextField();
-        _statusComboBox = new StatusCombobox(statusStringConverter);
+        _statusComboBox = new StatusCombobox(_statusStringConverter);
 
         _creationDateField.setDisable(true);
 
         InlineEditor<Appointment> editor = new InlineEditor<>(_listView, new AppointmentEditingSettings());
         editor.addPermanentVisible(descriptionLabel, creationDateLabel, statusLabel, plannedStartLabel, plannedEndLabel);
         editor.addViewerColumnNode(_descriptionLabel, _creationDateLabel, _statusLabel, _plannedStartLabel, _plannedEndLabel);
-        editor.addEditorColumnNode(_descriptionField, _creationDateField, _plannedStartField, _plannedEndField, _statusComboBox);
+        editor.addEditorColumnNode(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField);
         editor.createAndAddDefaultButton();
         return editor;
     }
 
     @Override
     protected void updateDescriptionContent(Appointment item, Class clazz) {
-
+        if (item == null) {
+            _descriptionLabel.setText(null);
+            _creationDateLabel.setText(null);
+            _statusLabel.setText(null);
+            _plannedStartLabel.setText(null);
+            _plannedEndLabel.setText(null);
+        } else {
+            _descriptionLabel.setText(item.getDescription());
+            _creationDateLabel.setText(item.getCreationDate().toGMTString());
+            _statusLabel.setText(_statusStringConverter.toString(item.getStatus()));
+            _plannedStartLabel.setText(item.getPlannedDateTimeFrom().toGMTString());
+            _plannedEndLabel.setText(item.getPlannedDateTimeTo().toGMTString());
+        }
     }
 
     @Override
     public void requestFocus() {
-
+        _listView.requestFocus();
     }
 }

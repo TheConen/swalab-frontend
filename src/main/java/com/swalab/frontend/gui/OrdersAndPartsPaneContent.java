@@ -1,5 +1,6 @@
 package com.swalab.frontend.gui;
 
+import com.swalab.frontend.converter.ProgressStatusConverter;
 import com.swalab.frontend.gui.composites.InlineEditor;
 import com.swalab.frontend.gui.object.builder.WarehousePartAndOrderEditingSettings;
 import com.swalab.frontend.model.AvailablePart;
@@ -24,6 +25,7 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
     private TextField _descriptionField;
     private Label _orderDateField;
     private Label _statusField;
+    private ProgressStatusConverter _statusStringConverter;
 
     public Parent getMainWindowContent() {
         BorderPane pane = new BorderPane();
@@ -31,7 +33,7 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
         pane.setBorder(createBorder());
         _listView = createListView();
         pane.setCenter(_listView);
-        _listView.getItems().add(new WarehousePartAndOrder(0l, "Description", new Date(), new PartWithQuantity(new AvailablePart("Part name","Part description"),10,"units"), Status.OPEN));
+        _listView.getItems().add(new WarehousePartAndOrder(0l, "Description", new Date(), new PartWithQuantity(new AvailablePart("Part name", "Part description"), 10, "units"), Status.OPEN));
         return pane;
     }
 
@@ -48,6 +50,8 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
         _orderDateField = new Label();
         _statusField = new Label();
 
+        _statusStringConverter = new ProgressStatusConverter();
+
         InlineEditor<WarehousePartAndOrder> editor = new InlineEditor<>(_listView, new WarehousePartAndOrderEditingSettings());
         editor.addPermanentVisible(descriptionLabel, orderDateLabel, statusLabel);
         editor.addViewerColumnNode(_descriptionLabel, _orderDateLabel, _statusLabel);
@@ -58,11 +62,19 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
 
     @Override
     protected void updateDescriptionContent(WarehousePartAndOrder item, Class clazz) {
-
+        if (item == null) {
+            _descriptionLabel.setText(null);
+            _orderDateLabel.setText(null);
+            _statusLabel.setText(null);
+        } else {
+            _descriptionLabel.setText(item.getDescription());
+            _orderDateLabel.setText(item.getOrderDate().toGMTString());
+            _statusLabel.setText(_statusStringConverter.toString(item.getStatus()));
+        }
     }
 
     @Override
     public void requestFocus() {
-
+        _listView.requestFocus();
     }
 }
