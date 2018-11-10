@@ -3,6 +3,7 @@ package com.swalab.frontend.gui;
 import com.swalab.frontend.gui.composites.InlineEditor;
 import com.swalab.frontend.gui.object.builder.CustomerEditingSettings;
 import com.swalab.frontend.model.Customer;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -40,8 +41,13 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
         pane.setCenter(_listView);
 
         Button creationButton = new Button("+ Customer");
-        creationButton.setOnAction(ae->_editor.setEditorMode(true));
-        HBox buttonBox=new HBox();
+        creationButton.setOnAction(ae -> {
+            _listView.getSelectionModel().select(null);
+            _editor.setEditorMode(true);
+        });
+        HBox buttonBox = new HBox();
+        buttonBox.setSpacing(5);
+        buttonBox.setPadding(new Insets(3, 3, 3, 3));
         buttonBox.getChildren().add(creationButton);
 
         pane.setBottom(buttonBox);

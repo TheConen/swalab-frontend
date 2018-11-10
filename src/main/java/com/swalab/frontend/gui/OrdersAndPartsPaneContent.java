@@ -2,17 +2,18 @@ package com.swalab.frontend.gui;
 
 import com.swalab.frontend.converter.ProgressStatusConverter;
 import com.swalab.frontend.gui.composites.InlineEditor;
+import com.swalab.frontend.gui.composites.StatusCombobox;
 import com.swalab.frontend.gui.object.builder.WarehousePartAndOrderEditingSettings;
 import com.swalab.frontend.model.AvailablePart;
 import com.swalab.frontend.model.PartWithQuantity;
 import com.swalab.frontend.model.Status;
 import com.swalab.frontend.model.WarehousePartAndOrder;
 import javafx.scene.Parent;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 
 import java.util.Date;
 
@@ -24,7 +25,7 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
     private Label _statusLabel;
     private TextField _descriptionField;
     private Label _orderDateField;
-    private Label _statusField;
+    private ComboBox<Status> _statusComboBox;
     private ProgressStatusConverter _statusStringConverter;
 
     public Parent getMainWindowContent() {
@@ -42,20 +43,22 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
         Label orderDateLabel = new Label("Order date");
         Label statusLabel = new Label("Status");
 
+        _statusStringConverter = new ProgressStatusConverter();
+
         _descriptionLabel = new Label();
         _orderDateLabel = new Label();
         _statusLabel = new Label();
 
         _descriptionField = new TextField();
         _orderDateField = new Label();
-        _statusField = new Label();
+        _statusComboBox = new StatusCombobox(_statusStringConverter);
 
-        _statusStringConverter = new ProgressStatusConverter();
 
-        InlineEditor<WarehousePartAndOrder> editor = new InlineEditor<>(_listView, new WarehousePartAndOrderEditingSettings());
+
+        InlineEditor<WarehousePartAndOrder> editor = new InlineEditor<>(_listView, new WarehousePartAndOrderEditingSettings(_descriptionField, _orderDateField, _statusComboBox));
         editor.addPermanentVisible(descriptionLabel, orderDateLabel, statusLabel);
         editor.addViewerColumnNode(_descriptionLabel, _orderDateLabel, _statusLabel);
-        editor.addEditorColumnNode(_descriptionField, _orderDateField, _statusField);
+        editor.addEditorColumnNode(_descriptionField, _orderDateField, _statusComboBox);
         editor.createAndAddDefaultButton();
         return editor;
     }

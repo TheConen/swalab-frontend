@@ -1,7 +1,6 @@
 package com.swalab.frontend.gui.composites;
 
 import com.swalab.frontend.api.IEditorSettings;
-import com.swalab.frontend.model.AbstractTaskAndNote;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
@@ -78,11 +77,12 @@ public class InlineEditor<T> extends GridPane {
             node.setVisible(isEditorMode);
             node.setManaged(isEditorMode);
         }
+        _objectBuilder.setDefaultValues(_listView.getSelectionModel().getSelectedItem());
     }
 
     public void createAndAddDefaultButton() {
         HBox viewerButtons = new HBox();
-        viewerButtons.setPadding(new Insets(3,3,3,3));
+        viewerButtons.setPadding(new Insets(3, 3, 3, 3));
         viewerButtons.setSpacing(5);
         Button deleteButton = new Button("Delete");
         deleteButton.setOnAction(ae -> {
@@ -109,29 +109,27 @@ public class InlineEditor<T> extends GridPane {
         });
 
 
-    addViewerColumnNode(viewerButtons);
+        addViewerColumnNode(viewerButtons);
 
-    HBox editorButtons = new HBox();
-    Button aboardButton = new Button("Aboard");
-        aboardButton.setOnAction(ae ->
-
-    setEditorMode(false));
-    Button saveButton = new Button("Save");
+        HBox editorButtons = new HBox();
+        editorButtons.setPadding(new Insets(3, 3, 3, 3));
+        editorButtons.setSpacing(5);
+        Button aboardButton = new Button("Aboard");
+        aboardButton.setOnAction(ae -> setEditorMode(false));
+        Button saveButton = new Button("Save");
         saveButton.setOnAction(ae ->
 
-    {
-        // TODO check whether it's an update or a new creation
-        if (_objectBuilder.canObjectBeCreated()) {
-            T object = _objectBuilder.createObject();
-            _listView.getItems().add(object);
-            setEditorMode(false);
-            _listView.getSelectionModel().select(object);
-        }
-    });
-        editorButtons.getChildren().
+        {
+            // TODO check whether it's an update or a new creation
+            if (_objectBuilder.canObjectBeCreated()) {
+                T object = _objectBuilder.createObject();
+                _listView.getItems().add(object);
+                setEditorMode(false);
+                _listView.getSelectionModel().select(object);
+            }
+        });
+        editorButtons.getChildren().addAll(saveButton,aboardButton);
 
-    addAll(aboardButton, saveButton);
-
-    addEditorColumnNode(editorButtons);
-}
+        addEditorColumnNode(editorButtons);
+    }
 }

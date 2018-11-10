@@ -17,17 +17,27 @@ public class CustomerEditingSettings implements IEditorSettings<Customer> {
     private final TextField _addressField;
 
     public CustomerEditingSettings(TextField nameField, TextField geolocationField, TextField phoneField, TextField mailField, TextField webField, TextField addressField) {
-    _nameField=nameField;
-    _geolocationField=geolocationField;
-    _phoneField=phoneField;
-    _mailField=mailField;
-    _webField=webField;
-    _addressField=addressField;
+        _nameField = nameField;
+        _geolocationField = geolocationField;
+        _phoneField = phoneField;
+        _mailField = mailField;
+        _webField = webField;
+        _addressField = addressField;
     }
 
     @Override
     public Customer createObject() {
-        return new Customer(_nameField.getText(),_geolocationField.getText(),_phoneField.getText(),_mailField.getText(),_webField.getText(),_addressField.getText(),new ArrayList<>());
+        return new Customer(_nameField.getText(), _geolocationField.getText(), _phoneField.getText(), _mailField.getText(), _webField.getText(), _addressField.getText(), new ArrayList<>());
+    }
+
+    @Override
+    public void setDefaultValues(Customer content) {
+        _nameField.setText(content==null?null:content.getName());
+        _geolocationField.setText(content==null?null:content.getGeolocation());
+        _phoneField.setText(content==null?null:content.getPhone());
+        _mailField.setText(content==null?null:content.getMail());
+        _webField.setText(content==null?null:content.getWeb());
+        _addressField.setText(content==null?null:content.getAddress());
     }
 
     @Override
