@@ -82,6 +82,8 @@ public class InlineEditor<T> extends GridPane {
 
     public void createAndAddDefaultButton() {
         HBox viewerButtons = new HBox();
+        viewerButtons.setPadding(new Insets(3,3,3,3));
+        viewerButtons.setSpacing(5);
         Button deleteButton = new Button("Delete");
         deleteButton.setOnAction(ae -> {
             T selectedItem = _listView.getSelectionModel().getSelectedItem();
