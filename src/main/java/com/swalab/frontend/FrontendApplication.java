@@ -72,7 +72,7 @@ public class FrontendApplication extends Application {
         toggleGroup.selectToggle(appointmentsButton);
 
         // start screen content
-        changeContent(pane, _appointmentPaneContent);
+        changeContent(pane, _customerPaneContent);
 
         // just further information at the bottom line
         HBox footline = new HBox(2);
