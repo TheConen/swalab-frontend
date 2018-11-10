@@ -1,7 +1,7 @@
 package com.swalab.frontend.gui;
 
 import com.swalab.frontend.gui.composites.InlineEditor;
-import com.swalab.frontend.gui.object.builder.CustomerBuilder;
+import com.swalab.frontend.gui.object.builder.CustomerEditingSettings;
 import com.swalab.frontend.model.Customer;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -10,7 +10,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 
@@ -77,7 +76,7 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
         _addressField = new TextField();
 
 
-        CustomerBuilder customerBuilder = new CustomerBuilder(_nameField, _geolocationField, _phoneField, _mailField, _webField, _addressField);
+        CustomerEditingSettings customerBuilder = new CustomerEditingSettings(_nameField, _geolocationField, _phoneField, _mailField, _webField, _addressField);
         _editor = new InlineEditor<>(_listView, customerBuilder);
 
         _editor.addPermanentVisible(nameLabel, geolocationLabel, phoneLabel, mailLabel, webLabel, addressLabel);

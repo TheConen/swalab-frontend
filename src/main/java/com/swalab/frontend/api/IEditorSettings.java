@@ -1,6 +1,6 @@
 package com.swalab.frontend.api;
 
-public interface IObjectBuilder<T> {
+public interface IEditorSettings<T> {
 
     /**
      * creates a specific object with it's own structure out of the available input data

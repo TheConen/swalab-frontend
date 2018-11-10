@@ -6,7 +6,7 @@ import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
 
-public class CustomerBuilder implements IEditorSettings<Customer> {
+public class CustomerEditingSettings implements IEditorSettings<Customer> {
 
 
     private final TextField _nameField;
@@ -16,7 +16,7 @@ public class CustomerBuilder implements IEditorSettings<Customer> {
     private final TextField _webField;
     private final TextField _addressField;
 
-    public CustomerBuilder(TextField nameField, TextField geolocationField, TextField phoneField, TextField mailField, TextField webField, TextField addressField) {
+    public CustomerEditingSettings(TextField nameField, TextField geolocationField, TextField phoneField, TextField mailField, TextField webField, TextField addressField) {
     _nameField=nameField;
     _geolocationField=geolocationField;
     _phoneField=phoneField;

@@ -1,7 +1,6 @@
 package com.swalab.frontend.gui.composites;
 
-import com.swalab.frontend.api.IObjectBuilder;
-import com.swalab.frontend.model.Customer;
+import com.swalab.frontend.api.IEditorSettings;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -18,9 +17,9 @@ public class InlineEditor<T> extends GridPane {
     private final List<Node> _viewerColumnNodeList;
     private final List<Node> _editorColumnNodeList;
     private final ListView<T> _listView;
-    private final IObjectBuilder<T> _objectBuilder;
+    private final IEditorSettings<T> _objectBuilder;
 
-    public InlineEditor(ListView<T> listView, IObjectBuilder objectBuilder) {
+    public InlineEditor(ListView<T> listView, IEditorSettings objectBuilder) {
         super();
         _listView = listView;
         _objectBuilder = objectBuilder;
