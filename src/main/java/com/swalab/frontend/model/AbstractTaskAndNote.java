@@ -1,9 +1,16 @@
 package com.swalab.frontend.model;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.swalab.frontend.api.INamedArtefact;
 
 import java.util.Date;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Note.class, name = "note"),
+        @JsonSubTypes.Type(value = Task.class, name = "task")
+})
 public abstract class AbstractTaskAndNote implements INamedArtefact {
 
     private Long id;
