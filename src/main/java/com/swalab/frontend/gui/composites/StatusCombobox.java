@@ -1,6 +1,5 @@
 package com.swalab.frontend.gui.composites;
 
-import com.swalab.frontend.api.IStatusConverterConstants;
 import com.swalab.frontend.model.Status;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

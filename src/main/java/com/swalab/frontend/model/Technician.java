@@ -3,8 +3,7 @@ package com.swalab.frontend.model;
 import java.util.List;
 
 public class Technician {
-
-    private Long id;
+    
     private String email;
     private String name;
     private String password;
