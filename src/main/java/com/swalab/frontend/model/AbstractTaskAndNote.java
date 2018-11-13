@@ -1,5 +1,6 @@
 package com.swalab.frontend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.swalab.frontend.api.INamedArtefact;
@@ -28,6 +29,7 @@ public abstract class AbstractTaskAndNote implements INamedArtefact {
     }
 
     @Override
+    @JsonIgnore
     public String getName() {
         return getTitle();
     }
@@ -63,13 +65,5 @@ public abstract class AbstractTaskAndNote implements INamedArtefact {
     public void setId(Long id) {
         this.id = id;
     }
-
-
-    /**
-     * TODO: delete
-     * default implementation for easier handling in the ui. some subtypes may override this method for returning the correct status
-     * @return the status of the object
-     */
-    public Status getStatus(){return null;}
 
 }

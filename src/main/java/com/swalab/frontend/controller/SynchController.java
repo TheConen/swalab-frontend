@@ -68,7 +68,7 @@ public class SynchController {
                 .fromHttpUrl(url)
                 .queryParam("technician", username);
 
-        currentTechnician = restTemplate.getForObject(builder.toUriString(), Technician.class); //TODO something is going very wrong here
+        currentTechnician = restTemplate.getForObject(builder.toUriString(), Technician.class);
         return (currentTechnician != null);
     }
 

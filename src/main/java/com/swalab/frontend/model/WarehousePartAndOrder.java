@@ -1,5 +1,6 @@
 package com.swalab.frontend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.swalab.frontend.api.INamedArtefact;
 
 import java.util.Date;
@@ -25,6 +26,7 @@ public class WarehousePartAndOrder implements INamedArtefact {
     }
 
     @Override
+    @JsonIgnore
     public String getName() {
         return part.getAvailablePart().getName();
     }
