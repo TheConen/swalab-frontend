@@ -75,4 +75,8 @@ public class Product {
     public void setProductParts(List<PartWithQuantity> productParts) {
         this.productParts = productParts;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

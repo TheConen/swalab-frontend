@@ -42,4 +42,12 @@ public class PartWithQuantity {
     public void setUnit(String unit) {
         this.unit = unit;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

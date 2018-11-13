@@ -97,4 +97,8 @@ public class Customer implements INamedArtefact {
     public long getID(){
         return id;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

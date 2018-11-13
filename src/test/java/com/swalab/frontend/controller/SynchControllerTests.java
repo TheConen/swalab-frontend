@@ -16,7 +16,7 @@ public class SynchControllerTests {
     private String userName = "noJs";
     private SynchController synchController = new SynchController(serverUrl, userName);
 
-    //Todo Warum wird "Server is online" wird nie ausgegeben?
+    //Todo Warum wird "Server is online" nie ausgegeben?
     @Test
     public void testGetDataFromServer() {
         if (!synchController.isOffline()) {

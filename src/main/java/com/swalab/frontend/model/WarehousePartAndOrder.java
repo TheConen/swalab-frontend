@@ -73,4 +73,7 @@ public class WarehousePartAndOrder implements INamedArtefact {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

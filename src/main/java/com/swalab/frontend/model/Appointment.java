@@ -148,4 +148,8 @@ public class Appointment implements INamedArtefact {
     public long getID(){
         return id;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

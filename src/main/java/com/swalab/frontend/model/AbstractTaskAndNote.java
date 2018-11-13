@@ -60,6 +60,10 @@ public abstract class AbstractTaskAndNote implements INamedArtefact {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 
     /**
      * TODO: delete
