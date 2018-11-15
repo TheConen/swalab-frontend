@@ -1,5 +1,9 @@
 package com.swalab.frontend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.List;
 
 public class Technician {
@@ -63,12 +67,22 @@ public class Technician {
         return appointments;
     }
 
+    @JsonIgnore
+    public ObservableList<Appointment> getObservableAppointments() {
+        return FXCollections.observableList(appointments);
+    }
+
     public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
     }
 
     public List<AbstractTaskAndNote> getTaskAndNotes() {
         return taskAndNotes;
+    }
+
+    @JsonIgnore
+    public ObservableList<AbstractTaskAndNote> getObservableTaskAndNotes() {
+        return FXCollections.observableList(taskAndNotes);
     }
 
     public void setTaskAndNotes(List<AbstractTaskAndNote> taskAndNotes) {
@@ -79,12 +93,22 @@ public class Technician {
         return customers;
     }
 
+    @JsonIgnore
+    public ObservableList<Customer> getObservableCustomers() {
+        return FXCollections.observableList(customers);
+    }
+
     public void setCustomers(List<Customer> customers) {
         this.customers = customers;
     }
 
     public List<WarehousePartAndOrder> getParts() {
         return parts;
+    }
+
+    @JsonIgnore
+    public ObservableList<WarehousePartAndOrder> getObservableParts() {
+        return FXCollections.observableList(parts);
     }
 
     public void setParts(List<WarehousePartAndOrder> parts) {

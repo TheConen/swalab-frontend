@@ -1,6 +1,9 @@
 package com.swalab.frontend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.swalab.frontend.api.INamedArtefact;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,12 +85,22 @@ public class Customer implements INamedArtefact {
         return products;
     }
 
+    @JsonIgnore
+    public ObservableList<Product> getObservableProducts() {
+        return FXCollections.observableList(products);
+    }
+
     public void setProducts(List<Product> products) {
         this.products = products;
     }
 
     public List<Appointment> getAppointmentHistoryList() {
         return appointmentHistoryList;
+    }
+
+    @JsonIgnore
+    public ObservableList<Appointment> getObservableAppointmentHistoryList() {
+        return FXCollections.observableList(appointmentHistoryList);
     }
 
     public void setAppointmentHistoryList(List<Appointment> appointmentHistoryList) {

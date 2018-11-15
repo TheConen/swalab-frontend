@@ -1,5 +1,9 @@
 package com.swalab.frontend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.Date;
 import java.util.List;
 
@@ -70,6 +74,11 @@ public class Product {
 
     public List<PartWithQuantity> getProductParts() {
         return productParts;
+    }
+
+    @JsonIgnore
+    public ObservableList<PartWithQuantity> getObservableProductParts() {
+        return FXCollections.observableList(productParts);
     }
 
     public void setProductParts(List<PartWithQuantity> productParts) {
