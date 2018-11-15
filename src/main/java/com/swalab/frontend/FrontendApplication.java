@@ -1,5 +1,6 @@
 package com.swalab.frontend;
 
+import com.swalab.frontend.controller.SynchController;
 import com.swalab.frontend.gui.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -106,6 +107,12 @@ public class FrontendApplication extends Application {
 
 
     public static void main(String[] args) {
-        launch(FrontendApplication.class, args);
+        //launch(FrontendApplication.class, args);
+
+        SynchController synchController = new SynchController("http://localhost:8080", "noJs");
+        synchController.getDataFromServer();
+        synchController.saveDataToFile();
+        synchController.loadDateFromFile();
+        synchController.sendDataToServer();
     }
 }

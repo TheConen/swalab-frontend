@@ -14,11 +14,12 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Observable;
 
 /**
  * This controller manages synchronisation to the server and saving data for offline mode.
  */
-public class SynchController {
+public class SynchController extends Observable {
 
     private Technician currentTechnician;
     private String baseUrl;
@@ -69,6 +70,7 @@ public class SynchController {
                 .queryParam("technician", username);
 
         currentTechnician = restTemplate.getForObject(builder.toUriString(), Technician.class);
+        notifyObservers();
         return (currentTechnician != null);
     }
 
@@ -129,6 +131,8 @@ public class SynchController {
                 e.printStackTrace();
             }
         }
+
+        notifyObservers();
         return result;
     }
 
