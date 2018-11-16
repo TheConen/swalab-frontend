@@ -14,6 +14,5 @@ public class Note extends AbstractTaskAndNote {
         super(title, description, creationDate);
     }
 
-    @JsonIgnore
-    public Status getStatus(){return null;}
+
 }

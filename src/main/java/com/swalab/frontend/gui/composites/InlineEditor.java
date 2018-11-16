@@ -1,6 +1,8 @@
 package com.swalab.frontend.gui.composites;
 
 import com.swalab.frontend.api.IEditorSettings;
+import com.swalab.frontend.model.AbstractTaskAndNote;
+import com.swalab.frontend.model.Task;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
@@ -13,6 +15,7 @@ import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class InlineEditor<T> extends GridPane {
 
@@ -22,10 +25,19 @@ public class InlineEditor<T> extends GridPane {
     private final ListView<T> _listView;
     private final IEditorSettings<T> _objectBuilder;
     private TextField _idField;
+    private Function<Boolean, Boolean> _postShowingFunction;
 
     public InlineEditor(ListView<T> listView, IEditorSettings objectBuilder) {
         super();
         _listView = listView;
+        _listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<T>() {
+            @Override
+            public void changed(ObservableValue<? extends T> observableValue, T oldValue, T newValue) {
+                if (oldValue == null && newValue != null) {
+                    setEditorMode(false);
+                }
+            }
+        });
         _objectBuilder = objectBuilder;
         _permanentVisibleNodeList = new ArrayList<Node>();
         _viewerColumnNodeList = new ArrayList<Node>();
@@ -88,6 +100,7 @@ public class InlineEditor<T> extends GridPane {
             node.setManaged(isEditorMode);
         }
         _objectBuilder.setDefaultValues(_listView.getSelectionModel().getSelectedItem());
+        _postShowingFunction.apply(isEditorMode);
     }
 
     public void createAndAddDefaultButton() {
@@ -103,7 +116,10 @@ public class InlineEditor<T> extends GridPane {
         });
         deleteButton.setDisable(true);
         Button editButton = new Button("Edit");
-        editButton.setOnAction(ae -> setEditorMode(true));
+        editButton.setOnAction(ae -> {
+            setEditorMode(true);
+            _listView.getSelectionModel().select(null);
+        });
         editButton.setDisable(true);
         viewerButtons.getChildren().addAll(editButton, deleteButton);
 
@@ -137,7 +153,7 @@ public class InlineEditor<T> extends GridPane {
                     setEditorMode(false);
                     _listView.getSelectionModel().select(object);
                 }
-            }else{
+            } else {
                 // TODO update existing data
             }
         });
@@ -148,5 +164,9 @@ public class InlineEditor<T> extends GridPane {
 
     private boolean isObjectCreationRequiered() {
         return _idField == null || _idField.getText().isEmpty();
+    }
+
+    public void setPostShowingFunction(Function<Boolean, Boolean> function) {
+        _postShowingFunction = function;
     }
 }

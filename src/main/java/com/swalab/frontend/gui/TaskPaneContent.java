@@ -1,7 +1,10 @@
 package com.swalab.frontend.gui;
 
+import com.swalab.frontend.api.IEditorSettings;
 import com.swalab.frontend.converter.ProgressStatusConverter;
+import com.swalab.frontend.gui.composites.InlineEditor;
 import com.swalab.frontend.gui.composites.StatusCombobox;
+import com.swalab.frontend.gui.object.builder.TaskAndNoteSettings;
 import com.swalab.frontend.model.AbstractTaskAndNote;
 import com.swalab.frontend.model.Note;
 import com.swalab.frontend.model.Status;
@@ -11,6 +14,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -20,6 +24,8 @@ import javafx.scene.layout.HBox;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.concurrent.Flow;
+import java.util.function.Function;
 
 public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
 
@@ -31,14 +37,10 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
     private TextField _descriptionField;
     private ComboBox<Status> _statusBox;
     private TextField _creationField;
-    private Button _creationButton;
     private ListView<AbstractTaskAndNote> _listView;
-    private Button _aboardButton;
     private Label _statusDescriptionLabel;
-    private Button _editButton;
-    private Button _deleteButton;
-    private HBox _viewerButtonBox;
     private ProgressStatusConverter _statusConverter;
+    private InlineEditor<AbstractTaskAndNote> _editor;
 
     @Override
     public Parent getMainWindowContent() {
@@ -55,11 +57,11 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         _listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<AbstractTaskAndNote>() {
             @Override
             public void changed(ObservableValue<? extends AbstractTaskAndNote> observableValue, AbstractTaskAndNote oldValue, AbstractTaskAndNote newValue) {
-                if (oldValue == null && newValue != null) {
-                    setEditorMode(false, newValue.getClass());
+                if (oldValue == null || newValue != null && oldValue.getClass().equals(newValue.getClass())) {
+                    boolean nodeMode = newValue instanceof Task;
+                    _statusDescriptionLabel.setVisible(nodeMode);
+                    _statusDescriptionLabel.setManaged(nodeMode);
                 }
-                _deleteButton.setDisable(newValue == null);
-                _editButton.setDisable(newValue == null);
             }
         });
 
@@ -69,9 +71,11 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         modificationBox.setSpacing(5);
         modificationBox.setPadding(new Insets(3, 3, 3, 3));
         Button taskCreationButton = new Button("+ Task");
-        taskCreationButton.setOnAction(ae -> openEditorView(Task.class));
+        taskCreationButton.setOnAction(ae -> {_listView.getSelectionModel().select(null);
+            _editor.setEditorMode(true);});
         Button noteCreationButton = new Button("+ Note");
-        noteCreationButton.setOnAction(ae -> openEditorView(Note.class));
+        noteCreationButton.setOnAction(ae -> {_listView.getSelectionModel().select(null);
+            _editor.setEditorMode(true);});
 
         modificationBox.getChildren().add(taskCreationButton);
         modificationBox.getChildren().add(noteCreationButton);
@@ -79,12 +83,6 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         pane.setBottom(modificationBox);
 
         return pane;
-    }
-
-    private void openEditorView(Class forClass) {
-        setEditorMode(true, forClass);
-        _listView.getSelectionModel().select(null);
-        _nameField.requestFocus();
     }
 
     @Override
@@ -98,7 +96,6 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
 
         Label nameLabel = new Label("Name");
         Label descriptionLabel = new Label("Description");
-
         _statusDescriptionLabel = new Label("Status");
         Label creationLabel = new Label("Creation date");
 
@@ -115,112 +112,34 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         _creationField.setDisable(true);
         _creationField.setText(getCurrentTime());
 
-        _creationButton = new Button("Create");
-        _creationButton.setOnAction(ae -> {
+        IEditorSettings editorSettings = new TaskAndNoteSettings(_nameField,_descriptionField,_creationField,_statusBox);
+         _editor = new InlineEditor<>(_listView, editorSettings);
+        _editor.addPermanentVisible(nameLabel, descriptionLabel, creationLabel, _statusDescriptionLabel);
+        _editor.addViewerColumnNode(_nameLabel, _descriptionLabel, _creationLabel, _statusLabel);
+        _editor.addEditorColumnNode(_nameField, _descriptionField, _creationField, _statusBox);
+        _editor.createAndAddDefaultButton();
 
-            AbstractTaskAndNote element = null;
-            if (_statusBox.isVisible()) {
-                element = createTask();
+        Function<Boolean, Boolean> f = isEditorMode -> {
+            boolean isStatusRowRequired = _statusDescriptionLabel.isVisible();
+            if (isEditorMode) {
+                _statusLabel.setVisible(false);
+                _statusLabel.setManaged(false);
+                _statusBox.setVisible(isStatusRowRequired);
+                _statusBox.setManaged(isStatusRowRequired);
             } else {
-                element = createNode();
+                _statusLabel.setVisible(isStatusRowRequired);
+                _statusLabel.setManaged(isStatusRowRequired);
+                _statusBox.setVisible(false);
+                _statusBox.setManaged(false);
             }
-            Class clazz = _statusBox.isVisible() ? Task.class : Note.class;
-            setEditorMode(false, clazz);
-            // temporary adding since ui doesn't have a connection to the backend
-            _listView.getItems().add(element);
-            _listView.getSelectionModel().select(element);
-        });
+            return isStatusRowRequired;
+        };
 
-        _aboardButton = new Button("Abort");
-        _aboardButton.setOnAction(ae -> setEditorMode(false, Note.class));
+        _editor.setPostShowingFunction(f);
 
-        HBox editorButtonBox = new HBox();
-        editorButtonBox.getChildren().addAll(_creationButton, _aboardButton);
-        editorButtonBox.setPadding(new Insets(5, 5, 5, 5));
-        editorButtonBox.setSpacing(3);
-
-        _editButton = new Button("Edit");
-        _deleteButton = new Button("Delete");
-        _editButton.setDisable(true);
-        _editButton.setOnAction(ae -> {
-            throw new RuntimeException("Not implemented yet");
-        });
-        _deleteButton.setDisable(true);
-        _deleteButton.setOnAction(ae -> {
-            ObservableList<AbstractTaskAndNote> selectedItems = _listView.getSelectionModel().getSelectedItems();
-            if (selectedItems != null && !selectedItems.isEmpty()) {
-                _nameLabel.setText(null);
-                _creationLabel.setText(null);
-                _statusLabel.setText(null);
-                _descriptionLabel.setText(null);
-                AbstractTaskAndNote toDelete = selectedItems.get(0);
-                _listView.getItems().remove(toDelete);
-
-            }
-        });
-        _viewerButtonBox = new HBox();
-        _viewerButtonBox.getChildren().addAll(_editButton, _deleteButton);
-        _viewerButtonBox.setPadding(new Insets(5, 5, 5, 5));
-        _viewerButtonBox.setSpacing(3);
-
-        setEditorMode(false, Note.class);
-
-        descriptionPane.addColumn(0, nameLabel, descriptionLabel, creationLabel, _statusDescriptionLabel);
-        descriptionPane.addColumn(1, _nameLabel, _descriptionLabel, _creationLabel, _statusLabel, _viewerButtonBox);
-        descriptionPane.addColumn(2, _nameField, _descriptionField, _creationField, _statusBox, editorButtonBox);
-
-        return descriptionPane;
+        return _editor;
     }
 
-    private AbstractTaskAndNote createNode() {
-        return new Note(_nameField.getText(), _descriptionField.getText(), null);
-    }
-
-    private AbstractTaskAndNote createTask() {
-        // TODO nullchecks
-        return new Task(_nameField.getText(), _descriptionField.getText(), null, null);
-    }
-
-    private void setEditorMode(boolean isEditorActive, Class clazz) {
-        _nameField.setVisible(isEditorActive);
-        _descriptionField.setVisible(isEditorActive);
-        _creationField.setVisible(isEditorActive);
-        _creationButton.setVisible(isEditorActive);
-        _aboardButton.setVisible(isEditorActive);
-
-        _deleteButton.setVisible(!isEditorActive);
-        _editButton.setVisible(!isEditorActive);
-        _viewerButtonBox.setVisible(!isEditorActive);
-        _viewerButtonBox.setManaged(!isEditorActive);
-
-        _nameLabel.setVisible(!isEditorActive);
-
-        _descriptionLabel.setVisible(!isEditorActive);
-        _creationLabel.setVisible(!isEditorActive);
-
-        if (isEditorActive) {
-            _descriptionLabel.setText("");
-            _nameLabel.setText("");
-            _creationLabel.setText("");
-            _statusLabel.setText(null);
-
-        }
-
-        boolean isTask = clazz.equals(Task.class);
-        _statusDescriptionLabel.setManaged(isTask);
-        _statusLabel.setManaged(isTask);
-        _statusBox.setManaged(isTask);
-
-        if (isTask) {
-            _statusDescriptionLabel.setVisible(true);
-            _statusBox.setVisible(isEditorActive);
-            _statusLabel.setVisible(!isEditorActive);
-        } else {
-            _statusBox.setVisible(false);
-            _statusLabel.setVisible(false);
-            _statusDescriptionLabel.setVisible(false);
-        }
-    }
 
     private String getCurrentTime() {
         StringBuilder builder = new StringBuilder();
