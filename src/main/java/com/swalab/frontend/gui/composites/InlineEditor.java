@@ -26,6 +26,7 @@ public class InlineEditor<T> extends GridPane {
     private final IEditorSettings<T> _objectBuilder;
     private TextField _idField;
     private Function<Boolean, Boolean> _postShowingFunction;
+    private T _currentSubject;
 
     public InlineEditor(ListView<T> listView, IEditorSettings objectBuilder) {
         super();
@@ -99,7 +100,8 @@ public class InlineEditor<T> extends GridPane {
             node.setVisible(isEditorMode);
             node.setManaged(isEditorMode);
         }
-        _objectBuilder.setDefaultValues(_listView.getSelectionModel().getSelectedItem());
+        _currentSubject = _listView.getSelectionModel().getSelectedItem();
+        _objectBuilder.setDefaultValues(_currentSubject);
         _postShowingFunction.apply(isEditorMode);
     }
 
@@ -141,7 +143,12 @@ public class InlineEditor<T> extends GridPane {
         editorButtons.setPadding(new Insets(3, 3, 3, 3));
         editorButtons.setSpacing(5);
         Button aboardButton = new Button("Aboard");
-        aboardButton.setOnAction(ae -> setEditorMode(false));
+        aboardButton.setOnAction(ae -> {
+            _listView.getSelectionModel().select(_currentSubject);
+            setEditorMode(false);
+            _listView.requestFocus();
+
+        });
         Button saveButton = new Button("Save");
         saveButton.setOnAction(ae ->
 
