@@ -13,12 +13,14 @@ public class WarehousePartAndOrderEditingSettings implements IEditorSettings<War
     private final Label _orderDateField;
     private final ComboBox<Status> _statusComboBox;
     private final TextField _idField;
+    private final TextField _orderNumberField;
 
-    public WarehousePartAndOrderEditingSettings(TextField descriptionField, Label orderDateField, ComboBox<Status> statusComboBox, TextField idField) {
+    public WarehousePartAndOrderEditingSettings(TextField descriptionField, Label orderDateField, ComboBox<Status> statusComboBox, TextField orderNumberField, TextField idField) {
         _descriptionField = descriptionField;
         _orderDateField = orderDateField;
         _statusComboBox = statusComboBox;
         _idField=idField;
+        _orderNumberField=orderNumberField;
     }
 
     @Override
@@ -33,6 +35,7 @@ public class WarehousePartAndOrderEditingSettings implements IEditorSettings<War
         _orderDateField.setText(content == null ? null : content.getOrderDate().toGMTString());
         _statusComboBox.getSelectionModel().select(content == null ? null : content.getStatus());
         _idField.setText(content==null?null:content.getID()+"");
+        _orderNumberField.setText(content==null?null:content.getOrderNumber()+"");
     }
 
     @Override

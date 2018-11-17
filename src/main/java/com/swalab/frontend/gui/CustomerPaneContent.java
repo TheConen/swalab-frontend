@@ -4,6 +4,7 @@ import com.swalab.frontend.controller.SynchController;
 import com.swalab.frontend.gui.composites.InlineEditor;
 import com.swalab.frontend.gui.composites.NamedArtefactBasedListCellFactory;
 import com.swalab.frontend.gui.object.builder.CustomerEditingSettings;
+import com.swalab.frontend.model.Appointment;
 import com.swalab.frontend.model.Customer;
 import com.swalab.frontend.model.Product;
 import com.swalab.frontend.model.Technician;
@@ -16,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class CustomerPaneContent extends AbstractPaneContent<Customer> {
@@ -35,6 +37,7 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
     private ListView<Customer> _listView;
     private InlineEditor<Customer> _editor;
     private ListView<Product> _productList;
+    private ListView<Appointment> _appointmentList;
 
     public CustomerPaneContent(SynchController synchController) {
         super(synchController);
@@ -74,6 +77,7 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
         Label webLabel = new Label("Web");
         Label addressLabel = new Label("Address");
         Label productlabel = new Label("Products");
+        Label appointmentLabel = new Label("Appointments");
 
 
         _nameLabel = new Label();
@@ -82,9 +86,11 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
         _mailLabel = new Label();
         _webLabel = new Label();
         _addressLabel = new Label();
-        _productList=new ListView<>();
+        _productList = new ListView<>();
         _productList.setPlaceholder(new Label("No customer selected or the customer doesn't have any of our products"));
         _productList.setCellFactory(new NamedArtefactBasedListCellFactory<>());
+        _appointmentList = new ListView<>();
+        _appointmentList.setPlaceholder(new Label("No customer selected or the customer doesn't have any appointments"));
 
         _nameField = new TextField();
         _geolocationField = new TextField();
@@ -95,11 +101,11 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
         TextField idField = new TextField();
 
 
-        CustomerEditingSettings customerBuilder = new CustomerEditingSettings(_nameField, _geolocationField, _phoneField, _mailField, _webField, _addressField, _productList, idField);
+        CustomerEditingSettings customerBuilder = new CustomerEditingSettings(_nameField, _geolocationField, _phoneField, _mailField, _webField, _addressField, null, null, idField);
         _editor = new InlineEditor<>(_listView, customerBuilder);
 
-        _editor.addPermanentVisible(nameLabel, geolocationLabel, phoneLabel, mailLabel, webLabel, addressLabel,productlabel);
-        _editor.addViewerColumnNode(_nameLabel, _geolocationLabel, _phoneLabel, _mailLabel, _webLabel, _addressLabel,_productList);
+        _editor.addPermanentVisible(nameLabel, geolocationLabel, phoneLabel, mailLabel, webLabel, addressLabel, productlabel, appointmentLabel);
+        _editor.addViewerColumnNode(_nameLabel, _geolocationLabel, _phoneLabel, _mailLabel, _webLabel, _addressLabel, _productList, _appointmentList);
         _editor.addEditorColumnNode(_nameField, _geolocationField, _phoneField, _mailField, _webField, _addressField);
         _editor.addIDField(idField);
         _editor.createAndAddDefaultButton();
@@ -117,6 +123,8 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
             _mailLabel.setText(null);
             _webLabel.setText(null);
             _addressLabel.setText(null);
+            _productList.setItems(null);
+            _appointmentList.setItems(null);
         } else {
             _nameLabel.setText(item.getName());
             _geolocationLabel.setText(item.getGeolocation());
@@ -124,6 +132,8 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
             _mailLabel.setText(item.getMail());
             _webLabel.setText(item.getWeb());
             _addressLabel.setText(item.getAddress());
+            _appointmentList.setItems(item.getObservableAppointmentHistoryList());
+            _productList.setItems(item.getObservableProducts());
         }
     }
 

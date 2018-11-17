@@ -7,11 +7,11 @@ import com.swalab.frontend.gui.composites.StatusCombobox;
 import com.swalab.frontend.gui.object.builder.AppointmentEditingSettings;
 import com.swalab.frontend.model.*;
 import javafx.scene.Parent;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.util.Callback;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,6 +31,10 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
     private TextField _plannedEndField;
     private StatusCombobox _statusComboBox;
     private ProgressStatusConverter _statusStringConverter;
+    private Label _customerLabel;
+    private Label _productLabel;
+    private ListView<PartWithQuantity> _plannedPartsAndServicesList;
+    private ListView<PartWithQuantity> _usedPartsAndServicesList;
 
     public AppointmentOverview(SynchController synchController) {
         super(synchController);
@@ -62,6 +66,10 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         Label statusLabel = new Label("Status");
         Label plannedStartLabel = new Label("Planned begin");
         Label plannedEndLabel = new Label("Planned end");
+        Label customerLabel=new Label("Customer");
+        Label productLabel=new Label("Product");
+        Label plannedPartsAndServicesLabel=new Label("Planned parts and services");
+        Label usedPartsAndServicesLabel=new Label("Used parts and services");
 
         _statusStringConverter = new ProgressStatusConverter();
 
@@ -71,21 +79,27 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         _statusLabel = new Label();
         _plannedStartLabel = new Label();
         _plannedEndLabel = new Label();
+        _customerLabel=new Label();
+        _productLabel=new Label();
+        _plannedPartsAndServicesList =new ListView<>();
+        _usedPartsAndServicesList =new ListView<>();
 
         _descriptionField = new TextField();
         _creationDateField = new TextField();
         _plannedStartField = new TextField();
         _plannedEndField = new TextField();
         _statusComboBox = new StatusCombobox(_statusStringConverter);
+        ComboBox<Customer> customerComboBox=new ComboBox<>();
+        ComboBox<Product> productComboBox=new ComboBox<>();
 
         TextField idField = new TextField();
 
         _creationDateField.setDisable(true);
 
-        InlineEditor<Appointment> editor = new InlineEditor<>(_listView, new AppointmentEditingSettings(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, idField));
-        editor.addPermanentVisible(descriptionLabel, creationDateLabel, statusLabel, plannedStartLabel, plannedEndLabel);
-        editor.addViewerColumnNode(_descriptionLabel, _creationDateLabel, _statusLabel, _plannedStartLabel, _plannedEndLabel);
-        editor.addEditorColumnNode(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField);
+        InlineEditor<Appointment> editor = new InlineEditor<>(_listView, new AppointmentEditingSettings(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField,customerComboBox,productComboBox, _plannedPartsAndServicesList, _usedPartsAndServicesList, idField));
+        editor.addPermanentVisible(descriptionLabel, creationDateLabel, statusLabel, plannedStartLabel, plannedEndLabel,customerLabel,productLabel, plannedPartsAndServicesLabel, usedPartsAndServicesLabel);
+        editor.addViewerColumnNode(_descriptionLabel, _creationDateLabel, _statusLabel, _plannedStartLabel, _plannedEndLabel,_customerLabel,_productLabel, _plannedPartsAndServicesList, _usedPartsAndServicesList);
+        editor.addEditorColumnNode(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField,customerComboBox,productComboBox);
         editor.createAndAddDefaultButton();
         editor.addIDField(idField);
         return editor;
@@ -99,12 +113,20 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
             _statusLabel.setText(null);
             _plannedStartLabel.setText(null);
             _plannedEndLabel.setText(null);
+            _customerLabel.setText(null);
+            _productLabel.setText(null);
+            _plannedPartsAndServicesList.setItems(null);
+            _usedPartsAndServicesList.setItems(null);
         } else {
             _descriptionLabel.setText(item.getDescription());
             _creationDateLabel.setText(item.getCreationDate().toGMTString());
             _statusLabel.setText(_statusStringConverter.toString(item.getStatus()));
             _plannedStartLabel.setText(item.getPlannedDateTimeFrom().toGMTString());
             _plannedEndLabel.setText(item.getPlannedDateTimeTo().toGMTString());
+            _customerLabel.setText(item.getCustomer().getName());
+            _productLabel.setText(item.getProduct().getName());
+            _plannedPartsAndServicesList.setItems(item.getObservablePlannedPartsAndServices());
+            _usedPartsAndServicesList.setItems(item.getObservableUsedPartsAndServices());
         }
     }
 

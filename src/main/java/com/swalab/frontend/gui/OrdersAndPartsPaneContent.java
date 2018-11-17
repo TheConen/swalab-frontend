@@ -26,6 +26,8 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
     private Label _orderDateField;
     private ComboBox<Status> _statusComboBox;
     private ProgressStatusConverter _statusStringConverter;
+    private Label _orderNumberLabel;
+    private TextField _orderNumberField;
 
     public OrdersAndPartsPaneContent(SynchController synchController) {
         super(synchController);
@@ -45,23 +47,27 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
         Label descriptionLabel = new Label("Description");
         Label orderDateLabel = new Label("Order date");
         Label statusLabel = new Label("Status");
+        Label orderNumberLabel = new Label("Order number");
 
         _statusStringConverter = new ProgressStatusConverter();
 
         _descriptionLabel = new Label();
         _orderDateLabel = new Label();
         _statusLabel = new Label();
+        _orderNumberLabel = new Label();
 
         _descriptionField = new TextField();
         _orderDateField = new Label();
         _statusComboBox = new StatusCombobox(_statusStringConverter);
+        _orderNumberField = new TextField();
+        _orderNumberField.setDisable(true);
 
-        TextField idField=new TextField();
+        TextField idField = new TextField();
 
-        InlineEditor<WarehousePartAndOrder> editor = new InlineEditor<>(_listView, new WarehousePartAndOrderEditingSettings(_descriptionField, _orderDateField, _statusComboBox, idField));
-        editor.addPermanentVisible(descriptionLabel, orderDateLabel, statusLabel);
-        editor.addViewerColumnNode(_descriptionLabel, _orderDateLabel, _statusLabel);
-        editor.addEditorColumnNode(_descriptionField, _orderDateField, _statusComboBox);
+        InlineEditor<WarehousePartAndOrder> editor = new InlineEditor<>(_listView, new WarehousePartAndOrderEditingSettings(_descriptionField, _orderDateField, _statusComboBox, _orderNumberField, idField));
+        editor.addPermanentVisible(orderNumberLabel, descriptionLabel, orderDateLabel, statusLabel);
+        editor.addViewerColumnNode(_orderNumberLabel, _descriptionLabel, _orderDateLabel, _statusLabel);
+        editor.addEditorColumnNode(_orderNumberField, _descriptionField, _orderDateField, _statusComboBox);
         editor.createAndAddDefaultButton();
         editor.addIDField(idField);
         return editor;
@@ -73,9 +79,11 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
             _descriptionLabel.setText(null);
             _orderDateLabel.setText(null);
             _statusLabel.setText(null);
+            _orderNumberLabel.setText(null);
         } else {
             _descriptionLabel.setText(item.getDescription());
             _orderDateLabel.setText(item.getOrderDate().toGMTString());
+            _orderNumberLabel.setText(item.getOrderNumber() + "");
             _statusLabel.setText(_statusStringConverter.toString(item.getStatus()));
         }
     }

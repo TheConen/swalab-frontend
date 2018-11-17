@@ -11,7 +11,7 @@ public class WarehousePartAndOrder implements INamedArtefact {
     private long orderNumber;
     private String description;
     private Date orderDate;
-    private PartWithQuantity part;
+    private PartWithQuantity part; // TODO specify what should be shown
     private Status status;
 
     public WarehousePartAndOrder() {
