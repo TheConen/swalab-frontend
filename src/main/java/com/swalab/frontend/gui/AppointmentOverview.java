@@ -82,7 +82,9 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         _customerLabel=new Label();
         _productLabel=new Label();
         _plannedPartsAndServicesList =new ListView<>();
+        _plannedPartsAndServicesList.setPlaceholder(new Label("No appointment selected or no data available"));
         _usedPartsAndServicesList =new ListView<>();
+        _usedPartsAndServicesList.setPlaceholder(new Label("No appointment selected or no data available"));
 
         _descriptionField = new TextField();
         _creationDateField = new TextField();
