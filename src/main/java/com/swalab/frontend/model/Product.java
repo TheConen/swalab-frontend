@@ -1,6 +1,7 @@
 package com.swalab.frontend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.swalab.frontend.api.INamedArtefact;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * This is the machine from the customer which needs a service. Don't mix up with "Part" which is a component of a product.
  */
-public class Product {
+public class Product implements INamedArtefact {
 
     private Long id;
     private String name;
@@ -32,6 +33,7 @@ public class Product {
         this.productParts = productParts;
     }
 
+    @Override
     public String getName() {
         return name;
     }

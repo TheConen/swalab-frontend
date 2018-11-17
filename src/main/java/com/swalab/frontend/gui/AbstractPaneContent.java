@@ -2,6 +2,7 @@ package com.swalab.frontend.gui;
 
 import com.swalab.frontend.api.INamedArtefact;
 import com.swalab.frontend.controller.SynchController;
+import com.swalab.frontend.gui.composites.NamedArtefactBasedListCellFactory;
 import com.swalab.frontend.model.Technician;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -49,23 +50,7 @@ public abstract class AbstractPaneContent<T extends INamedArtefact> {
                 }
             }
         });
-        listView.setCellFactory(new Callback<ListView<T>, ListCell<T>>() {
-            @Override
-            public ListCell<T> call(ListView<T> taskListView) {
-                return new ListCell<T>() {
-                    @Override
-                    public void updateItem(T task, boolean isEmpty) {
-                        super.updateItem(task, isEmpty);
-                        if (task == null || isEmpty) {
-                            setText(null);
-                            setStyle("");
-                        } else {
-                            setText(task.getName());
-                        }
-                    }
-                };
-            }
-        });
+        listView.setCellFactory(new NamedArtefactBasedListCellFactory<T>());
         return listView;
     }
 

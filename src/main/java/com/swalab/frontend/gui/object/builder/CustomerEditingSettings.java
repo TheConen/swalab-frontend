@@ -2,6 +2,8 @@ package com.swalab.frontend.gui.object.builder;
 
 import com.swalab.frontend.api.IEditorSettings;
 import com.swalab.frontend.model.Customer;
+import com.swalab.frontend.model.Product;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
@@ -16,14 +18,16 @@ public class CustomerEditingSettings implements IEditorSettings<Customer> {
     private final TextField _webField;
     private final TextField _addressField;
     private final TextField _idField;
+    private final ListView<Product> _productList;
 
-    public CustomerEditingSettings(TextField nameField, TextField geolocationField, TextField phoneField, TextField mailField, TextField webField, TextField addressField, TextField idField) {
+    public CustomerEditingSettings(TextField nameField, TextField geolocationField, TextField phoneField, TextField mailField, TextField webField, TextField addressField, ListView<Product> productList, TextField idField) {
         _nameField = nameField;
         _geolocationField = geolocationField;
         _phoneField = phoneField;
         _mailField = mailField;
         _webField = webField;
         _addressField = addressField;
+        _productList=productList;
         _idField=idField;
     }
 
@@ -40,6 +44,7 @@ public class CustomerEditingSettings implements IEditorSettings<Customer> {
         _mailField.setText(content==null?null:content.getMail());
         _webField.setText(content==null?null:content.getWeb());
         _addressField.setText(content==null?null:content.getAddress());
+        _productList.setItems(content==null?null:content.getObservableProducts());
         _idField.setText(content==null?null:content.getID()+"");
     }
 
