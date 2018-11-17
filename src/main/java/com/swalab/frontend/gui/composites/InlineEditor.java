@@ -5,7 +5,9 @@ import com.swalab.frontend.model.AbstractTaskAndNote;
 import com.swalab.frontend.model.Task;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -58,6 +60,8 @@ public class InlineEditor<T> extends GridPane {
     public void addPermanentVisible(Node node) {
         _permanentVisibleNodeList.add(node);
         add(node, 0, _permanentVisibleNodeList.size());
+        setHalignment(node, HPos.LEFT);
+        setValignment(node, VPos.TOP);
     }
 
     public void addViewerColumnNode(Node... nodes) {
