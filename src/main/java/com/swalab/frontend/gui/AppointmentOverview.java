@@ -1,21 +1,21 @@
 package com.swalab.frontend.gui;
 
+import com.swalab.frontend.controller.SynchController;
 import com.swalab.frontend.converter.ProgressStatusConverter;
 import com.swalab.frontend.gui.composites.InlineEditor;
 import com.swalab.frontend.gui.composites.StatusCombobox;
 import com.swalab.frontend.gui.object.builder.AppointmentEditingSettings;
-import com.swalab.frontend.model.Appointment;
-import com.swalab.frontend.model.Customer;
-import com.swalab.frontend.model.Product;
-import com.swalab.frontend.model.Status;
+import com.swalab.frontend.model.*;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.util.Callback;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.function.Consumer;
 
 public class AppointmentOverview extends AbstractPaneContent<Appointment> {
 
@@ -32,8 +32,19 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
     private StatusCombobox _statusComboBox;
     private ProgressStatusConverter _statusStringConverter;
 
+    public AppointmentOverview(SynchController synchController) {
+        super(synchController);
+    }
+
     @Override
-    public Parent getMainWindowContent() {
+    protected Consumer<Technician> getUpdateConsumer() {
+        return technician ->
+                _listView.setItems(technician.getObservableAppointments());
+
+    }
+
+    @Override
+    public Parent createMainWindowContent() {
         BorderPane pane = new BorderPane();
         pane.setPrefWidth(200);
         pane.setBorder(createBorder());
@@ -44,7 +55,7 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
     }
 
     @Override
-    public Parent getDescriptionWindowContent() {
+    public Parent createDescriptionWindowContent() {
 
         Label descriptionLabel = new Label("Description");
         Label creationDateLabel = new Label("Creation Date");
@@ -67,7 +78,7 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         _plannedEndField = new TextField();
         _statusComboBox = new StatusCombobox(_statusStringConverter);
 
-        TextField idField=new TextField();
+        TextField idField = new TextField();
 
         _creationDateField.setDisable(true);
 

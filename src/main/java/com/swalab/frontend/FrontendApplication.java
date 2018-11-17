@@ -19,6 +19,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SpringBootApplication
 public class FrontendApplication extends Application {
 
+    private static SynchController _synchController;
     private ConfigurableApplicationContext springContext;
     private AbstractPaneContent _taskPaneContent;
     private AbstractPaneContent _customerPaneContent;
@@ -28,6 +29,7 @@ public class FrontendApplication extends Application {
     @Override
     public void init() throws Exception {
         springContext = SpringApplication.run(FrontendApplication.class);
+        _synchController = new SynchController("http://localhost:8080", "noJs");
     }
 
     @Override
@@ -35,6 +37,8 @@ public class FrontendApplication extends Application {
         primaryStage.setTitle("Task Overview");
         Parent parent = createWindowContent();
         Scene scene = new Scene(parent, 800, 600);
+
+        _synchController.loadDateFromFile();
 
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -46,30 +50,30 @@ public class FrontendApplication extends Application {
         // create button navigation for the top
         // Taps
         HBox navigationBox = new HBox(5);
-        navigationBox.setPadding(new Insets(3,3,3,3));
+        navigationBox.setPadding(new Insets(3, 3, 3, 3));
         pane.setTop(navigationBox);
         navigationBox.setBorder(createBorder());
 
         ToggleButton appointmentsButton = new ToggleButton("Appointments");
-        _appointmentPaneContent = new AppointmentOverview();
+        _appointmentPaneContent = new AppointmentOverview(_synchController);
         appointmentsButton.setOnAction(ae -> changeContent(pane, _appointmentPaneContent));
 
         ToggleButton taskButton = new ToggleButton("Tasks");
-        _taskPaneContent = new TaskPaneContent();
+        _taskPaneContent = new TaskPaneContent(_synchController);
         taskButton.setOnAction(ae -> changeContent(pane, _taskPaneContent));
 
         ToggleButton customerButton = new ToggleButton("Customer");
-        _customerPaneContent = new CustomerPaneContent();
+        _customerPaneContent = new CustomerPaneContent(_synchController);
         customerButton.setOnAction(ae -> changeContent(pane, _customerPaneContent));
 
         ToggleButton ordersAndPartsButton = new ToggleButton("Orders and Parts");
-        _ordersAndPartPaneContent = new OrdersAndPartsPaneContent();
+        _ordersAndPartPaneContent = new OrdersAndPartsPaneContent(_synchController);
         ordersAndPartsButton.setOnAction(ae -> changeContent(pane, _ordersAndPartPaneContent));
 
         navigationBox.getChildren().addAll(appointmentsButton, taskButton, customerButton, ordersAndPartsButton);
 
-        ToggleGroup toggleGroup=new ToggleGroup();
-        toggleGroup.getToggles().addAll(appointmentsButton,taskButton,customerButton,ordersAndPartsButton);
+        ToggleGroup toggleGroup = new ToggleGroup();
+        toggleGroup.getToggles().addAll(appointmentsButton, taskButton, customerButton, ordersAndPartsButton);
         toggleGroup.selectToggle(appointmentsButton);
 
         // start screen content
@@ -79,10 +83,10 @@ public class FrontendApplication extends Application {
         HBox footline = new HBox(2);
         footline.setBorder(createBorder());
         pane.setBottom(footline);
-        String user=System.getProperty("user.name");
+        String user = System.getProperty("user.name");
         Label userDescriptionLabel = new Label("Logged in as: ");
-        Label userLabel=new Label(user);
-         footline.getChildren().addAll(userDescriptionLabel,userLabel);
+        Label userLabel = new Label(user);
+        footline.getChildren().addAll(userDescriptionLabel, userLabel);
 
 
         return pane;
@@ -101,15 +105,24 @@ public class FrontendApplication extends Application {
 
     @Override
     public void stop() throws Exception {
+        unregisterUIModels();
+
         springContext.stop();
         System.exit(0);
+    }
+
+    private void unregisterUIModels() {
+        _taskPaneContent.removeListener(_synchController);
+        _appointmentPaneContent.removeListener(_synchController);
+        _customerPaneContent.removeListener(_synchController);
+        _ordersAndPartPaneContent.removeListener(_synchController);
     }
 
 
     public static void main(String[] args) {
         launch(FrontendApplication.class, args);
 
-        //SynchController synchController = new SynchController("http://localhost:8080", "noJs");
+        //synchController = new SynchController("http://localhost:8080", "noJs");
         //synchController.getDataFromServer();
         //synchController.saveDataToFile();
         //synchController.loadDateFromFile();

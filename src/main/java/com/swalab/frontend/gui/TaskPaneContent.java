@@ -1,14 +1,12 @@
 package com.swalab.frontend.gui;
 
 import com.swalab.frontend.api.IEditorSettings;
+import com.swalab.frontend.controller.SynchController;
 import com.swalab.frontend.converter.ProgressStatusConverter;
 import com.swalab.frontend.gui.composites.InlineEditor;
 import com.swalab.frontend.gui.composites.StatusCombobox;
 import com.swalab.frontend.gui.object.builder.TaskAndNoteSettings;
-import com.swalab.frontend.model.AbstractTaskAndNote;
-import com.swalab.frontend.model.Note;
-import com.swalab.frontend.model.Status;
-import com.swalab.frontend.model.Task;
+import com.swalab.frontend.model.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -25,6 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.Flow;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
@@ -42,8 +41,12 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
     private ProgressStatusConverter _statusConverter;
     private InlineEditor<AbstractTaskAndNote> _editor;
 
+    public TaskPaneContent(SynchController synchController) {
+        super(synchController);
+    }
+
     @Override
-    public Parent getMainWindowContent() {
+    public Parent createMainWindowContent() {
         ObservableList<AbstractTaskAndNote> list = FXCollections.observableArrayList();
         list.add(new Task("title", "description", Status.OPEN, new Date(System.currentTimeMillis())));
         list.add(new Task("title2", "description", Status.IN_PROGRESS, new Date(System.currentTimeMillis())));
@@ -86,7 +89,7 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
     }
 
     @Override
-    public Parent getDescriptionWindowContent() {
+    public Parent createDescriptionWindowContent() {
         GridPane descriptionPane = new GridPane();
         descriptionPane.setPadding(new Insets(5, 5, 5, 5));
         descriptionPane.setVgap(3);
@@ -186,6 +189,11 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
             }
         }
 
+    }
+
+    @Override
+    protected Consumer<Technician> getUpdateConsumer() {
+        return technician -> _listView.setItems(technician.getObservableTaskAndNotes());
     }
 
 

@@ -102,7 +102,9 @@ public class InlineEditor<T> extends GridPane {
         }
         _currentSubject = _listView.getSelectionModel().getSelectedItem();
         _objectBuilder.setDefaultValues(_currentSubject);
-        _postShowingFunction.apply(isEditorMode);
+        if (_postShowingFunction != null) {
+            _postShowingFunction.apply(isEditorMode);
+        }
     }
 
     public void createAndAddDefaultButton() {

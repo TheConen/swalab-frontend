@@ -1,8 +1,11 @@
 package com.swalab.frontend.gui;
 
 import com.swalab.frontend.api.INamedArtefact;
+import com.swalab.frontend.controller.SynchController;
+import com.swalab.frontend.model.Technician;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -12,11 +15,22 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
 
+import java.util.function.Consumer;
+
 public abstract class AbstractPaneContent<T extends INamedArtefact> {
 
-    public abstract Parent getMainWindowContent();
+    private final Parent _descriptionWindowContent;
+    private final Parent _mainWindowContent;
 
-    public abstract Parent getDescriptionWindowContent();
+    public abstract Parent createMainWindowContent();
+
+    public abstract Parent createDescriptionWindowContent();
+
+    public AbstractPaneContent(SynchController synchController) {
+        synchController.registerModelForUpdate(getUpdateConsumer());
+        _mainWindowContent=createMainWindowContent();
+        _descriptionWindowContent=createDescriptionWindowContent();
+    }
 
     protected Border createBorder() {
         BorderStroke stroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(1), new BorderWidths(1));
@@ -60,9 +74,37 @@ public abstract class AbstractPaneContent<T extends INamedArtefact> {
      */
     protected abstract void updateDescriptionContent(T item, Class clazz);
 
+    /**
+     * offers an callable for updating the corresponding ui model
+     *
+     * @return the callable which implements the update mechanism
+     */
+    protected abstract Consumer<Technician> getUpdateConsumer();
+
+    public void removeListener(SynchController synchController) {
+        // TODO check whether the instances are the same or if the consumer shouled be cached
+        synchController.removeModelForUpdate(getUpdateConsumer());
+    }
+
 
     /**
      * requests the focus for the element which should have it right after this page is shown
      */
     public abstract void requestFocus();
+
+    /**
+     *
+     * @return the content for the main window
+     */
+    public Node getMainWindowContent() {
+        return _mainWindowContent;
+    }
+
+    /**
+     *
+     * @return the content for the description window
+     */
+    public Node getDescriptionWindowContent() {
+        return _descriptionWindowContent;
+    }
 }

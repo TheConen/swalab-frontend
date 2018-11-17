@@ -1,8 +1,10 @@
 package com.swalab.frontend.gui;
 
+import com.swalab.frontend.controller.SynchController;
 import com.swalab.frontend.gui.composites.InlineEditor;
 import com.swalab.frontend.gui.object.builder.CustomerEditingSettings;
 import com.swalab.frontend.model.Customer;
+import com.swalab.frontend.model.Technician;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -13,6 +15,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 public class CustomerPaneContent extends AbstractPaneContent<Customer> {
 
@@ -31,8 +34,12 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
     private ListView<Customer> _listView;
     private InlineEditor<Customer> _editor;
 
+    public CustomerPaneContent(SynchController synchController) {
+        super(synchController);
+    }
+
     @Override
-    public Parent getMainWindowContent() {
+    public Parent createMainWindowContent() {
         BorderPane pane = new BorderPane();
         pane.setPrefWidth(200);
         pane.setBorder(createBorder());
@@ -56,7 +63,7 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
     }
 
     @Override
-    public Parent getDescriptionWindowContent() {
+    public Parent createDescriptionWindowContent() {
 
         Label nameLabel = new Label("Name");
         Label geolocationLabel = new Label("Geolocation");
@@ -113,6 +120,11 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
             _webLabel.setText(item.getWeb());
             _addressLabel.setText(item.getAddress());
         }
+    }
+
+    @Override
+    protected Consumer<Technician> getUpdateConsumer() {
+        return technician -> _listView.setItems(technician.getObservableCustomers());
     }
 
     @Override

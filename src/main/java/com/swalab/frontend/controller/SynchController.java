@@ -14,17 +14,22 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
+import java.util.Queue;
+import java.util.function.Consumer;
 
 /**
  * This controller manages synchronisation to the server and saving data for offline mode.
  */
-public class SynchController extends Observable {
+public class SynchController {
 
     private Technician currentTechnician;
     private String baseUrl;
     private String username;
     private RestTemplate restTemplate;
+    private List<Consumer<Technician>> _models;
 
     /**
      * Instantiates a new Synch controller.
@@ -37,6 +42,7 @@ public class SynchController extends Observable {
         this.username = username;
         restTemplate = new RestTemplate();
         restTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory(baseUrl));
+        _models=new ArrayList<>(4);
     }
 
     /**
@@ -143,5 +149,28 @@ public class SynchController extends Observable {
      */
     public Technician getCurrentTechnician() {
         return currentTechnician;
+    }
+
+    /**
+     * offers the possibility for consumers to register them the the controller
+     * @param model which should be updated iff model changes by the server were triggered
+     * @return true if the model could be added - otherwise false
+     */
+    public boolean registerModelForUpdate(Consumer<Technician> model) {
+        return _models.add(model);
+    }
+
+    /**
+     * offers the possibility for consumers to unregister them the the controller
+     * @param model which should be removed as an observer from the model updates
+     * @return true if the model could be removed - otherwise false
+     */
+    public boolean removeModelForUpdate(Consumer<Technician> model){
+        return _models.remove(model);
+    }
+
+    private void notifyObservers(){
+        _models.stream().forEach(c->c.accept(getCurrentTechnician()));
+System.out.println("FAIL");
     }
 }

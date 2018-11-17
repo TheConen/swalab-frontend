@@ -1,13 +1,11 @@
 package com.swalab.frontend.gui;
 
+import com.swalab.frontend.controller.SynchController;
 import com.swalab.frontend.converter.ProgressStatusConverter;
 import com.swalab.frontend.gui.composites.InlineEditor;
 import com.swalab.frontend.gui.composites.StatusCombobox;
 import com.swalab.frontend.gui.object.builder.WarehousePartAndOrderEditingSettings;
-import com.swalab.frontend.model.AvailablePart;
-import com.swalab.frontend.model.PartWithQuantity;
-import com.swalab.frontend.model.Status;
-import com.swalab.frontend.model.WarehousePartAndOrder;
+import com.swalab.frontend.model.*;
 import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -16,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 
 import java.util.Date;
+import java.util.function.Consumer;
 
 public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePartAndOrder> {
 
@@ -28,7 +27,11 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
     private ComboBox<Status> _statusComboBox;
     private ProgressStatusConverter _statusStringConverter;
 
-    public Parent getMainWindowContent() {
+    public OrdersAndPartsPaneContent(SynchController synchController) {
+        super(synchController);
+    }
+
+    public Parent createMainWindowContent() {
         BorderPane pane = new BorderPane();
         pane.setPrefWidth(200);
         pane.setBorder(createBorder());
@@ -38,7 +41,7 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
         return pane;
     }
 
-    public Parent getDescriptionWindowContent() {
+    public Parent createDescriptionWindowContent() {
         Label descriptionLabel = new Label("Description");
         Label orderDateLabel = new Label("Order date");
         Label statusLabel = new Label("Status");
@@ -75,6 +78,11 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
             _orderDateLabel.setText(item.getOrderDate().toGMTString());
             _statusLabel.setText(_statusStringConverter.toString(item.getStatus()));
         }
+    }
+
+    @Override
+    protected Consumer<Technician> getUpdateConsumer() {
+        return technician -> _listView.setItems(technician.getObservableParts());
     }
 
     @Override
