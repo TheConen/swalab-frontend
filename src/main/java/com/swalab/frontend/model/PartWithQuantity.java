@@ -1,9 +1,11 @@
 package com.swalab.frontend.model;
 
+import com.swalab.frontend.api.INamedArtefact;
+
 /**
  * Build of material: Item on lists containing a part, the quantity and an unit
  */
-public class PartWithQuantity {
+public class PartWithQuantity implements INamedArtefact {
 
     private Long id;
     private AvailablePart availablePart;
@@ -49,5 +51,10 @@ public class PartWithQuantity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public String getName() {
+        return new StringBuilder(getAvailablePart().getName()).append(" ( ").append(getQuantity()).append(' ').append(getUnit()).append(" )").toString();
     }
 }

@@ -1,6 +1,8 @@
 package com.swalab.frontend.model;
 
-public class AvailablePart {
+import com.swalab.frontend.api.INamedArtefact;
+
+public class AvailablePart implements INamedArtefact {
 
     private Long id;
     private String name;
@@ -14,6 +16,7 @@ public class AvailablePart {
         this.description = description;
     }
 
+    @Override
     public String getName() {
         return name;
     }

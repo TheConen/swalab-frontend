@@ -16,23 +16,6 @@ public class StatusCombobox extends ComboBox<Status> {
         ObservableList items = FXCollections.observableArrayList();
         items.addAll(Status.OPEN, Status.IN_PROGRESS, Status.FINISHED);
         setItems(items);
-        Callback<ListView<Status>, ListCell<Status>> callback = new Callback<ListView<Status>, ListCell<Status>>() {
-            @Override
-            public ListCell<Status> call(ListView<Status> taskListView) {
-                return new ListCell<Status>() {
-                    @Override
-                    public void updateItem(Status status, boolean isEmpty) {
-                        super.updateItem(status, isEmpty);
-                        if (status == null || isEmpty) {
-                            setText(null);
-                        } else {
-                            setText(statusConverter.toString(status));
-                        }
-                    }
-                };
-            }
-        };
-        setCellFactory(callback);
         setConverter(statusConverter);
 
     }

@@ -1,11 +1,15 @@
 package com.swalab.frontend.gui.object.builder;
 
 import com.swalab.frontend.api.IEditorSettings;
+import com.swalab.frontend.model.AvailablePart;
+import com.swalab.frontend.model.PartWithQuantity;
 import com.swalab.frontend.model.Status;
 import com.swalab.frontend.model.WarehousePartAndOrder;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+
+import java.util.Date;
 
 public class WarehousePartAndOrderEditingSettings implements IEditorSettings<WarehousePartAndOrder> {
 
@@ -14,18 +18,33 @@ public class WarehousePartAndOrderEditingSettings implements IEditorSettings<War
     private final ComboBox<Status> _statusComboBox;
     private final TextField _idField;
     private final TextField _orderNumberField;
+    private final ComboBox<AvailablePart> _partComboBox;
+    private final TextField _quantityField;
+    private final TextField _unitField;
 
-    public WarehousePartAndOrderEditingSettings(TextField descriptionField, Label orderDateField, ComboBox<Status> statusComboBox, TextField orderNumberField, TextField idField) {
+    public WarehousePartAndOrderEditingSettings(ComboBox<AvailablePart> partComboBox, TextField quantityField, TextField unitField, TextField descriptionField, Label orderDateField, ComboBox<Status> statusComboBox, TextField orderNumberField, TextField idField) {
         _descriptionField = descriptionField;
         _orderDateField = orderDateField;
         _statusComboBox = statusComboBox;
         _idField=idField;
         _orderNumberField=orderNumberField;
+        _partComboBox=partComboBox;
+        _quantityField=quantityField;
+        _unitField=unitField;
     }
 
     @Override
     public WarehousePartAndOrder createObject() {
-        // TODO create the object correctly
+        PartWithQuantity partWithQuantity=new PartWithQuantity();
+        partWithQuantity.setQuantity(Integer.parseInt(_quantityField.getText()));
+        partWithQuantity.setUnit(_unitField.getText());
+        partWithQuantity.setAvailablePart(_partComboBox.getValue());
+
+        WarehousePartAndOrder partAndOrder=new WarehousePartAndOrder();
+        partAndOrder.setPart(partWithQuantity);
+        partAndOrder.setDescription(_descriptionField.getText());
+        partAndOrder.setStatus(_statusComboBox.getValue());
+        partAndOrder.setOrderDate(new Date());// TODO parse value out of the text field
         return new WarehousePartAndOrder();
     }
 
@@ -36,6 +55,17 @@ public class WarehousePartAndOrderEditingSettings implements IEditorSettings<War
         _statusComboBox.getSelectionModel().select(content == null ? null : content.getStatus());
         _idField.setText(content==null?null:content.getID()+"");
         _orderNumberField.setText(content==null?null:content.getOrderNumber()+"");
+        PartWithQuantity part = content.getPart();
+        if(part==null){
+            _partComboBox.getSelectionModel().select(null);
+            _quantityField.setText(null);
+            _unitField.setText(null);
+        }else{
+            _partComboBox.getSelectionModel().select(part.getAvailablePart());
+            _quantityField.setText(part.getQuantity()+"");
+            _unitField.setText(part.getUnit());
+        }
+
     }
 
     @Override

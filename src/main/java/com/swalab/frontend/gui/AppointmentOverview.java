@@ -3,6 +3,7 @@ package com.swalab.frontend.gui;
 import com.swalab.frontend.controller.SynchController;
 import com.swalab.frontend.converter.ProgressStatusConverter;
 import com.swalab.frontend.gui.composites.InlineEditor;
+import com.swalab.frontend.gui.composites.NamedArtefactBasedListCellFactory;
 import com.swalab.frontend.gui.composites.StatusCombobox;
 import com.swalab.frontend.gui.object.builder.AppointmentEditingSettings;
 import com.swalab.frontend.model.*;
@@ -66,10 +67,10 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         Label statusLabel = new Label("Status");
         Label plannedStartLabel = new Label("Planned begin");
         Label plannedEndLabel = new Label("Planned end");
-        Label customerLabel=new Label("Customer");
-        Label productLabel=new Label("Product");
-        Label plannedPartsAndServicesLabel=new Label("Planned parts and services");
-        Label usedPartsAndServicesLabel=new Label("Used parts and services");
+        Label customerLabel = new Label("Customer");
+        Label productLabel = new Label("Product");
+        Label plannedPartsAndServicesLabel = new Label("Planned parts and services");
+        Label usedPartsAndServicesLabel = new Label("Used parts and services");
 
         _statusStringConverter = new ProgressStatusConverter();
 
@@ -79,29 +80,31 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         _statusLabel = new Label();
         _plannedStartLabel = new Label();
         _plannedEndLabel = new Label();
-        _customerLabel=new Label();
-        _productLabel=new Label();
-        _plannedPartsAndServicesList =new ListView<>();
+        _customerLabel = new Label();
+        _productLabel = new Label();
+        _plannedPartsAndServicesList = new ListView<>();
         _plannedPartsAndServicesList.setPlaceholder(new Label("No appointment selected or no data available"));
-        _usedPartsAndServicesList =new ListView<>();
+        _plannedPartsAndServicesList.setCellFactory(new NamedArtefactBasedListCellFactory<>());
+        _usedPartsAndServicesList = new ListView<>();
         _usedPartsAndServicesList.setPlaceholder(new Label("No appointment selected or no data available"));
+        _usedPartsAndServicesList.setCellFactory(new NamedArtefactBasedListCellFactory<>());
 
         _descriptionField = new TextField();
         _creationDateField = new TextField();
         _plannedStartField = new TextField();
         _plannedEndField = new TextField();
         _statusComboBox = new StatusCombobox(_statusStringConverter);
-        ComboBox<Customer> customerComboBox=new ComboBox<>();
-        ComboBox<Product> productComboBox=new ComboBox<>();
+        ComboBox<Customer> customerComboBox = new ComboBox<>();
+        ComboBox<Product> productComboBox = new ComboBox<>();
 
         TextField idField = new TextField();
 
         _creationDateField.setDisable(true);
 
-        InlineEditor<Appointment> editor = new InlineEditor<>(_listView, new AppointmentEditingSettings(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField,customerComboBox,productComboBox, _plannedPartsAndServicesList, _usedPartsAndServicesList, idField));
-        editor.addPermanentVisible(descriptionLabel, creationDateLabel, statusLabel, plannedStartLabel, plannedEndLabel,customerLabel,productLabel, plannedPartsAndServicesLabel, usedPartsAndServicesLabel);
-        editor.addViewerColumnNode(_descriptionLabel, _creationDateLabel, _statusLabel, _plannedStartLabel, _plannedEndLabel,_customerLabel,_productLabel, _plannedPartsAndServicesList, _usedPartsAndServicesList);
-        editor.addEditorColumnNode(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField,customerComboBox,productComboBox);
+        InlineEditor<Appointment> editor = new InlineEditor<>(_listView, new AppointmentEditingSettings(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, customerComboBox, productComboBox, _plannedPartsAndServicesList, _usedPartsAndServicesList, idField));
+        editor.addPermanentVisible(descriptionLabel, creationDateLabel, statusLabel, plannedStartLabel, plannedEndLabel, customerLabel, productLabel, plannedPartsAndServicesLabel, usedPartsAndServicesLabel);
+        editor.addViewerColumnNode(_descriptionLabel, _creationDateLabel, _statusLabel, _plannedStartLabel, _plannedEndLabel, _customerLabel, _productLabel, _plannedPartsAndServicesList, _usedPartsAndServicesList);
+        editor.addEditorColumnNode(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, customerComboBox, productComboBox);
         editor.createAndAddDefaultButton();
         editor.addIDField(idField);
         return editor;
