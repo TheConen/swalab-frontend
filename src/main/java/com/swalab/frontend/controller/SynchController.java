@@ -42,7 +42,7 @@ public class SynchController {
         this.username = username;
         restTemplate = new RestTemplate();
         restTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory(baseUrl));
-        _models=new ArrayList<>(4);
+        _models = new ArrayList<>(4);
     }
 
     /**
@@ -153,6 +153,7 @@ public class SynchController {
 
     /**
      * offers the possibility for consumers to register them the the controller
+     *
      * @param model which should be updated iff model changes by the server were triggered
      * @return true if the model could be added - otherwise false
      */
@@ -162,15 +163,15 @@ public class SynchController {
 
     /**
      * offers the possibility for consumers to unregister them the the controller
+     *
      * @param model which should be removed as an observer from the model updates
      * @return true if the model could be removed - otherwise false
      */
-    public boolean removeModelForUpdate(Consumer<Technician> model){
+    public boolean removeModelForUpdate(Consumer<Technician> model) {
         return _models.remove(model);
     }
 
-    private void notifyObservers(){
-        _models.stream().forEach(c->c.accept(getCurrentTechnician()));
-System.out.println("FAIL");
+    private void notifyObservers() {
+        _models.stream().forEach(c -> c.accept(getCurrentTechnician()));
     }
 }
