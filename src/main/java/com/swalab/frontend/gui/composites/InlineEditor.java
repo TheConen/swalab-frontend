@@ -120,6 +120,8 @@ public class InlineEditor<T> extends GridPane {
             T selectedItem = _listView.getSelectionModel().getSelectedItem();
             if (selectedItem != null) {
                 _listView.getItems().remove(selectedItem);
+                // TODO reset editor fields
+                // if _listView.isEmpty, hide editor (NOTE: What happens, if it's hidden and something should be created?
             }
         });
         deleteButton.setDisable(true);
