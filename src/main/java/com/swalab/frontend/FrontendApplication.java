@@ -4,8 +4,10 @@ import com.swalab.frontend.controller.SynchController;
 import com.swalab.frontend.gui.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -49,10 +51,20 @@ public class FrontendApplication extends Application {
 
         // create button navigation for the top
         // Taps
+        BorderPane buttonPane=new BorderPane();
         HBox navigationBox = new HBox(5);
+        buttonPane.setLeft(navigationBox);
         navigationBox.setPadding(new Insets(3, 3, 3, 3));
-        pane.setTop(navigationBox);
-        navigationBox.setBorder(createBorder());
+        pane.setTop(buttonPane);
+        buttonPane.setBorder(createBorder());
+
+        HBox synchronizationBox=new HBox(5);
+        buttonPane.setRight(synchronizationBox);
+        synchronizationBox.setPadding(new Insets(3,3,3,3));
+        Button toServerSyncButton=new Button("Local ->");
+        Button fromServerSyncButton=new Button("-> Local");
+        synchronizationBox.getChildren().addAll(toServerSyncButton,fromServerSyncButton);
+        synchronizationBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
 
         ToggleButton appointmentsButton = new ToggleButton("Appointments");
         _appointmentPaneContent = new AppointmentOverview(_synchController);
