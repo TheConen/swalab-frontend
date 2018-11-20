@@ -7,12 +7,11 @@ import com.swalab.frontend.gui.composites.NamedArtefactBasedListCellFactory;
 import com.swalab.frontend.gui.composites.StatusCombobox;
 import com.swalab.frontend.gui.object.builder.WarehousePartAndOrderEditingSettings;
 import com.swalab.frontend.model.*;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.util.StringConverter;
 
 import java.util.Date;
@@ -25,7 +24,7 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
     private Label _orderDateLabel;
     private Label _statusLabel;
     private TextField _descriptionField;
-    private Label _orderDateField;
+    private TextField _orderDateField;
     private ComboBox<Status> _statusComboBox;
     private ProgressStatusConverter _statusStringConverter;
     private Label _orderNumberLabel;
@@ -36,6 +35,7 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
     private TextField _quantityField;
     private ComboBox<AvailablePart> _partComboBox;
     private TextField _unitField;
+    private InlineEditor<WarehousePartAndOrder> _editor;
 
     public OrdersAndPartsPaneContent(SynchController synchController) {
         super(synchController);
@@ -48,6 +48,19 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
         _listView = createListView();
         pane.setCenter(_listView);
         _listView.getItems().add(new WarehousePartAndOrder(0l, "Description", new Date(), new PartWithQuantity(new AvailablePart("Part name", "Part description"), 10, "units"), Status.OPEN));
+
+        HBox buttonBox = new HBox();
+        buttonBox.setSpacing(5);
+        buttonBox.setPadding(new Insets(3, 3, 3, 3));
+        pane.setBottom(buttonBox);
+
+        Button creationButton = new Button("+ Order");
+        buttonBox.getChildren().add(creationButton);
+        creationButton.setOnAction(ae -> {
+            _listView.getSelectionModel().select(null);
+            _editor.setEditorMode(true);
+        });
+
         return pane;
     }
 
@@ -71,15 +84,17 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
         _quantityLabel = new Label();
 
         _descriptionField = new TextField();
-        _orderDateField = new Label();
+        _orderDateField = new TextField();
+        _orderDateField.setDisable(true);
         _statusComboBox = new StatusCombobox(_statusStringConverter);
         _orderNumberField = new TextField();
         _orderNumberField.setDisable(true);
         _partComboBox = new ComboBox<>();
+        _partComboBox.getItems().add(new AvailablePart("This part is not existing","Dummy placeholder"));
         _partComboBox.setConverter(new StringConverter<>() {
             @Override
             public String toString(AvailablePart availablePart) {
-                if(availablePart==null){
+                if (availablePart == null) {
                     return "No part available";
                 }
                 return availablePart.getName();
@@ -95,13 +110,13 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
 
         TextField idField = new TextField();
 
-        InlineEditor<WarehousePartAndOrder> editor = new InlineEditor<>(_listView, new WarehousePartAndOrderEditingSettings(_partComboBox, _quantityField, _unitField, _descriptionField, _orderDateField, _statusComboBox, _orderNumberField, idField));
-        editor.addPermanentVisible(partLabel, quantityLabel, unitLabel, orderNumberLabel, descriptionLabel, orderDateLabel, statusLabel);
-        editor.addViewerColumnNode(_partLabel, _quantityLabel, _unitLabel, _orderNumberLabel, _descriptionLabel, _orderDateLabel, _statusLabel);
-        editor.addEditorColumnNode(_partComboBox, _quantityField, _unitField, _orderNumberField, _descriptionField, _orderDateField, _statusComboBox);
-        editor.createAndAddDefaultButton();
-        editor.addIDField(idField);
-        return editor;
+        _editor = new InlineEditor<>(_listView, new WarehousePartAndOrderEditingSettings(_partComboBox, _quantityField, _unitField, _descriptionField, _orderDateField, _statusComboBox, _orderNumberField, idField));
+        _editor.addPermanentVisible(partLabel, quantityLabel, unitLabel, orderNumberLabel, descriptionLabel, orderDateLabel, statusLabel);
+        _editor.addViewerColumnNode(_partLabel, _quantityLabel, _unitLabel, _orderNumberLabel, _descriptionLabel, _orderDateLabel, _statusLabel);
+        _editor.addEditorColumnNode(_partComboBox, _quantityField, _unitField, _orderNumberField, _descriptionField, _orderDateField, _statusComboBox);
+        _editor.createAndAddDefaultButton();
+        _editor.addIDField(idField);
+        return _editor;
     }
 
     @Override

@@ -178,7 +178,8 @@ public class InlineEditor<T> extends GridPane {
     }
 
     private boolean isObjectCreationRequiered() {
-        return _idField == null || _idField.getText().isEmpty();
+        String text = _idField.getText();
+        return _idField == null || text == null || text.isEmpty();
     }
 
     public void setPostShowingFunction(Function<Boolean, Boolean> function) {

@@ -14,7 +14,7 @@ import java.util.Date;
 public class WarehousePartAndOrderEditingSettings implements IEditorSettings<WarehousePartAndOrder> {
 
     private final TextField _descriptionField;
-    private final Label _orderDateField;
+    private final TextField _orderDateField;
     private final ComboBox<Status> _statusComboBox;
     private final TextField _idField;
     private final TextField _orderNumberField;
@@ -22,47 +22,48 @@ public class WarehousePartAndOrderEditingSettings implements IEditorSettings<War
     private final TextField _quantityField;
     private final TextField _unitField;
 
-    public WarehousePartAndOrderEditingSettings(ComboBox<AvailablePart> partComboBox, TextField quantityField, TextField unitField, TextField descriptionField, Label orderDateField, ComboBox<Status> statusComboBox, TextField orderNumberField, TextField idField) {
+    public WarehousePartAndOrderEditingSettings(ComboBox<AvailablePart> partComboBox, TextField quantityField, TextField unitField, TextField descriptionField, TextField orderDateField, ComboBox<Status> statusComboBox, TextField orderNumberField, TextField idField) {
         _descriptionField = descriptionField;
         _orderDateField = orderDateField;
         _statusComboBox = statusComboBox;
-        _idField=idField;
-        _orderNumberField=orderNumberField;
-        _partComboBox=partComboBox;
-        _quantityField=quantityField;
-        _unitField=unitField;
+        _idField = idField;
+        _orderNumberField = orderNumberField;
+        _partComboBox = partComboBox;
+        _quantityField = quantityField;
+        _unitField = unitField;
     }
 
     @Override
     public WarehousePartAndOrder createObject() {
-        PartWithQuantity partWithQuantity=new PartWithQuantity();
+        PartWithQuantity partWithQuantity = new PartWithQuantity();
         partWithQuantity.setQuantity(Integer.parseInt(_quantityField.getText()));
         partWithQuantity.setUnit(_unitField.getText());
-        partWithQuantity.setAvailablePart(_partComboBox.getValue());
+        AvailablePart part = _partComboBox.getValue();
+        partWithQuantity.setAvailablePart(part);
 
-        WarehousePartAndOrder partAndOrder=new WarehousePartAndOrder();
+        WarehousePartAndOrder partAndOrder = new WarehousePartAndOrder();
         partAndOrder.setPart(partWithQuantity);
         partAndOrder.setDescription(_descriptionField.getText());
         partAndOrder.setStatus(_statusComboBox.getValue());
         partAndOrder.setOrderDate(new Date());// TODO parse value out of the text field
-        return new WarehousePartAndOrder();
+        return partAndOrder;
     }
 
     @Override
     public void setDefaultValues(WarehousePartAndOrder content) {
         _descriptionField.setText(content == null ? null : content.getDescription());
-        _orderDateField.setText(content == null ? null : content.getOrderDate().toGMTString());
+        _orderDateField.setText(content == null ? new Date().toGMTString() : content.getOrderDate().toGMTString());
         _statusComboBox.getSelectionModel().select(content == null ? null : content.getStatus());
-        _idField.setText(content==null?null:content.getID()+"");
-        _orderNumberField.setText(content==null?null:content.getOrderNumber()+"");
-        PartWithQuantity part = content.getPart();
-        if(part==null){
+        _idField.setText(content == null ? null : content.getID() + "");
+        _orderNumberField.setText(content == null ? null : content.getOrderNumber() + "");
+        PartWithQuantity part = content == null ? null : content.getPart();
+        if (part == null) {
             _partComboBox.getSelectionModel().select(null);
             _quantityField.setText(null);
             _unitField.setText(null);
-        }else{
+        } else {
             _partComboBox.getSelectionModel().select(part.getAvailablePart());
-            _quantityField.setText(part.getQuantity()+"");
+            _quantityField.setText(part.getQuantity() + "");
             _unitField.setText(part.getUnit());
         }
 
