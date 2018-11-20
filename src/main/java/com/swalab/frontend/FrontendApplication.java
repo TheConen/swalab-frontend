@@ -27,11 +27,13 @@ public class FrontendApplication extends Application {
     private AbstractPaneContent _customerPaneContent;
     private AbstractPaneContent _appointmentPaneContent;
     private OrdersAndPartsPaneContent _ordersAndPartPaneContent;
+    private String baseUrl;
 
     @Override
     public void init() throws Exception {
         springContext = SpringApplication.run(FrontendApplication.class);
-        _synchController = new SynchController("http://localhost:8080", "noJs");
+        baseUrl = springContext.getEnvironment().getProperty("backend.baseurl");
+        _synchController = new SynchController(baseUrl, "noJs");
     }
 
     @Override
