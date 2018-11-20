@@ -1,10 +1,11 @@
 package com.swalab.frontend.model;
 
 import com.swalab.frontend.api.INamedArtefact;
+import com.swalab.frontend.util.IdGenerator;
 
 public class AvailablePart implements INamedArtefact {
 
-    private Long id;
+    private Long id = IdGenerator.getNewId();
     private String name;
     private String description;
 

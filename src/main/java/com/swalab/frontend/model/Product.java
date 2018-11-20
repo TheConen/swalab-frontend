@@ -2,6 +2,7 @@ package com.swalab.frontend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.swalab.frontend.api.INamedArtefact;
+import com.swalab.frontend.util.IdGenerator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -13,7 +14,7 @@ import java.util.List;
  */
 public class Product implements INamedArtefact {
 
-    private Long id;
+    private Long id = IdGenerator.getNewId();
     private String name;
     private String description;
     private long serialNumber;

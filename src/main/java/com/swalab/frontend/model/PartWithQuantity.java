@@ -1,13 +1,14 @@
 package com.swalab.frontend.model;
 
 import com.swalab.frontend.api.INamedArtefact;
+import com.swalab.frontend.util.IdGenerator;
 
 /**
  * Build of material: Item on lists containing a part, the quantity and an unit
  */
 public class PartWithQuantity implements INamedArtefact {
 
-    private Long id;
+    private Long id = IdGenerator.getNewId();
     private AvailablePart availablePart;
     private int quantity;
     private String unit;

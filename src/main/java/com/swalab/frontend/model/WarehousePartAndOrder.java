@@ -2,12 +2,13 @@ package com.swalab.frontend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.swalab.frontend.api.INamedArtefact;
+import com.swalab.frontend.util.IdGenerator;
 
 import java.util.Date;
 
 public class WarehousePartAndOrder implements INamedArtefact {
 
-    private Long id;
+    private Long id = IdGenerator.getNewId();
     private long orderNumber;
     private String description;
     private Date orderDate;

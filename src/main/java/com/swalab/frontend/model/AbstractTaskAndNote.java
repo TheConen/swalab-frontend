@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.swalab.frontend.api.INamedArtefact;
+import com.swalab.frontend.util.IdGenerator;
 
 import java.util.Date;
 
@@ -14,7 +15,7 @@ import java.util.Date;
 })
 public abstract class AbstractTaskAndNote implements INamedArtefact {
 
-    private Long id;
+    private Long id = IdGenerator.getNewId();
     private String title;
     private String description;
     private Date creationDate;
