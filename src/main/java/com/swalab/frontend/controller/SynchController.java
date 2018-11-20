@@ -1,7 +1,7 @@
 package com.swalab.frontend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.swalab.frontend.model.Technician;
+import com.swalab.frontend.model.*;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -148,6 +148,35 @@ public class SynchController {
      * @return the current technician, can be null
      */
     public Technician getCurrentTechnician() {
+        return currentTechnician;
+    }
+
+    /**
+     * This method will update the current technician with either a technician loaded from a file (if offline) or from the server.
+     * If none of those is successful, a empty technician will be created.
+     *
+     * @return The updated technician. Cannot be null.
+     */
+    public Technician updateTechnician() {
+        boolean wasSuccessful = false;
+        if (isOffline()) {
+            wasSuccessful = loadDateFromFile();
+        } else {
+            wasSuccessful = getDataFromServer();
+        }
+
+        if(!wasSuccessful || currentTechnician == null) {
+            String email = "";
+            String name = "";
+            String password = "";
+            String phone = "";
+            List<Appointment> appointments = new ArrayList<Appointment>();
+            List<AbstractTaskAndNote> taskAndNotes = new ArrayList<AbstractTaskAndNote>();
+            List<Customer> customers = new ArrayList<Customer>();
+            List<WarehousePartAndOrder> parts = new ArrayList<WarehousePartAndOrder>();
+            currentTechnician = new Technician(email, name, password, phone, appointments, taskAndNotes, customers, parts);
+            notifyObservers();
+        }
         return currentTechnician;
     }
 

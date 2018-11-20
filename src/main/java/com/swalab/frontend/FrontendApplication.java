@@ -42,7 +42,7 @@ public class FrontendApplication extends Application {
         Parent parent = createWindowContent();
         Scene scene = new Scene(parent, 800, 600);
 
-        _synchController.loadDateFromFile();
+        _synchController.updateTechnician();
 
         primaryStage.setScene(scene);
         primaryStage.show();
