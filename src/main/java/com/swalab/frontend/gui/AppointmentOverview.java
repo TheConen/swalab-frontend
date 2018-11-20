@@ -4,15 +4,16 @@ import com.swalab.frontend.controller.SynchController;
 import com.swalab.frontend.converter.ProgressStatusConverter;
 import com.swalab.frontend.gui.composites.InlineEditor;
 import com.swalab.frontend.gui.composites.NamedArtefactBasedListCellFactory;
+import com.swalab.frontend.gui.composites.PartsAndServiceEditor;
 import com.swalab.frontend.gui.composites.StatusCombobox;
 import com.swalab.frontend.gui.object.builder.AppointmentEditingSettings;
 import com.swalab.frontend.model.*;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,6 +37,7 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
     private Label _productLabel;
     private ListView<PartWithQuantity> _plannedPartsAndServicesList;
     private ListView<PartWithQuantity> _usedPartsAndServicesList;
+    private InlineEditor<Appointment> _editor;
 
     public AppointmentOverview(SynchController synchController) {
         super(synchController);
@@ -56,12 +58,22 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         _listView = createListView();
         pane.setCenter(_listView);
         _listView.getItems().add(new Appointment(new Customer(), "Description", new Product("Product name", "Product description", 0l, new Date(), "", new ArrayList<>()), new Date(), Status.OPEN, new ArrayList<>(), new Date(), new Date(), new ArrayList(), new Date(), new Date()));
+
+        HBox buttonBox = new HBox(5);
+        buttonBox.setPadding(new Insets(3, 3, 3, 3));
+        Button creationButton = new Button("+ Appointment");
+        creationButton.setOnAction(ae -> {
+            _listView.getSelectionModel().select(null);
+            _editor.setEditorMode(true);
+        });
+
+        buttonBox.getChildren().add(creationButton);
+        pane.setBottom(buttonBox);
         return pane;
     }
 
     @Override
     public Parent createDescriptionWindowContent() {
-
         Label descriptionLabel = new Label("Description");
         Label creationDateLabel = new Label("Creation Date");
         Label statusLabel = new Label("Status");
@@ -96,18 +108,19 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         _statusComboBox = new StatusCombobox(_statusStringConverter);
         ComboBox<Customer> customerComboBox = new ComboBox<>();
         ComboBox<Product> productComboBox = new ComboBox<>();
+        PartsAndServiceEditor partsAndServiceEditor = new PartsAndServiceEditor();
 
         TextField idField = new TextField();
 
         _creationDateField.setDisable(true);
-
-        InlineEditor<Appointment> editor = new InlineEditor<>(_listView, new AppointmentEditingSettings(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, customerComboBox, productComboBox, _plannedPartsAndServicesList, _usedPartsAndServicesList, idField));
-        editor.addPermanentVisible(descriptionLabel, creationDateLabel, statusLabel, plannedStartLabel, plannedEndLabel, customerLabel, productLabel, plannedPartsAndServicesLabel, usedPartsAndServicesLabel);
-        editor.addViewerColumnNode(_descriptionLabel, _creationDateLabel, _statusLabel, _plannedStartLabel, _plannedEndLabel, _customerLabel, _productLabel, _plannedPartsAndServicesList, _usedPartsAndServicesList);
-        editor.addEditorColumnNode(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, customerComboBox, productComboBox);
-        editor.createAndAddDefaultButton();
-        editor.addIDField(idField);
-        return editor;
+        AppointmentEditingSettings settings=new AppointmentEditingSettings(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, customerComboBox, productComboBox, _plannedPartsAndServicesList, _usedPartsAndServicesList, partsAndServiceEditor,idField);
+        _editor = new InlineEditor<>(_listView, settings);
+        _editor.addPermanentVisible(descriptionLabel, creationDateLabel, statusLabel, plannedStartLabel, plannedEndLabel, customerLabel, productLabel, plannedPartsAndServicesLabel, usedPartsAndServicesLabel);
+        _editor.addViewerColumnNode(_descriptionLabel, _creationDateLabel, _statusLabel, _plannedStartLabel, _plannedEndLabel, _customerLabel, _productLabel, _plannedPartsAndServicesList, _usedPartsAndServicesList);
+        _editor.addEditorColumnNode(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, customerComboBox, productComboBox, partsAndServiceEditor);
+        _editor.createAndAddDefaultButton();
+        _editor.addIDField(idField);
+        return _editor;
     }
 
     @Override

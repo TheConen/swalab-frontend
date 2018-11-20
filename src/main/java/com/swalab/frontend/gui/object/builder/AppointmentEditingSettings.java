@@ -1,6 +1,7 @@
 package com.swalab.frontend.gui.object.builder;
 
 import com.swalab.frontend.api.IEditorSettings;
+import com.swalab.frontend.gui.composites.PartsAndServiceEditor;
 import com.swalab.frontend.gui.composites.StatusCombobox;
 import com.swalab.frontend.model.Appointment;
 import com.swalab.frontend.model.Customer;
@@ -9,6 +10,8 @@ import com.swalab.frontend.model.Product;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+
+import java.util.List;
 
 public class AppointmentEditingSettings implements IEditorSettings<Appointment> {
 
@@ -22,8 +25,9 @@ public class AppointmentEditingSettings implements IEditorSettings<Appointment> 
     private final ComboBox<Product> _productComboBox;
     private final ListView<PartWithQuantity> _plannedPartsAndServicesList;
     private final ListView<PartWithQuantity> _usedPartsAndServicesList;
+    private final PartsAndServiceEditor _partsAndServiceEditor;
 
-    public AppointmentEditingSettings(TextField descriptionField, TextField creationDateField, StatusCombobox statusComboBox, TextField plannedStartField, TextField plannedEndField, ComboBox<Customer> customerComboBox, ComboBox<Product> productComboBox, ListView<PartWithQuantity> plannedPartsAndServicesList, ListView<PartWithQuantity> usedPartsAndServicesList, TextField idField) {
+    public AppointmentEditingSettings(TextField descriptionField, TextField creationDateField, StatusCombobox statusComboBox, TextField plannedStartField, TextField plannedEndField, ComboBox<Customer> customerComboBox, ComboBox<Product> productComboBox, ListView<PartWithQuantity> plannedPartsAndServicesList, ListView<PartWithQuantity> usedPartsAndServicesList, PartsAndServiceEditor partsAndServiceEditor, TextField idField) {
         _descriptionField = descriptionField;
         _creationDateField = creationDateField;
         _plannedStartField = plannedStartField;
@@ -34,10 +38,12 @@ public class AppointmentEditingSettings implements IEditorSettings<Appointment> 
         _productComboBox=productComboBox;
         _plannedPartsAndServicesList=plannedPartsAndServicesList;
         _usedPartsAndServicesList=usedPartsAndServicesList;
+        _partsAndServiceEditor=partsAndServiceEditor;
     }
 
     @Override
     public Appointment createObject() {
+        List<PartWithQuantity> partsWithQuantity = _partsAndServiceEditor.getPartsWithQuantity();
         // TODO create correct object
         return new Appointment();
 
