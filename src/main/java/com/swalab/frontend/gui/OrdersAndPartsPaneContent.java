@@ -15,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.util.StringConverter;
 
 import java.util.Date;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePartAndOrder> {
@@ -90,7 +91,7 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
         _orderNumberField = new TextField();
         _orderNumberField.setDisable(true);
         _partComboBox = new ComboBox<>();
-        _partComboBox.getItems().add(new AvailablePart("This part is not existing","Dummy placeholder"));
+        _partComboBox.getItems().add(new AvailablePart("This part is not existing", "Dummy placeholder"));
         _partComboBox.setConverter(new StringConverter<>() {
             @Override
             public String toString(AvailablePart availablePart) {
@@ -102,7 +103,11 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
 
             @Override
             public AvailablePart fromString(String s) {
-                return null;
+                Optional<AvailablePart> availablePartOptional = _partComboBox.getItems().stream().filter(p -> p.getName().equals(s)).findFirst();
+                if (availablePartOptional.isPresent()) {
+                    return availablePartOptional.get();
+                }
+                throw new IllegalArgumentException("Element not available");
             }
         });
         _unitField = new TextField();
