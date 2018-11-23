@@ -38,6 +38,7 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
     private ListView<PartWithQuantity> _plannedPartsAndServicesList;
     private ListView<PartWithQuantity> _usedPartsAndServicesList;
     private InlineEditor<Appointment> _editor;
+    private ComboBox<Customer> _customerComboBox;
 
     public AppointmentOverview(SynchController synchController) {
         super(synchController);
@@ -45,8 +46,10 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
 
     @Override
     protected Consumer<Technician> getUpdateConsumer() {
-        return technician ->
-                _listView.setItems(technician.getObservableAppointments());
+        return technician -> {
+            _listView.setItems(technician.getObservableAppointments());
+            _customerComboBox.setItems(technician.getObservableCustomers());
+        };
 
     }
 
@@ -106,18 +109,25 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         _plannedStartField = new TextField();
         _plannedEndField = new TextField();
         _statusComboBox = new StatusCombobox(_statusStringConverter);
-        ComboBox<Customer> customerComboBox = new ComboBox<>();
+        _customerComboBox = new ComboBox<>();
         ComboBox<Product> productComboBox = new ComboBox<>();
         PartsAndServiceEditor partsAndServiceEditor = new PartsAndServiceEditor();
+
+        _customerComboBox.getSelectionModel().selectedItemProperty().addListener(ae -> {
+            System.out.println(_customerComboBox.getSelectionModel().getSelectedItem());
+            productComboBox.setItems(_customerComboBox.getSelectionModel().getSelectedItem().getObservableProducts());
+        });
+        _customerComboBox.getSelectionModel().selectedItemProperty().addListener(ae -> productComboBox.setDisable(_customerComboBox.getValue() == null));
+        productComboBox.setDisable(true);
 
         TextField idField = new TextField();
 
         _creationDateField.setDisable(true);
-        AppointmentEditingSettings settings=new AppointmentEditingSettings(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, customerComboBox, productComboBox, _plannedPartsAndServicesList, _usedPartsAndServicesList, partsAndServiceEditor,idField);
+        AppointmentEditingSettings settings = new AppointmentEditingSettings(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, _customerComboBox, productComboBox, _plannedPartsAndServicesList, _usedPartsAndServicesList, partsAndServiceEditor, idField);
         _editor = new InlineEditor<>(_listView, settings);
         _editor.addPermanentVisible(descriptionLabel, creationDateLabel, statusLabel, plannedStartLabel, plannedEndLabel, customerLabel, productLabel, plannedPartsAndServicesLabel, usedPartsAndServicesLabel);
         _editor.addViewerColumnNode(_descriptionLabel, _creationDateLabel, _statusLabel, _plannedStartLabel, _plannedEndLabel, _customerLabel, _productLabel, _plannedPartsAndServicesList, _usedPartsAndServicesList);
-        _editor.addEditorColumnNode(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, customerComboBox, productComboBox, partsAndServiceEditor);
+        _editor.addEditorColumnNode(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, _customerComboBox, productComboBox, partsAndServiceEditor);
         _editor.createAndAddDefaultButton();
         _editor.addIDField(idField);
         return _editor;
