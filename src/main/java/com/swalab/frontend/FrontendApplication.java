@@ -2,6 +2,7 @@ package com.swalab.frontend;
 
 import com.swalab.frontend.controller.SynchController;
 import com.swalab.frontend.gui.*;
+import com.swalab.frontend.model.Technician;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
@@ -17,6 +18,8 @@ import javafx.stage.Stage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+
+import java.util.function.Consumer;
 
 @SpringBootApplication
 public class FrontendApplication extends Application {
@@ -100,6 +103,8 @@ public class FrontendApplication extends Application {
         String user = System.getProperty("user.name");
         Label userDescriptionLabel = new Label("Logged in as: ");
         Label userLabel = new Label(user);
+        Consumer<Technician> consumer=t->userLabel.setText(t.getName());
+        _synchController.registerModelForUpdate(consumer);
         footline.getChildren().addAll(userDescriptionLabel, userLabel);
 
 
