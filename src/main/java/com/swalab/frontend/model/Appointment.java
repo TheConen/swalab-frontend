@@ -160,7 +160,8 @@ public class Appointment implements INamedArtefact {
         this.realDateTo = realDateTo;
     }
 
-    public long getID(){
+    // TODO one common system for all ids: object Long or primitive data type long
+    public Long getID(){
         return id;
     }
 

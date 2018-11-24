@@ -158,6 +158,8 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
 
     @Override
     public void requestFocus() {
+        defaultListElementSelection(_listView);
+        _editor.setEditorMode(false);
         _listView.requestFocus();
     }
 }

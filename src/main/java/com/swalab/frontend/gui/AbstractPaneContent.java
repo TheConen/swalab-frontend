@@ -8,10 +8,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
@@ -76,6 +73,16 @@ public abstract class AbstractPaneContent<T extends INamedArtefact> {
      * requests the focus for the element which should have it right after this page is shown
      */
     public abstract void requestFocus();
+
+    public void defaultListElementSelection(ListView<T> listView){
+        MultipleSelectionModel<T> selectionModel = listView.getSelectionModel();
+        if(listView.getItems().isEmpty()){
+            return;
+        }
+        if(selectionModel.getSelectedItems().isEmpty()){
+            selectionModel.select(0);
+        }
+    }
 
     /**
      *

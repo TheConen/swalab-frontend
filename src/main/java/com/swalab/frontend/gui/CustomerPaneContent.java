@@ -144,6 +144,8 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
 
     @Override
     public void requestFocus() {
+        defaultListElementSelection(_listView);
+        _editor.setEditorMode(false);
         _listView.requestFocus();
     }
 }

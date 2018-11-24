@@ -32,13 +32,13 @@ public class AppointmentEditingSettings implements IEditorSettings<Appointment> 
         _creationDateField = creationDateField;
         _plannedStartField = plannedStartField;
         _plannedEndField = plannedEndField;
-        _idField=idField;
-        _statusBox=statusComboBox;
-        _customerComboBox =customerComboBox;
-        _productComboBox=productComboBox;
-        _plannedPartsAndServicesList=plannedPartsAndServicesList;
-        _usedPartsAndServicesList=usedPartsAndServicesList;
-        _partsAndServiceEditor=partsAndServiceEditor;
+        _idField = idField;
+        _statusBox = statusComboBox;
+        _customerComboBox = customerComboBox;
+        _productComboBox = productComboBox;
+        _plannedPartsAndServicesList = plannedPartsAndServicesList;
+        _usedPartsAndServicesList = usedPartsAndServicesList;
+        _partsAndServiceEditor = partsAndServiceEditor;
     }
 
     @Override
@@ -55,12 +55,12 @@ public class AppointmentEditingSettings implements IEditorSettings<Appointment> 
         _creationDateField.setText(content == null ? null : content.getCreationDate().toGMTString());
         _plannedStartField.setText(content == null ? null : content.getPlannedDateTimeFrom().toGMTString());
         _plannedEndField.setText(content == null ? null : content.getPlannedDateTimeTo().toGMTString());
-        _idField.setText(content==null?null:content.getID()+"");
-        _statusBox.getSelectionModel().select(content==null?null:content.getStatus());
+        _idField.setText(content == null ? null : (content.getID()==null)?"":content.getID() + "");
+        _statusBox.getSelectionModel().select(content == null ? null : content.getStatus());
         _customerComboBox.getSelectionModel().select(null); // TODO take customer list from technician
         _productComboBox.getSelectionModel().select(null); // TODO take product list from technician
-        _plannedPartsAndServicesList.setItems(content==null?null:content.getObservablePlannedPartsAndServices());
-        _usedPartsAndServicesList.setItems(content==null?null:content.getObservableUsedPartsAndServices());
+        _plannedPartsAndServicesList.setItems(content == null ? null : content.getObservablePlannedPartsAndServices());
+        _usedPartsAndServicesList.setItems(content == null ? null : content.getObservableUsedPartsAndServices());
     }
 
     @Override

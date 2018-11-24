@@ -74,11 +74,15 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         modificationBox.setSpacing(5);
         modificationBox.setPadding(new Insets(3, 3, 3, 3));
         Button taskCreationButton = new Button("+ Task");
-        taskCreationButton.setOnAction(ae -> {_listView.getSelectionModel().select(null);
-            _editor.setEditorMode(true);});
+        taskCreationButton.setOnAction(ae -> {
+            _listView.getSelectionModel().select(null);
+            _editor.setEditorMode(true);
+        });
         Button noteCreationButton = new Button("+ Note");
-        noteCreationButton.setOnAction(ae -> {_listView.getSelectionModel().select(null);
-            _editor.setEditorMode(true);});
+        noteCreationButton.setOnAction(ae -> {
+            _listView.getSelectionModel().select(null);
+            _editor.setEditorMode(true);
+        });
 
         modificationBox.getChildren().add(taskCreationButton);
         modificationBox.getChildren().add(noteCreationButton);
@@ -115,8 +119,8 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         _creationField.setDisable(true);
         _creationField.setText(getCurrentTime());
 
-        IEditorSettings editorSettings = new TaskAndNoteSettings(_nameField,_descriptionField,_creationField,_statusBox);
-         _editor = new InlineEditor<>(_listView, editorSettings);
+        IEditorSettings editorSettings = new TaskAndNoteSettings(_nameField, _descriptionField, _creationField, _statusBox);
+        _editor = new InlineEditor<>(_listView, editorSettings);
         _editor.addPermanentVisible(nameLabel, descriptionLabel, creationLabel, _statusDescriptionLabel);
         _editor.addViewerColumnNode(_nameLabel, _descriptionLabel, _creationLabel, _statusLabel);
         _editor.addEditorColumnNode(_nameField, _descriptionField, _creationField, _statusBox);
@@ -199,6 +203,8 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
 
     @Override
     public void requestFocus() {
+        defaultListElementSelection(_listView);
+        _editor.setEditorMode(false);
         _listView.requestFocus();
     }
 

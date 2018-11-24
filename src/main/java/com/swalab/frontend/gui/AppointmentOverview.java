@@ -117,7 +117,7 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
 
             @Override
             public String toString(Product product) {
-                return product==null?"":product.getName();
+                return product == null ? "" : product.getName();
             }
 
             @Override
@@ -200,6 +200,8 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
 
     @Override
     public void requestFocus() {
+        defaultListElementSelection(_listView);
+        _editor.setEditorMode(false);
         _listView.requestFocus();
     }
 }
