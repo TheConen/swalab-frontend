@@ -169,7 +169,8 @@ public class InlineEditor<T> extends GridPane {
                     _listView.getSelectionModel().select(object);
                 }
             } else {
-                // TODO update existing data
+                _objectBuilder.updateContent(_currentSubject);
+                setEditorMode(false);
             }
         });
         editorButtons.getChildren().addAll(saveButton, aboardButton);

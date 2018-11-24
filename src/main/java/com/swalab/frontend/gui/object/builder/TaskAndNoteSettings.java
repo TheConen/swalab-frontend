@@ -15,12 +15,14 @@ public class TaskAndNoteSettings implements IEditorSettings<AbstractTaskAndNote>
     private final TextField _descriptionField;
     private final TextField _creationField;
     private final ComboBox<Status> _statusBox;
+    private final TextField _idField;
 
-    public TaskAndNoteSettings(TextField nameField, TextField descriptionField, TextField creationField, ComboBox<Status> statusBox) {
+    public TaskAndNoteSettings(TextField nameField, TextField descriptionField, TextField creationField, ComboBox<Status> statusBox, TextField idField) {
         _nameField = nameField;
         _descriptionField = descriptionField;
         _creationField = creationField;
         _statusBox = statusBox;
+        _idField=idField;
     }
 
     @Override
@@ -43,10 +45,12 @@ public class TaskAndNoteSettings implements IEditorSettings<AbstractTaskAndNote>
             _descriptionField.setText(null);
             _creationField.setText(null);
             _statusBox.getSelectionModel().select(null);
+            _idField.setText(null);
         } else {
             _nameField.setText(content.getName());
             _descriptionField.setText(content.getDescription());
             _creationField.setText(content.getCreationDate().toGMTString());
+            _idField.setText(content.getID()+"");
             if (content instanceof Task) {
                 Status status = ((Task) content).getStatus();
                 _statusBox.getSelectionModel().select(status);
@@ -58,5 +62,16 @@ public class TaskAndNoteSettings implements IEditorSettings<AbstractTaskAndNote>
     public boolean canObjectBeCreated() {
         // TODO creation security checks
         return true;
+    }
+
+    @Override
+    public void updateContent(AbstractTaskAndNote taskOrNote) {
+        taskOrNote.setTitle(_nameField.getText());
+        taskOrNote.setDescription(_nameField.getText());
+        if(taskOrNote instanceof Task){
+            Task task=(Task)taskOrNote;
+            task.setStatus(_statusBox.getSelectionModel().getSelectedItem());
+        }
+
     }
 }

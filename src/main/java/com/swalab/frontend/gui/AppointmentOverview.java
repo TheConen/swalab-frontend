@@ -8,6 +8,7 @@ import com.swalab.frontend.gui.composites.PartsAndServiceEditor;
 import com.swalab.frontend.gui.composites.StatusCombobox;
 import com.swalab.frontend.gui.object.builder.AppointmentEditingSettings;
 import com.swalab.frontend.model.*;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -136,7 +137,8 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         PartsAndServiceEditor partsAndServiceEditor = new PartsAndServiceEditor();
 
         _customerComboBox.getSelectionModel().selectedItemProperty().addListener(ae -> {
-            productComboBox.setItems(_customerComboBox.getSelectionModel().getSelectedItem().getObservableProducts());
+            Customer customer = _customerComboBox.getSelectionModel().getSelectedItem();
+            productComboBox.setItems(customer == null ? FXCollections.observableArrayList() : customer.getObservableProducts());
         });
         _customerComboBox.getSelectionModel().selectedItemProperty().addListener(ae -> productComboBox.setDisable(_customerComboBox.getSelectionModel().getSelectedItem() == null));
         _customerComboBox.setConverter(new StringConverter<>() {

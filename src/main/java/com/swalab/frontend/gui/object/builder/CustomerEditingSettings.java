@@ -47,8 +47,8 @@ public class CustomerEditingSettings implements IEditorSettings<Customer> {
         _mailField.setText(content == null ? null : content.getMail());
         _webField.setText(content == null ? null : content.getWeb());
         _addressField.setText(content == null ? null : content.getAddress());
-        //  _productList.setItems(content==null?null:content.getObservableProducts());
-        //  _appointmentList.setItems(content==null?null:content.getObservableAppointmentHistoryList());
+        //_productList.setItems(content == null ? null : content.getObservableProducts());
+        //_appointmentList.setItems(content == null ? null : content.getObservableAppointmentHistoryList());
         _idField.setText(content == null ? null : content.getID() + "");
     }
 
@@ -56,5 +56,17 @@ public class CustomerEditingSettings implements IEditorSettings<Customer> {
     public boolean canObjectBeCreated() {
         // TODO correct safty checks
         return true;
+    }
+
+    @Override
+    public void updateContent(Customer customer) {
+        customer.setName(_nameField.getText());
+        customer.setGeolocation(_geolocationField.getText());
+        customer.setPhone(_phoneField.getText());
+        customer.setMail(_mailField.getText());
+        customer.setWeb(_webField.getText());
+        customer.setAddress(_addressField.getText());
+       // customer.setProducts(_productList.getItems());
+       // customer.setAppointmentHistoryList(_appointmentList.getItems());
     }
 }

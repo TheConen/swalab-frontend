@@ -11,6 +11,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import java.util.Date;
 import java.util.List;
 
 public class AppointmentEditingSettings implements IEditorSettings<Appointment> {
@@ -55,7 +56,7 @@ public class AppointmentEditingSettings implements IEditorSettings<Appointment> 
         _creationDateField.setText(content == null ? null : content.getCreationDate().toGMTString());
         _plannedStartField.setText(content == null ? null : content.getPlannedDateTimeFrom().toGMTString());
         _plannedEndField.setText(content == null ? null : content.getPlannedDateTimeTo().toGMTString());
-        _idField.setText(content == null ? null : (content.getID()==null)?"":content.getID() + "");
+        _idField.setText(content == null ? null : (content.getID() == null) ? "" : content.getID() + "");
         _statusBox.getSelectionModel().select(content == null ? null : content.getStatus());
         _customerComboBox.getSelectionModel().select(null); // TODO take customer list from technician
         _productComboBox.getSelectionModel().select(null); // TODO take product list from technician
@@ -67,5 +68,21 @@ public class AppointmentEditingSettings implements IEditorSettings<Appointment> 
     public boolean canObjectBeCreated() {
         // TODO write correct check
         return true;
+    }
+
+    @Override
+    public void updateContent(Appointment appointment) {
+        appointment.setCreationDate(new Date());
+        appointment.setCustomer(_customerComboBox.getSelectionModel().getSelectedItem());
+        appointment.setDescription(_descriptionField.getText());
+        appointment.setStatus(_statusBox.getSelectionModel().getSelectedItem());
+        appointment.setRealDateFrom(new Date());
+        appointment.setRealDateTo(new Date());
+        appointment.setPlannedDateTimeFrom(new Date());
+        appointment.setPlannedDateTimeTo(new Date());
+        appointment.setPlannedPartsAndServices(_plannedPartsAndServicesList.getItems());
+        appointment.setUsedPartsAndServices(_usedPartsAndServicesList.getItems());
+        appointment.setCustomer(_customerComboBox.getSelectionModel().getSelectedItem());
+
     }
 }

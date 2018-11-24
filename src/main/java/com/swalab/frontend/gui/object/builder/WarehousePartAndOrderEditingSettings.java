@@ -73,4 +73,10 @@ public class WarehousePartAndOrderEditingSettings implements IEditorSettings<War
     public boolean canObjectBeCreated() {
         return true;
     }
+
+    @Override
+    public void updateContent(WarehousePartAndOrder partAndOrder) {
+        partAndOrder.setDescription(_descriptionField.getText());
+        partAndOrder.setStatus(_statusComboBox.getSelectionModel().getSelectedItem());
+    }
 }

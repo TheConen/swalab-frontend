@@ -19,4 +19,10 @@ public interface IEditorSettings<T> {
      * @return true if the creation is possible
      */
     boolean canObjectBeCreated(); // TODO change all implementations of this interface so the check is performed correctly before the object is created
+
+    /**
+     * changes the content of the given project
+     * @param currentObject which should be updated
+     */
+    void updateContent(T currentObject);
 }

@@ -119,12 +119,15 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         _creationField.setDisable(true);
         _creationField.setText(getCurrentTime());
 
-        IEditorSettings editorSettings = new TaskAndNoteSettings(_nameField, _descriptionField, _creationField, _statusBox);
+        TextField idField=new TextField();
+
+        IEditorSettings editorSettings = new TaskAndNoteSettings(_nameField, _descriptionField, _creationField, _statusBox,idField);
         _editor = new InlineEditor<>(_listView, editorSettings);
         _editor.addPermanentVisible(nameLabel, descriptionLabel, creationLabel, _statusDescriptionLabel);
         _editor.addViewerColumnNode(_nameLabel, _descriptionLabel, _creationLabel, _statusLabel);
         _editor.addEditorColumnNode(_nameField, _descriptionField, _creationField, _statusBox);
         _editor.createAndAddDefaultButton();
+        _editor.addIDField(idField);
 
         Function<Boolean, Boolean> f = isEditorMode -> {
             boolean isStatusRowRequired = _statusDescriptionLabel.isVisible();
