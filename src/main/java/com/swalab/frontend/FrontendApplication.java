@@ -67,7 +67,9 @@ public class FrontendApplication extends Application {
         buttonPane.setRight(synchronizationBox);
         synchronizationBox.setPadding(new Insets(3,3,3,3));
         Button toServerSyncButton=new Button("Local ->");
+        toServerSyncButton.setOnAction(ae->_synchController.persistData());
         Button fromServerSyncButton=new Button("-> Local");
+        fromServerSyncButton.setOnAction(ae->_synchController.loadData());
         synchronizationBox.getChildren().addAll(toServerSyncButton,fromServerSyncButton);
         synchronizationBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
 

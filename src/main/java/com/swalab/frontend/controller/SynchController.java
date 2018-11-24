@@ -201,4 +201,28 @@ public class SynchController {
     private void notifyObservers() {
         _models.stream().forEach(c -> c.accept(getCurrentTechnician()));
     }
+
+    /**
+     * saves the data depending on the application state from a local file or the server
+     * @node if the application works online, the data is online stored
+     */
+    public void persistData() {
+        if(isOffline()){
+            saveDataToFile();
+        }else{
+            sendDataToServer();
+        }
+    }
+
+    /**
+     * loads the data depending on the application state from a local file or the server
+     * @node if the application works online, the data is online stored
+     */
+    public void loadData() {
+        if(isOffline()){
+            loadDateFromFile();
+        }else{
+            getDataFromServer();
+        }
+    }
 }
