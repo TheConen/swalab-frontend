@@ -14,9 +14,11 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.util.StringConverter;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class AppointmentOverview extends AbstractPaneContent<Appointment> {
@@ -111,13 +113,51 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         _statusComboBox = new StatusCombobox(_statusStringConverter);
         _customerComboBox = new ComboBox<>();
         ComboBox<Product> productComboBox = new ComboBox<>();
+        productComboBox.setConverter(new StringConverter<>() {
+
+            @Override
+            public String toString(Product product) {
+                return product==null?"":product.getName();
+            }
+
+            @Override
+            public Product fromString(String s) {
+                if (s.isEmpty()) {
+                    return null;
+                }
+                Optional<Product> productOptional = productComboBox.getItems().stream().filter(c -> c.getName().equals(s)).findFirst();
+                if (productOptional.isPresent()) {
+                    return productOptional.get();
+                } else {
+                    throw new IllegalArgumentException("Customer not found");
+                }
+            }
+        });
         PartsAndServiceEditor partsAndServiceEditor = new PartsAndServiceEditor();
 
         _customerComboBox.getSelectionModel().selectedItemProperty().addListener(ae -> {
-            System.out.println(_customerComboBox.getSelectionModel().getSelectedItem());
             productComboBox.setItems(_customerComboBox.getSelectionModel().getSelectedItem().getObservableProducts());
         });
-        _customerComboBox.getSelectionModel().selectedItemProperty().addListener(ae -> productComboBox.setDisable(_customerComboBox.getValue() == null));
+        _customerComboBox.getSelectionModel().selectedItemProperty().addListener(ae -> productComboBox.setDisable(_customerComboBox.getSelectionModel().getSelectedItem() == null));
+        _customerComboBox.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(Customer customer) {
+                return customer == null ? "" : customer.getName();
+            }
+
+            @Override
+            public Customer fromString(String s) {
+                if (s.isEmpty()) {
+                    return null;
+                }
+                Optional<Customer> customerOptional = _customerComboBox.getItems().stream().filter(c -> c.getName().equals(s)).findFirst();
+                if (customerOptional.isPresent()) {
+                    return customerOptional.get();
+                } else {
+                    throw new IllegalArgumentException("Customer not found");
+                }
+            }
+        });
         productComboBox.setDisable(true);
 
         TextField idField = new TextField();
