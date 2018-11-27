@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class WarehousePartAndOrder implements INamedArtefact {
 
-    private Long id = IdGenerator.getNewId();
+    private long id = IdGenerator.getNewId();
     private long orderNumber;
     private String description;
     private Date orderDate;

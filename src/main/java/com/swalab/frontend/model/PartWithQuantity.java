@@ -8,7 +8,7 @@ import com.swalab.frontend.util.IdGenerator;
  */
 public class PartWithQuantity implements INamedArtefact {
 
-    private Long id = IdGenerator.getNewId();
+    private long id = IdGenerator.getNewId();
     private AvailablePart availablePart;
     private int quantity;
     private String unit;

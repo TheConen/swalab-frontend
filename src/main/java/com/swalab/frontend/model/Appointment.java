@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Appointment implements INamedArtefact {
 
-    private Long id;
+    private long id;
     private Customer customer;
     private String description;
     private Product product;

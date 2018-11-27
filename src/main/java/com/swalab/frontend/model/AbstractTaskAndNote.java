@@ -15,7 +15,7 @@ import java.util.Date;
 })
 public abstract class AbstractTaskAndNote implements INamedArtefact {
 
-    private Long id = IdGenerator.getNewId();
+    private long id = IdGenerator.getNewId();
     private String title;
     private String description;
     private Date creationDate;

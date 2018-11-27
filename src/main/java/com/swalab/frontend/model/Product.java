@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class Product implements INamedArtefact {
 
-    private Long id = IdGenerator.getNewId();
+    private long id = IdGenerator.getNewId();
     private String name;
     private String description;
     private long serialNumber;

@@ -2,9 +2,9 @@ package com.swalab.frontend.util;
 
 public class IdGenerator {
 
-    private static Long lastId = 0L;
+    private static long lastId = 0L;
 
-    public static Long getNewId() {
+    public static long getNewId() {
         lastId -= 1;
         return lastId;
     }
