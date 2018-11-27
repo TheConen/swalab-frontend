@@ -50,7 +50,7 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         ObservableList<AbstractTaskAndNote> list = FXCollections.observableArrayList();
         list.add(new Task("title", "description", Status.OPEN, new Date(System.currentTimeMillis())));
         list.add(new Task("title2", "description", Status.IN_PROGRESS, new Date(System.currentTimeMillis())));
-        list.add(new Note("Note", "Note description", new Date(System.currentTimeMillis())));
+        //list.add(new Note("Note", "Note description", new Date(System.currentTimeMillis())));
 
         BorderPane pane = new BorderPane();
         pane.setPrefWidth(200);
@@ -78,14 +78,14 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
             _listView.getSelectionModel().select(null);
             _editor.setEditorMode(true);
         });
-        Button noteCreationButton = new Button("+ Note");
-        noteCreationButton.setOnAction(ae -> {
-            _listView.getSelectionModel().select(null);
-            _editor.setEditorMode(true);
-        });
+        //Button noteCreationButton = new Button("+ Note");
+        //noteCreationButton.setOnAction(ae -> {
+        //    _listView.getSelectionModel().select(null);
+        //    _editor.setEditorMode(true);
+        //});
 
         modificationBox.getChildren().add(taskCreationButton);
-        modificationBox.getChildren().add(noteCreationButton);
+        //modificationBox.getChildren().add(noteCreationButton);
 
         pane.setBottom(modificationBox);
 
