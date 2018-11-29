@@ -1,6 +1,7 @@
 package com.swalab.frontend.gui;
 
 import com.swalab.frontend.api.INamedArtefact;
+import com.swalab.frontend.api.IUpdateableWindowDescription;
 import com.swalab.frontend.controller.SynchController;
 import com.swalab.frontend.gui.composites.NamedArtefactBasedListCellFactory;
 import com.swalab.frontend.model.Technician;
@@ -11,11 +12,10 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.util.Callback;
 
 import java.util.function.Consumer;
 
-public abstract class AbstractPaneContent<T extends INamedArtefact> {
+public abstract class AbstractPaneContent<T extends INamedArtefact> implements IUpdateableWindowDescription<T> {
 
     private final Parent _descriptionWindowContent;
     private final Parent _mainWindowContent;
@@ -26,8 +26,8 @@ public abstract class AbstractPaneContent<T extends INamedArtefact> {
 
     public AbstractPaneContent(SynchController synchController) {
         synchController.registerModelForUpdate(getUpdateConsumer());
-        _mainWindowContent=createMainWindowContent();
-        _descriptionWindowContent=createDescriptionWindowContent();
+        _mainWindowContent = createMainWindowContent();
+        _descriptionWindowContent = createDescriptionWindowContent();
     }
 
     protected Border createBorder() {
@@ -43,7 +43,7 @@ public abstract class AbstractPaneContent<T extends INamedArtefact> {
             @Override
             public void changed(ObservableValue<? extends T> observableValue, T oldValue, T newValue) {
                 if (newValue != null) {
-                    updateDescriptionContent(newValue, newValue.getClass());
+                    updateDescriptionContentInternal(newValue, newValue.getClass());
                 }
             }
         });
@@ -51,10 +51,18 @@ public abstract class AbstractPaneContent<T extends INamedArtefact> {
         return listView;
     }
 
+    public void updateDescriptionContent(T item) {
+        if (item == null) {
+            updateDescriptionContentInternal(item, null);
+        } else {
+            updateDescriptionContentInternal(item, item.getClass());
+        }
+    }
+
     /**
      * called for changeing the content of the description window of the currently shown pane
      */
-    protected abstract void updateDescriptionContent(T item, Class clazz);
+    protected abstract void updateDescriptionContentInternal(T item, Class clazz);
 
     /**
      * offers an callable for updating the corresponding ui model
@@ -74,18 +82,17 @@ public abstract class AbstractPaneContent<T extends INamedArtefact> {
      */
     public abstract void requestFocus();
 
-    public void defaultListElementSelection(ListView<T> listView){
+    public void defaultListElementSelection(ListView<T> listView) {
         MultipleSelectionModel<T> selectionModel = listView.getSelectionModel();
-        if(listView.getItems().isEmpty()){
+        if (listView.getItems().isEmpty()) {
             return;
         }
-        if(selectionModel.getSelectedItems().isEmpty()){
+        if (selectionModel.getSelectedItems().isEmpty()) {
             selectionModel.select(0);
         }
     }
 
     /**
-     *
      * @return the content for the main window
      */
     public Node getMainWindowContent() {
@@ -93,7 +100,6 @@ public abstract class AbstractPaneContent<T extends INamedArtefact> {
     }
 
     /**
-     *
      * @return the content for the description window
      */
     public Node getDescriptionWindowContent() {

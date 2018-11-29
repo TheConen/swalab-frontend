@@ -8,16 +8,13 @@ import com.swalab.frontend.model.Appointment;
 import com.swalab.frontend.model.Customer;
 import com.swalab.frontend.model.Product;
 import com.swalab.frontend.model.Technician;
-import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.util.Callback;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Consumer;
 
 public class CustomerPaneContent extends AbstractPaneContent<Customer> {
@@ -102,7 +99,7 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
 
 
         CustomerEditingSettings customerBuilder = new CustomerEditingSettings(_nameField, _geolocationField, _phoneField, _mailField, _webField, _addressField, null, null, idField);
-        _editor = new InlineEditor<>(_listView, customerBuilder);
+        _editor = new InlineEditor<>(_listView, customerBuilder,this);
 
         _editor.addPermanentVisible(nameLabel, geolocationLabel, phoneLabel, mailLabel, webLabel, addressLabel, productlabel, appointmentLabel);
         _editor.addViewerColumnNode(_nameLabel, _geolocationLabel, _phoneLabel, _mailLabel, _webLabel, _addressLabel, _productList, _appointmentList);
@@ -115,7 +112,7 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
     }
 
     @Override
-    protected void updateDescriptionContent(Customer item, Class clazz) {
+    protected void updateDescriptionContentInternal(Customer item, Class clazz) {
         if (item == null) {
             _nameLabel.setText(null);
             _geolocationLabel.setText(null);

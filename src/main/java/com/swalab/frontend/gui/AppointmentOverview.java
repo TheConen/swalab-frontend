@@ -166,7 +166,7 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
 
         _creationDateField.setDisable(true);
         AppointmentEditingSettings settings = new AppointmentEditingSettings(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, _customerComboBox, productComboBox, _plannedPartsAndServicesList, _usedPartsAndServicesList, partsAndServiceEditor, idField);
-        _editor = new InlineEditor<>(_listView, settings);
+        _editor = new InlineEditor<>(_listView, settings,this);
         _editor.addPermanentVisible(descriptionLabel, creationDateLabel, statusLabel, plannedStartLabel, plannedEndLabel, customerLabel, productLabel, plannedPartsAndServicesLabel, usedPartsAndServicesLabel);
         _editor.addViewerColumnNode(_descriptionLabel, _creationDateLabel, _statusLabel, _plannedStartLabel, _plannedEndLabel, _customerLabel, _productLabel, _plannedPartsAndServicesList, _usedPartsAndServicesList);
         _editor.addEditorColumnNode(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, _customerComboBox, productComboBox, partsAndServiceEditor);
@@ -176,7 +176,7 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
     }
 
     @Override
-    protected void updateDescriptionContent(Appointment item, Class clazz) {
+    protected void updateDescriptionContentInternal(Appointment item, Class clazz) {
         if (item == null) {
             _descriptionLabel.setText(null);
             _creationDateLabel.setText(null);

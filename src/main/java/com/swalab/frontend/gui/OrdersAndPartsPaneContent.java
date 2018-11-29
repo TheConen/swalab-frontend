@@ -114,8 +114,8 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
         _quantityField = new TextField();
 
         TextField idField = new TextField();
-
-        _editor = new InlineEditor<>(_listView, new WarehousePartAndOrderEditingSettings(_partComboBox, _quantityField, _unitField, _descriptionField, _orderDateField, _statusComboBox, _orderNumberField, idField));
+        WarehousePartAndOrderEditingSettings settings = new WarehousePartAndOrderEditingSettings(_partComboBox, _quantityField, _unitField, _descriptionField, _orderDateField, _statusComboBox, _orderNumberField, idField);
+        _editor = new InlineEditor<>(_listView, settings,this);
         _editor.addPermanentVisible(partLabel, quantityLabel, unitLabel, orderNumberLabel, descriptionLabel, orderDateLabel, statusLabel);
         _editor.addViewerColumnNode(_partLabel, _quantityLabel, _unitLabel, _orderNumberLabel, _descriptionLabel, _orderDateLabel, _statusLabel);
         _editor.addEditorColumnNode(_partComboBox, _quantityField, _unitField, _orderNumberField, _descriptionField, _orderDateField, _statusComboBox);
@@ -125,7 +125,7 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
     }
 
     @Override
-    protected void updateDescriptionContent(WarehousePartAndOrder item, Class clazz) {
+    protected void updateDescriptionContentInternal(WarehousePartAndOrder item, Class clazz) {
         if (item == null) {
             _descriptionLabel.setText(null);
             _orderDateLabel.setText(null);

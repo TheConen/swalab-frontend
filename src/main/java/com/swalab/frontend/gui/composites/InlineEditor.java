@@ -1,6 +1,7 @@
 package com.swalab.frontend.gui.composites;
 
 import com.swalab.frontend.api.IEditorSettings;
+import com.swalab.frontend.api.IUpdateableWindowDescription;
 import com.swalab.frontend.model.AbstractTaskAndNote;
 import com.swalab.frontend.model.Task;
 import javafx.beans.value.ChangeListener;
@@ -26,12 +27,14 @@ public class InlineEditor<T> extends GridPane {
     private final List<Node> _editorColumnNodeList;
     private final ListView<T> _listView;
     private final IEditorSettings<T> _objectBuilder;
+    private final IUpdateableWindowDescription<T> _updateableWindowDescription;
     private TextField _idField;
     private Function<Boolean, Boolean> _postShowingFunction;
     private T _currentSubject;
 
-    public InlineEditor(ListView<T> listView, IEditorSettings objectBuilder) {
+    public InlineEditor(ListView<T> listView, IEditorSettings objectBuilder, IUpdateableWindowDescription<T> updateableWindowDescription) {
         super();
+        _updateableWindowDescription=updateableWindowDescription;
         _listView = listView;
         _listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<T>() {
             @Override
@@ -105,10 +108,14 @@ public class InlineEditor<T> extends GridPane {
             node.setManaged(isEditorMode);
         }
         _currentSubject = _listView.getSelectionModel().getSelectedItem();
+        if(!isEditorMode){
+            _updateableWindowDescription.updateDescriptionContent(_currentSubject);
+        }
         _objectBuilder.setDefaultValues(_currentSubject);
         if (_postShowingFunction != null) {
             _postShowingFunction.apply(isEditorMode);
         }
+
     }
 
     public void createAndAddDefaultButton() {
@@ -128,7 +135,7 @@ public class InlineEditor<T> extends GridPane {
         Button editButton = new Button("Edit");
         editButton.setOnAction(ae -> {
             setEditorMode(true);
-            _listView.getSelectionModel().select(null);
+            //_listView.getSelectionModel().select(null);
         });
         editButton.setDisable(true);
         viewerButtons.getChildren().addAll(editButton, deleteButton);

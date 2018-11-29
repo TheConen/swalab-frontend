@@ -122,7 +122,7 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         TextField idField=new TextField();
 
         IEditorSettings editorSettings = new TaskAndNoteSettings(_nameField, _descriptionField, _creationField, _statusBox,idField);
-        _editor = new InlineEditor<>(_listView, editorSettings);
+        _editor = new InlineEditor<>(_listView, editorSettings,this);
         _editor.addPermanentVisible(nameLabel, descriptionLabel, creationLabel, _statusDescriptionLabel);
         _editor.addViewerColumnNode(_nameLabel, _descriptionLabel, _creationLabel, _statusLabel);
         _editor.addEditorColumnNode(_nameField, _descriptionField, _creationField, _statusBox);
@@ -163,7 +163,7 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
     }
 
     @Override
-    protected void updateDescriptionContent(AbstractTaskAndNote item, Class clazz) {
+    protected void updateDescriptionContentInternal(AbstractTaskAndNote item, Class clazz) {
         if (item == null) {
             _nameLabel.setText(null);
             _descriptionLabel.setText(null);
