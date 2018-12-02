@@ -76,11 +76,5 @@ public class FrontendApplication extends Application {
 
     public static void main(String[] args) {
         launch(FrontendApplication.class, args);
-
-        //synchController = new SynchController("http://localhost:8080", "noJs");
-        //synchController.getDataFromServer();
-        //synchController.saveDataToFile();
-        //synchController.loadDateFromFile();
-        //synchController.sendDataToServer();
     }
 }
