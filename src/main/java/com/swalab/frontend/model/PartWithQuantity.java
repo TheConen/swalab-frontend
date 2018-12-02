@@ -1,5 +1,6 @@
 package com.swalab.frontend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.swalab.frontend.api.INamedArtefact;
 import com.swalab.frontend.util.IdGenerator;
 
@@ -55,6 +56,7 @@ public class PartWithQuantity implements INamedArtefact {
     }
 
     @Override
+    @JsonIgnore
     public String getName() {
         return new StringBuilder(getAvailablePart().getName()).append(" ( ").append(getQuantity()).append(' ').append(getUnit()).append(" )").toString();
     }
