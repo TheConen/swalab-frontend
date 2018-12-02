@@ -1,7 +1,9 @@
 package com.swalab.frontend.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swalab.frontend.model.*;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -224,5 +226,41 @@ public class SynchController {
         }else{
             getDataFromServer();
         }
+    }
+
+
+    /**
+     * Gets all available parts.
+     *
+     * @return All available parts.
+     */
+    public List<AvailablePart> getAvailableParts() {
+        List<AvailablePart> availableParts = new ArrayList<AvailablePart>();
+        if(isOffline()) {
+            ObjectMapper mapper = new ObjectMapper();
+            File file = new File("availableParts.json");
+            if (file.isFile()) {
+                try {
+                    availableParts = mapper.readValue(file, new TypeReference<ArrayList<AvailablePart>>() {});
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            String url = baseUrl + "/availablepart/all";
+            ResponseEntity<List<AvailablePart>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<AvailablePart>>() {});
+            int responseCode = responseEntity.getStatusCodeValue();
+            if (200 <= responseCode && responseCode <= 399) {
+                availableParts = responseEntity.getBody();
+                ObjectMapper mapper = new ObjectMapper();
+                File file = new File("availableParts.json");
+                try {
+                    mapper.writeValue(file, availableParts);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return availableParts;
     }
 }
