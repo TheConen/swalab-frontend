@@ -3,7 +3,6 @@ package com.swalab.frontend.gui;
 import com.swalab.frontend.controller.SynchController;
 import com.swalab.frontend.converter.ProgressStatusConverter;
 import com.swalab.frontend.gui.composites.InlineEditor;
-import com.swalab.frontend.gui.composites.NamedArtefactBasedListCellFactory;
 import com.swalab.frontend.gui.composites.StatusCombobox;
 import com.swalab.frontend.gui.object.builder.WarehousePartAndOrderEditingSettings;
 import com.swalab.frontend.model.*;

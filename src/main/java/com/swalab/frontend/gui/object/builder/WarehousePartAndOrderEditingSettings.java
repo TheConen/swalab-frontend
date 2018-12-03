@@ -6,7 +6,6 @@ import com.swalab.frontend.model.PartWithQuantity;
 import com.swalab.frontend.model.Status;
 import com.swalab.frontend.model.WarehousePartAndOrder;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.util.Date;

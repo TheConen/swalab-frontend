@@ -1,7 +1,5 @@
 package com.swalab.frontend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.Date;
 
 public class Note extends AbstractTaskAndNote {

@@ -4,9 +4,6 @@ import com.swalab.frontend.model.Status;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 public class StatusCombobox extends ComboBox<Status> {

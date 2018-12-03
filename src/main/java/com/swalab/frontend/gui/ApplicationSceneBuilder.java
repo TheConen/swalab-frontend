@@ -12,7 +12,6 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import org.springframework.context.ConfigurableApplicationContext;
 
 import java.util.function.Consumer;
 

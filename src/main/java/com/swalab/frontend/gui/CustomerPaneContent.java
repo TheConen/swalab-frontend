@@ -10,7 +10,10 @@ import com.swalab.frontend.model.Product;
 import com.swalab.frontend.model.Technician;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 

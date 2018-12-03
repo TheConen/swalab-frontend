@@ -1,8 +1,7 @@
 package com.swalab.frontend;
 
-import com.swalab.frontend.gui.*;
+import com.swalab.frontend.gui.ApplicationSceneBuilder;
 import javafx.application.Application;
-import javafx.geometry.NodeOrientation;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

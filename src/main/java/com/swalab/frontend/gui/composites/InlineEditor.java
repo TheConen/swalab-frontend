@@ -2,8 +2,6 @@ package com.swalab.frontend.gui.composites;
 
 import com.swalab.frontend.api.IEditorSettings;
 import com.swalab.frontend.api.IUpdateableWindowDescription;
-import com.swalab.frontend.model.AbstractTaskAndNote;
-import com.swalab.frontend.model.Task;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.HPos;
