@@ -41,7 +41,8 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
 
     public OrdersAndPartsPaneContent(SynchController synchController) {
         super(synchController);
-        _dateConverter=new DateConverter();
+        _dateConverter = new DateConverter();
+        _partComboBox.setItems(synchController.getAvailableParts());
     }
 
     public Parent createMainWindowContent() {
@@ -93,7 +94,6 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
         _orderNumberField = new TextField();
         _orderNumberField.setDisable(true);
         _partComboBox = new ComboBox<>();
-        _partComboBox.getItems().add(new AvailablePart("This part is not existing", "Dummy placeholder"));
         _partComboBox.setConverter(new StringConverter<>() {
             @Override
             public String toString(AvailablePart availablePart) {
@@ -117,7 +117,7 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
 
         TextField idField = new TextField();
         WarehousePartAndOrderEditingSettings settings = new WarehousePartAndOrderEditingSettings(_partComboBox, _quantityField, _unitField, _descriptionField, _orderDateField, _statusComboBox, _orderNumberField, idField);
-        _editor = new InlineEditor<>(_listView, settings,this);
+        _editor = new InlineEditor<>(_listView, settings, this);
         _editor.addPermanentVisible(partLabel, quantityLabel, unitLabel, orderNumberLabel, descriptionLabel, orderDateLabel, statusLabel);
         _editor.addViewerColumnNode(_partLabel, _quantityLabel, _unitLabel, _orderNumberLabel, _descriptionLabel, _orderDateLabel, _statusLabel);
         _editor.addEditorColumnNode(_partComboBox, _quantityField, _unitField, _orderNumberField, _descriptionField, _orderDateField, _statusComboBox);

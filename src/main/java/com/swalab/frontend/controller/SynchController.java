@@ -3,6 +3,8 @@ package com.swalab.frontend.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swalab.frontend.model.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -234,7 +236,7 @@ public class SynchController {
      *
      * @return All available parts.
      */
-    public List<AvailablePart> getAvailableParts() {
+    public ObservableList<AvailablePart> getAvailableParts() {
         List<AvailablePart> availableParts = new ArrayList<AvailablePart>();
         if(isOffline()) {
             ObjectMapper mapper = new ObjectMapper();
@@ -261,6 +263,8 @@ public class SynchController {
                 }
             }
         }
-        return availableParts;
+        ObservableList<AvailablePart> observableList = FXCollections.observableArrayList();
+        availableParts.stream().forEach(e->observableList.add(e));
+        return observableList;
     }
 }
