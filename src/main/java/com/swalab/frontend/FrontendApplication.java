@@ -25,7 +25,6 @@ public class FrontendApplication extends Application {
     @Override
     public void init() throws Exception {
         _springContext = SpringApplication.run(FrontendApplication.class);
-        String baseUrl = _springContext.getEnvironment().getProperty("backend.baseurl");
 
     }
 
