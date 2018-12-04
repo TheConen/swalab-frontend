@@ -1,6 +1,7 @@
 package com.swalab.frontend.gui.object.builder;
 
 import com.swalab.frontend.api.IEditorSettings;
+import com.swalab.frontend.converter.DateConverter;
 import com.swalab.frontend.model.AvailablePart;
 import com.swalab.frontend.model.PartWithQuantity;
 import com.swalab.frontend.model.Status;
@@ -8,7 +9,6 @@ import com.swalab.frontend.model.WarehousePartAndOrder;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
-import java.util.Date;
 
 public class WarehousePartAndOrderEditingSettings implements IEditorSettings<WarehousePartAndOrder> {
 
@@ -20,6 +20,7 @@ public class WarehousePartAndOrderEditingSettings implements IEditorSettings<War
     private final ComboBox<AvailablePart> _partComboBox;
     private final TextField _quantityField;
     private final TextField _unitField;
+    private final DateConverter _dateConverter;
 
     public WarehousePartAndOrderEditingSettings(ComboBox<AvailablePart> partComboBox, TextField quantityField, TextField unitField, TextField descriptionField, TextField orderDateField, ComboBox<Status> statusComboBox, TextField orderNumberField, TextField idField) {
         _descriptionField = descriptionField;
@@ -30,6 +31,7 @@ public class WarehousePartAndOrderEditingSettings implements IEditorSettings<War
         _partComboBox = partComboBox;
         _quantityField = quantityField;
         _unitField = unitField;
+        _dateConverter = new DateConverter();
     }
 
     @Override
@@ -44,14 +46,14 @@ public class WarehousePartAndOrderEditingSettings implements IEditorSettings<War
         partAndOrder.setPart(partWithQuantity);
         partAndOrder.setDescription(_descriptionField.getText());
         partAndOrder.setStatus(_statusComboBox.getValue());
-        partAndOrder.setOrderDate(new Date());// TODO parse value out of the text field
+        partAndOrder.setOrderDate(_dateConverter.fromString(_orderDateField.getText()));
         return partAndOrder;
     }
 
     @Override
     public void setDefaultValues(WarehousePartAndOrder content) {
         _descriptionField.setText(content == null ? null : content.getDescription());
-        _orderDateField.setText(content == null ? new Date().toGMTString() : content.getOrderDate().toGMTString());
+        _orderDateField.setText(content == null ? null : _dateConverter.toString(content.getOrderDate()));
         _statusComboBox.getSelectionModel().select(content == null ? null : content.getStatus());
         _idField.setText(content == null ? null : content.getID() + "");
         _orderNumberField.setText(content == null ? null : content.getOrderNumber() + "");

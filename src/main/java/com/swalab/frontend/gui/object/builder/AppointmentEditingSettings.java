@@ -1,6 +1,7 @@
 package com.swalab.frontend.gui.object.builder;
 
 import com.swalab.frontend.api.IEditorSettings;
+import com.swalab.frontend.converter.DateConverter;
 import com.swalab.frontend.gui.composites.PartsAndServiceEditor;
 import com.swalab.frontend.gui.composites.StatusCombobox;
 import com.swalab.frontend.model.Appointment;
@@ -11,6 +12,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +29,7 @@ public class AppointmentEditingSettings implements IEditorSettings<Appointment> 
     private final ListView<PartWithQuantity> _plannedPartsAndServicesList;
     private final ListView<PartWithQuantity> _usedPartsAndServicesList;
     private final PartsAndServiceEditor _partsAndServiceEditor;
+    private final DateConverter _dateConverter;
 
     public AppointmentEditingSettings(TextField descriptionField, TextField creationDateField, StatusCombobox statusComboBox, TextField plannedStartField, TextField plannedEndField, ComboBox<Customer> customerComboBox, ComboBox<Product> productComboBox, ListView<PartWithQuantity> plannedPartsAndServicesList, ListView<PartWithQuantity> usedPartsAndServicesList, PartsAndServiceEditor partsAndServiceEditor, TextField idField) {
         _descriptionField = descriptionField;
@@ -40,6 +43,8 @@ public class AppointmentEditingSettings implements IEditorSettings<Appointment> 
         _plannedPartsAndServicesList = plannedPartsAndServicesList;
         _usedPartsAndServicesList = usedPartsAndServicesList;
         _partsAndServiceEditor = partsAndServiceEditor;
+
+        _dateConverter=new DateConverter();
     }
 
     @Override
@@ -53,9 +58,9 @@ public class AppointmentEditingSettings implements IEditorSettings<Appointment> 
     @Override
     public void setDefaultValues(Appointment content) {
         _descriptionField.setText(content == null ? null : content.getDescription());
-        _creationDateField.setText(content == null ? null : content.getCreationDate().toGMTString());
-        _plannedStartField.setText(content == null ? null : content.getPlannedDateTimeFrom().toGMTString());
-        _plannedEndField.setText(content == null ? null : content.getPlannedDateTimeTo().toGMTString());
+        _creationDateField.setText(_dateConverter.toString(content == null ? Calendar.getInstance().getTime() : content.getCreationDate()));
+        _plannedStartField.setText(_dateConverter.toString(content == null ? Calendar.getInstance().getTime() : content.getPlannedDateTimeFrom()));
+        _plannedEndField.setText(_dateConverter.toString(content == null ? Calendar.getInstance().getTime() : content.getPlannedDateTimeTo()));
         _idField.setText(content == null ? null : (content.getID() == null) ? "" : content.getID() + "");
         _statusBox.getSelectionModel().select(content == null ? null : content.getStatus());
         _customerComboBox.getSelectionModel().select(null); // TODO take customer list from technician

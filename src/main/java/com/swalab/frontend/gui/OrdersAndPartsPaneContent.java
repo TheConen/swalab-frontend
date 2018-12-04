@@ -1,6 +1,7 @@
 package com.swalab.frontend.gui;
 
 import com.swalab.frontend.controller.SynchController;
+import com.swalab.frontend.converter.DateConverter;
 import com.swalab.frontend.converter.ProgressStatusConverter;
 import com.swalab.frontend.gui.composites.InlineEditor;
 import com.swalab.frontend.gui.composites.StatusCombobox;
@@ -19,6 +20,7 @@ import java.util.function.Consumer;
 
 public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePartAndOrder> {
 
+    private final DateConverter _dateConverter;
     private ListView<WarehousePartAndOrder> _listView;
     private Label _descriptionLabel;
     private Label _orderDateLabel;
@@ -39,6 +41,7 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
 
     public OrdersAndPartsPaneContent(SynchController synchController) {
         super(synchController);
+        _dateConverter=new DateConverter();
     }
 
     public Parent createMainWindowContent() {
@@ -135,7 +138,7 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
             _unitLabel.setText(null);
         } else {
             _descriptionLabel.setText(item.getDescription());
-            _orderDateLabel.setText(item.getOrderDate().toGMTString());
+            _orderDateLabel.setText(_dateConverter.toString(item.getOrderDate()));
             _orderNumberLabel.setText(item.getOrderNumber() + "");
             _statusLabel.setText(_statusStringConverter.toString(item.getStatus()));
             PartWithQuantity partWithQuantity = item.getPart();

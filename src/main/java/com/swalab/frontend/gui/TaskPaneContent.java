@@ -2,6 +2,7 @@ package com.swalab.frontend.gui;
 
 import com.swalab.frontend.api.IEditorSettings;
 import com.swalab.frontend.controller.SynchController;
+import com.swalab.frontend.converter.DateConverter;
 import com.swalab.frontend.converter.ProgressStatusConverter;
 import com.swalab.frontend.gui.composites.InlineEditor;
 import com.swalab.frontend.gui.composites.StatusCombobox;
@@ -29,6 +30,7 @@ import java.util.function.Function;
 
 public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
 
+    private final DateConverter _dateConverter;
     private Label _nameLabel;
     private Label _descriptionLabel;
     private Label _statusLabel;
@@ -44,6 +46,7 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
 
     public TaskPaneContent(SynchController synchController) {
         super(synchController);
+        _dateConverter=new DateConverter();
     }
 
     @Override
@@ -118,7 +121,6 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         _creationField = new TextField();
 
         _creationField.setDisable(true);
-        _creationField.setText(getCurrentTime());
 
         TextField idField=new TextField();
 
@@ -152,17 +154,6 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
     }
 
 
-    private String getCurrentTime() {
-        StringBuilder builder = new StringBuilder();
-        Calendar calendar = GregorianCalendar.getInstance();
-        builder.append(calendar.get(Calendar.DATE));
-        builder.append('.');
-        builder.append(calendar.get(Calendar.MONTH) + 1);
-        builder.append('.');
-        builder.append(calendar.get(Calendar.YEAR));
-        return builder.toString();
-    }
-
     @Override
     protected void updateDescriptionContentInternal(AbstractTaskAndNote item, Class clazz) {
         if (item == null) {
@@ -177,7 +168,7 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
             _descriptionLabel.setText(item.getDescription());
             Date creationDate = item.getCreationDate();
             _creationLabel.setVisible(true);
-            _creationLabel.setText(creationDate == null ? null : creationDate.toGMTString());
+            _creationLabel.setText(creationDate == null ? null : _dateConverter.toString(creationDate));
 
             boolean isTask = clazz.equals(Task.class);
             _statusDescriptionLabel.setManaged(isTask);
