@@ -49,9 +49,9 @@ public class AppointmentEditingSettings implements IEditorSettings<Appointment> 
 
     @Override
     public Appointment createObject() {
-        List<PartWithQuantity> partsWithQuantity = _partsAndServiceEditor.getPartsWithQuantity();
-        // TODO create correct object
-        return new Appointment();
+        List<PartWithQuantity> usedPartsWithQuantity = _partsAndServiceEditor.getPartsWithQuantity();
+        List<PartWithQuantity> plannedPartsWithQuantity=_partsAndServiceEditor.getPartsWithQuantity();
+        return new Appointment(_customerComboBox.getSelectionModel().getSelectedItem(),_descriptionField.getText(),_productComboBox.getSelectionModel().getSelectedItem(),_dateConverter.fromString(_creationDateField.getText()),_statusBox.getSelectionModel().getSelectedItem(),plannedPartsWithQuantity,_dateConverter.fromString(_plannedStartField.getText()),_dateConverter.fromString(_plannedEndField.getText()),usedPartsWithQuantity,null,null);
 
     }
 
