@@ -141,15 +141,15 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
             _orderDateLabel.setText(_dateConverter.toString(item.getOrderDate()));
             _orderNumberLabel.setText(item.getOrderNumber() + "");
             _statusLabel.setText(_statusStringConverter.toString(item.getStatus()));
+            _quantityLabel.setText(null);
+            _partLabel.setText(null);
+            _unitLabel.setText(null);
             PartWithQuantity partWithQuantity = item.getPart();
             if (partWithQuantity != null) {
                 _partLabel.setText(partWithQuantity.getAvailablePart().getName());
                 _unitLabel.setText(partWithQuantity.getUnit());
                 _quantityLabel.setText(partWithQuantity.getQuantity() + "");
             }
-            _quantityLabel.setText(null);
-            _partLabel.setText(null);
-            _unitLabel.setText(null);
         }
     }
 
