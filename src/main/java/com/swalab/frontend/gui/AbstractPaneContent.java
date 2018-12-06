@@ -75,7 +75,7 @@ public abstract class AbstractPaneContent<T extends INamedArtefact> implements I
     protected abstract Consumer<Technician> getUpdateConsumer();
 
     public void removeListener(SynchController synchController) {
-        // TODO check whether the instances are the same or if the consumer shouled be cached
+        // TODO check whether the instances are the same or if the consumer should be cached
         synchController.removeModelForUpdate(getUpdateConsumer());
     }
 
