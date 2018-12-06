@@ -21,6 +21,7 @@ public class Appointment implements INamedArtefact {
     private Date plannedDateTimeFrom;
     private Date plannedDateTimeTo;
     private List<PartWithQuantity> usedPartsAndServices;
+    // TODO what is a realDateFrom and a realDateTo?
     private Date realDateFrom;
     private Date realDateTo;
 
