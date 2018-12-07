@@ -136,7 +136,6 @@ public class InlineEditor<T> extends GridPane {
         editButton.setOnAction(ae -> {
             setEditorMode(true);
             ae.consume();
-            //_listView.getSelectionModel().select(null);
         });
         editButton.setDisable(true);
         viewerButtons.getChildren().addAll(editButton, deleteButton);

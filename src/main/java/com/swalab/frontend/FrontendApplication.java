@@ -23,7 +23,7 @@ public class FrontendApplication extends Application {
     private ApplicationSceneBuilder _applicationSceneBuilder;
 
     @Override
-    public void init() throws Exception {
+    public void init() {
         _springContext = SpringApplication.run(FrontendApplication.class);
 
     }
@@ -33,7 +33,7 @@ public class FrontendApplication extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         primaryStage.setTitle("Task Overview");
         Parent parent = createLoginMask(primaryStage);
         Scene scene = new Scene(parent, 300, 200);
