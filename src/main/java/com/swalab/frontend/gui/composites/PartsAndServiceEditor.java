@@ -5,6 +5,7 @@ import com.swalab.frontend.converter.AvailablePartConverter;
 import com.swalab.frontend.model.AvailablePart;
 import com.swalab.frontend.model.PartWithQuantity;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -20,6 +21,9 @@ public class PartsAndServiceEditor extends GridPane {
     public SynchController _syncController;
 
     public PartsAndServiceEditor() {
+        setPadding(new Insets(5,5,5,5));
+        setVgap(3);
+        setHgap(3);
         Label typeLabel = new Label("Type");
         Label quantityLabel = new Label("Quantity");
         Label utilLabel = new Label("Util");

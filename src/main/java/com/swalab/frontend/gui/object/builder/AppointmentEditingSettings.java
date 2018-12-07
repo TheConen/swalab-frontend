@@ -4,10 +4,7 @@ import com.swalab.frontend.api.IEditorSettings;
 import com.swalab.frontend.converter.DateConverter;
 import com.swalab.frontend.gui.composites.PartsAndServiceEditor;
 import com.swalab.frontend.gui.composites.StatusCombobox;
-import com.swalab.frontend.model.Appointment;
-import com.swalab.frontend.model.Customer;
-import com.swalab.frontend.model.PartWithQuantity;
-import com.swalab.frontend.model.Product;
+import com.swalab.frontend.model.*;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -28,10 +25,11 @@ public class AppointmentEditingSettings implements IEditorSettings<Appointment> 
     private final ComboBox<Product> _productComboBox;
     private final ListView<PartWithQuantity> _plannedPartsAndServicesList;
     private final ListView<PartWithQuantity> _usedPartsAndServicesList;
-    private final PartsAndServiceEditor _partsAndServiceEditor;
+    private final PartsAndServiceEditor _usedPartsAndServiceEditor;
     private final DateConverter _dateConverter;
+    private final PartsAndServiceEditor _plannedPartsAndServiceEditor;
 
-    public AppointmentEditingSettings(TextField descriptionField, TextField creationDateField, StatusCombobox statusComboBox, TextField plannedStartField, TextField plannedEndField, ComboBox<Customer> customerComboBox, ComboBox<Product> productComboBox, ListView<PartWithQuantity> plannedPartsAndServicesList, ListView<PartWithQuantity> usedPartsAndServicesList, PartsAndServiceEditor partsAndServiceEditor, TextField idField) {
+    public AppointmentEditingSettings(TextField descriptionField, TextField creationDateField, StatusCombobox statusComboBox, TextField plannedStartField, TextField plannedEndField, ComboBox<Customer> customerComboBox, ComboBox<Product> productComboBox, ListView<PartWithQuantity> plannedPartsAndServicesList, ListView<PartWithQuantity> usedPartsAndServicesList, PartsAndServiceEditor usedPartsAndServiceEditor, TextField idField, PartsAndServiceEditor plannedPartsAndServiceEditor) {
         _descriptionField = descriptionField;
         _creationDateField = creationDateField;
         _plannedStartField = plannedStartField;
@@ -42,16 +40,24 @@ public class AppointmentEditingSettings implements IEditorSettings<Appointment> 
         _productComboBox = productComboBox;
         _plannedPartsAndServicesList = plannedPartsAndServicesList;
         _usedPartsAndServicesList = usedPartsAndServicesList;
-        _partsAndServiceEditor = partsAndServiceEditor;
+        _usedPartsAndServiceEditor = usedPartsAndServiceEditor;
+        _plannedPartsAndServiceEditor = plannedPartsAndServiceEditor;
 
-        _dateConverter=new DateConverter();
+        _dateConverter = new DateConverter();
     }
 
     @Override
     public Appointment createObject() {
-        List<PartWithQuantity> usedPartsWithQuantity = _partsAndServiceEditor.getPartsWithQuantity();
-        List<PartWithQuantity> plannedPartsWithQuantity=_partsAndServiceEditor.getPartsWithQuantity();
-        return new Appointment(_customerComboBox.getSelectionModel().getSelectedItem(),_descriptionField.getText(),_productComboBox.getSelectionModel().getSelectedItem(),_dateConverter.fromString(_creationDateField.getText()),_statusBox.getSelectionModel().getSelectedItem(),plannedPartsWithQuantity,_dateConverter.fromString(_plannedStartField.getText()),_dateConverter.fromString(_plannedEndField.getText()),usedPartsWithQuantity,null,null);
+        List<PartWithQuantity> usedPartsWithQuantity = _usedPartsAndServiceEditor.getPartsWithQuantity();
+        List<PartWithQuantity> plannedPartsWithQuantity = _plannedPartsAndServiceEditor.getPartsWithQuantity();
+        Customer customer = _customerComboBox.getSelectionModel().getSelectedItem();
+        String description = _descriptionField.getText();
+        Product product = _productComboBox.getSelectionModel().getSelectedItem();
+        Date creationDate = _dateConverter.fromString(_creationDateField.getText());
+        Status status = _statusBox.getSelectionModel().getSelectedItem();
+        Date plannedStart = _dateConverter.fromString(_plannedStartField.getText());
+        Date plannedEnd = _dateConverter.fromString(_plannedEndField.getText());
+        return new Appointment(customer, description, product, creationDate, status, plannedPartsWithQuantity, plannedStart, plannedEnd, usedPartsWithQuantity, null, null);
 
     }
 
@@ -77,17 +83,27 @@ public class AppointmentEditingSettings implements IEditorSettings<Appointment> 
 
     @Override
     public void updateContent(Appointment appointment) {
-        appointment.setCreationDate(new Date());
-        appointment.setCustomer(_customerComboBox.getSelectionModel().getSelectedItem());
-        appointment.setDescription(_descriptionField.getText());
-        appointment.setStatus(_statusBox.getSelectionModel().getSelectedItem());
-        appointment.setRealDateFrom(new Date());
-        appointment.setRealDateTo(new Date());
-        appointment.setPlannedDateTimeFrom(new Date());
-        appointment.setPlannedDateTimeTo(new Date());
-        appointment.setPlannedPartsAndServices(_plannedPartsAndServicesList.getItems());
-        appointment.setUsedPartsAndServices(_usedPartsAndServicesList.getItems());
-        appointment.setCustomer(_customerComboBox.getSelectionModel().getSelectedItem());
+        List<PartWithQuantity> usedPartsWithQuantity = _usedPartsAndServiceEditor.getPartsWithQuantity();
+        List<PartWithQuantity> plannedPartsWithQuantity = _plannedPartsAndServiceEditor.getPartsWithQuantity();
+        Customer customer = _customerComboBox.getSelectionModel().getSelectedItem();
+        String description = _descriptionField.getText();
+        Product product = _productComboBox.getSelectionModel().getSelectedItem();
+        Date creationDate = _dateConverter.fromString(_creationDateField.getText());
+        Status status = _statusBox.getSelectionModel().getSelectedItem();
+        Date plannedStart = _dateConverter.fromString(_plannedStartField.getText());
+        Date plannedEnd = _dateConverter.fromString(_plannedEndField.getText());
+
+        appointment.setCreationDate(creationDate);
+        appointment.setCustomer(customer);
+        appointment.setDescription(description);
+        appointment.setStatus(status);
+        appointment.setRealDateFrom(null);
+        appointment.setRealDateTo(null);
+        appointment.setPlannedDateTimeFrom(plannedStart);
+        appointment.setPlannedDateTimeTo(plannedEnd);
+        appointment.setPlannedPartsAndServices(plannedPartsWithQuantity);
+        appointment.setUsedPartsAndServices(usedPartsWithQuantity);
+        appointment.setProduct(product);
 
     }
 }

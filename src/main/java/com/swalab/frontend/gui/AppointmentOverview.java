@@ -43,12 +43,14 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
     private ListView<PartWithQuantity> _usedPartsAndServicesList;
     private InlineEditor<Appointment> _editor;
     private ComboBox<Customer> _customerComboBox;
-    private PartsAndServiceEditor _partsAndServiceEditor;
+    private PartsAndServiceEditor _plannedPartsAndServiceEditor;
+    private PartsAndServiceEditor _usedPartsAndServiceEditor;
 
     public AppointmentOverview(SynchController synchController) {
         super(synchController);
         _dateConverter = new DateConverter();
-        _partsAndServiceEditor.setSyncController(synchController);
+        _plannedPartsAndServiceEditor.setSyncController(synchController);
+        _usedPartsAndServiceEditor.setSyncController(synchController);
     }
 
     @Override
@@ -139,7 +141,8 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
             }
         });
 
-        _partsAndServiceEditor = new PartsAndServiceEditor();
+        _plannedPartsAndServiceEditor = new PartsAndServiceEditor();
+        _usedPartsAndServiceEditor = new PartsAndServiceEditor();
 
         _customerComboBox.getSelectionModel().selectedItemProperty().addListener(ae -> {
             Customer customer = _customerComboBox.getSelectionModel().getSelectedItem();
@@ -170,11 +173,13 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         TextField idField = new TextField();
 
         _creationDateField.setDisable(true);
-        AppointmentEditingSettings settings = new AppointmentEditingSettings(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, _customerComboBox, productComboBox, _plannedPartsAndServicesList, _usedPartsAndServicesList, _partsAndServiceEditor, idField);
+        AppointmentEditingSettings settings = new AppointmentEditingSettings(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, _customerComboBox, productComboBox, _plannedPartsAndServicesList, _usedPartsAndServicesList, _plannedPartsAndServiceEditor, idField, _usedPartsAndServiceEditor);
         _editor = new InlineEditor<>(_listView, settings, this);
         _editor.addPermanentVisible(descriptionLabel, creationDateLabel, statusLabel, plannedStartLabel, plannedEndLabel, customerLabel, productLabel, plannedPartsAndServicesLabel, usedPartsAndServicesLabel);
         _editor.addViewerColumnNode(_descriptionLabel, _creationDateLabel, _statusLabel, _plannedStartLabel, _plannedEndLabel, _customerLabel, _productLabel, _plannedPartsAndServicesList, _usedPartsAndServicesList);
-        _editor.addEditorColumnNode(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, _customerComboBox, productComboBox, _partsAndServiceEditor);
+        _editor.addEditorColumnNode(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, _customerComboBox, productComboBox);
+        _editor.addEditorColumnNode(_plannedPartsAndServiceEditor,3,1);
+        _editor.addEditorColumnNode(_usedPartsAndServiceEditor,3,1);
         _editor.createAndAddDefaultButton();
         _editor.addIDField(idField);
         return _editor;

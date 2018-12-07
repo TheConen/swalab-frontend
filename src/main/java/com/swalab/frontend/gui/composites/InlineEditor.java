@@ -78,13 +78,13 @@ public class InlineEditor<T> extends GridPane {
 
     public void addEditorColumnNode(Node... nodes) {
         for (Node node : nodes) {
-            addEditorColumnNode(node);
+            addEditorColumnNode(node,1,1);
         }
     }
 
-    public void addEditorColumnNode(Node node) {
+    public void addEditorColumnNode(Node node,int colSpan,int rowSpan) {
         _editorColumnNodeList.add(node);
-        add(node, 2, _editorColumnNodeList.size());
+        add(node, 2, _editorColumnNodeList.size(),colSpan,rowSpan);
         node.setVisible(false);
         node.setManaged(false);
     }
