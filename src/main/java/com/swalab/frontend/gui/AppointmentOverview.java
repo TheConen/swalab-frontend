@@ -37,7 +37,7 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
     private TextField _plannedEndField;
     private StatusCombobox _statusComboBox;
     private ProgressStatusConverter _statusStringConverter;
-    private Label _customerLabel;
+    private Hyperlink _customerLink;
     private Label _productLabel;
     private ListView<PartWithQuantity> _plannedPartsAndServicesList;
     private ListView<PartWithQuantity> _usedPartsAndServicesList;
@@ -45,7 +45,6 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
     private ComboBox<Customer> _customerComboBox;
     private PartsAndServiceEditor _usedPartsAndServiceEditor;
     private PartsAndServiceEditor _plannedPartsAndServiceEditor;
-    private Hyperlink _link;
 
     public AppointmentOverview(SynchController synchController, HyperlinkRefresher hyperlinkRefresher) {
         super(synchController);
@@ -105,10 +104,9 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         _statusLabel = new Label();
         _plannedStartLabel = new Label();
         _plannedEndLabel = new Label();
-        _customerLabel = new Label();
+        _customerLink = new Hyperlink();
         _productLabel = new Label();
 
-        _link=new Hyperlink();
 
         _plannedPartsAndServicesList = new ListView<>();
         _plannedPartsAndServicesList.setPlaceholder(new Label("No appointment selected or no data available"));
@@ -180,7 +178,7 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         AppointmentEditingSettings settings = new AppointmentEditingSettings(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, _customerComboBox, productComboBox, _plannedPartsAndServicesList, _usedPartsAndServicesList, _usedPartsAndServiceEditor, idField, _plannedPartsAndServiceEditor);
         _editor = new InlineEditor<>(_listView, settings, this);
         _editor.addPermanentVisible(descriptionLabel, creationDateLabel, statusLabel, plannedStartLabel, plannedEndLabel, customerLabel, productLabel, plannedPartsAndServicesLabel, usedPartsAndServicesLabel);
-        _editor.addViewerColumnNode(_descriptionLabel, _creationDateLabel, _statusLabel, _plannedStartLabel, _plannedEndLabel, _customerLabel, _productLabel, _plannedPartsAndServicesList, _usedPartsAndServicesList,_link);
+        _editor.addViewerColumnNode(_descriptionLabel, _creationDateLabel, _statusLabel, _plannedStartLabel, _plannedEndLabel, _customerLink, _productLabel, _plannedPartsAndServicesList, _usedPartsAndServicesList);
         _editor.addEditorColumnNode(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, _customerComboBox, productComboBox);
         _editor.addEditorColumnNode(_plannedPartsAndServiceEditor, 3, 1);
         _editor.addEditorColumnNode(_usedPartsAndServiceEditor, 3, 1);
@@ -197,7 +195,7 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
             _statusLabel.setText(null);
             _plannedStartLabel.setText(null);
             _plannedEndLabel.setText(null);
-            _customerLabel.setText(null);
+            _customerLink.setText(null);
             _productLabel.setText(null);
             _plannedPartsAndServicesList.setItems(null);
             _usedPartsAndServicesList.setItems(null);
@@ -207,11 +205,11 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
             _statusLabel.setText(_statusStringConverter.toString(item.getStatus()));
             _plannedStartLabel.setText(_dateConverter.toString(item.getPlannedDateTimeFrom()));
             _plannedEndLabel.setText(_dateConverter.toString(item.getPlannedDateTimeTo()));
-            _customerLabel.setText(item.getCustomer().getName());
+            _customerLink.setText(item.getCustomer().getName());
             _productLabel.setText(item.getProduct().getName());
             _plannedPartsAndServicesList.setItems(item.getObservablePlannedPartsAndServices());
             _usedPartsAndServicesList.setItems(item.getObservableUsedPartsAndServices());
-            _hyperlinkRefresher.refreshHyperlink(_link,item.getCustomer(),Customer.class);
+            _hyperlinkRefresher.refreshHyperlink(_customerLink,item.getCustomer(),Customer.class);
         }
     }
 
