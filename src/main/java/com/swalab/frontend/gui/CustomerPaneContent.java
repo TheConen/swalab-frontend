@@ -148,4 +148,9 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
         _editor.setEditorMode(false);
         _listView.requestFocus();
     }
+
+    @Override
+    public void clearEditorEnvironment() {
+        // do nothing
+    }
 }

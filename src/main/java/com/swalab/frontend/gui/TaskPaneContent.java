@@ -204,4 +204,8 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
     }
 
 
+    @Override
+    public void clearEditorEnvironment() {
+        // do nothing
+    }
 }

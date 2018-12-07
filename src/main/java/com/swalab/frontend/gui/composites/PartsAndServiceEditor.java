@@ -7,10 +7,7 @@ import com.swalab.frontend.model.PartWithQuantity;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
@@ -19,28 +16,45 @@ import java.util.List;
 public class PartsAndServiceEditor extends GridPane {
 
     public SynchController _syncController;
+    private List<Node> _currentAdditionalElements;
 
     public PartsAndServiceEditor() {
-        setPadding(new Insets(5,5,5,5));
+        setPadding(new Insets(5, 5, 5, 5));
         setVgap(3);
         setHgap(3);
         Label typeLabel = new Label("Type");
         Label quantityLabel = new Label("Quantity");
         Label utilLabel = new Label("Util");
         Button addButton = new Button("Add");
-        _syncController=null;
+        _syncController = null;
         addButton.setOnAction(ae -> {
-            ComboBox<AvailablePart> typeCombo = new ComboBox<>();
-            typeCombo.setItems(_syncController.getAvailableParts());
-            typeCombo.setConverter(new AvailablePartConverter(typeCombo));
-            TextField quantityField = new TextField();
-            TextField unitField = new TextField();
-            Button removeButton = new Button("Remove");
-            removeButton.setOnAction(e -> getChildren().removeAll(typeCombo, quantityField, unitField, removeButton));
-            addRow(getRowCount(), typeCombo, quantityField, unitField, removeButton);
+            insertNewEntry(null);
         });
 
         addRow(0, typeLabel, quantityLabel, utilLabel, addButton);
+        _currentAdditionalElements =new ArrayList<>();
+    }
+
+    private void insertNewEntry(PartWithQuantity part) {
+        ComboBox<AvailablePart> typeCombo = new ComboBox<>();
+        typeCombo.setItems(_syncController.getAvailableParts());
+        typeCombo.setConverter(new AvailablePartConverter(typeCombo));
+        TextField quantityField = new TextField();
+        TextField unitField = new TextField();
+        Button removeButton = new Button("Remove");
+        removeButton.setOnAction(e -> getChildren().removeAll(typeCombo, quantityField, unitField, removeButton));
+        addRow(getRowCount(), typeCombo, quantityField, unitField, removeButton);
+
+        if (part != null) {
+            typeCombo.getSelectionModel().select(part.getAvailablePart());
+            quantityField.setText(part.getQuantity() + "");
+            unitField.setText(part.getUnit());
+        }
+
+        _currentAdditionalElements.add(typeCombo);
+        _currentAdditionalElements.add(quantityField);
+        _currentAdditionalElements.add(unitField);
+        _currentAdditionalElements.add(removeButton);
     }
 
     public List<PartWithQuantity> getPartsWithQuantity() {
@@ -61,5 +75,17 @@ public class PartsAndServiceEditor extends GridPane {
 
     public void setSyncController(SynchController syncController) {
         _syncController = syncController;
+    }
+
+    public void initialWithContent(List<PartWithQuantity> partsAndServicesList) {
+        for (PartWithQuantity partWithQuantity : partsAndServicesList) {
+            insertNewEntry(partWithQuantity);
+        }
+    }
+
+    public void clear() {
+        ObservableList<Node> children = getChildren();
+        children.removeAll(_currentAdditionalElements);
+        _currentAdditionalElements.clear();
     }
 }

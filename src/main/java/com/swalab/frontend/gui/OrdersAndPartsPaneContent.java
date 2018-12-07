@@ -164,4 +164,9 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
         _editor.setEditorMode(false);
         _listView.requestFocus();
     }
+
+    @Override
+    public void clearEditorEnvironment() {
+    // do nothing
+    }
 }

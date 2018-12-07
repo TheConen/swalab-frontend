@@ -73,6 +73,9 @@ public class AppointmentEditingSettings implements IEditorSettings<Appointment> 
         _productComboBox.getSelectionModel().select(content.getProduct());
         _plannedPartsAndServicesList.setItems(content == null ? null : content.getObservablePlannedPartsAndServices());
         _usedPartsAndServicesList.setItems(content == null ? null : content.getObservableUsedPartsAndServices());
+
+        _plannedPartsAndServiceEditor.initialWithContent(content.getPlannedPartsAndServices());
+        _usedPartsAndServiceEditor.initialWithContent(content.getUsedPartsAndServices());
     }
 
     @Override

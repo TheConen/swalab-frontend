@@ -108,6 +108,8 @@ public class InlineEditor<T> extends GridPane {
         _currentSubject = _listView.getSelectionModel().getSelectedItem();
         if(!isEditorMode){
             _updateableWindowDescription.updateDescriptionContent(_currentSubject);
+        }else{
+            _updateableWindowDescription.clearEditorEnvironment();
         }
         _objectBuilder.setDefaultValues(_currentSubject);
         if (_postShowingFunction != null) {
@@ -133,6 +135,7 @@ public class InlineEditor<T> extends GridPane {
         Button editButton = new Button("Edit");
         editButton.setOnAction(ae -> {
             setEditorMode(true);
+            ae.consume();
             //_listView.getSelectionModel().select(null);
         });
         editButton.setDisable(true);
