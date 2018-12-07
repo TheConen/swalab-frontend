@@ -73,7 +73,7 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
         Label nameLabel = new Label("Name");
         Label geolocationLabel = new Label("Geolocation");
         Label phoneLabel = new Label("Phone");
-        Label mailLabel = new Label("Phone");
+        Label mailLabel = new Label("Mail");
         Label webLabel = new Label("Web");
         Label addressLabel = new Label("Address");
         Label productlabel = new Label("Products");
