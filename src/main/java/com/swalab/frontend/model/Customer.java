@@ -88,7 +88,7 @@ public class Customer implements INamedArtefact {
 
     @JsonIgnore
     public ObservableList<Product> getObservableProducts() {
-        return FXCollections.observableList(products);
+        return products == null ? FXCollections.observableArrayList() : FXCollections.observableList(products);
     }
 
     public void setProducts(List<Product> products) {
@@ -108,7 +108,7 @@ public class Customer implements INamedArtefact {
         this.appointmentHistoryList = appointmentHistoryList;
     }
 
-    public long getID(){
+    public long getID() {
         return id;
     }
 
