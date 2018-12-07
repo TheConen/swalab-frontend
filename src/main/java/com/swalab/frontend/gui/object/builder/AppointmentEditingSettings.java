@@ -67,15 +67,17 @@ public class AppointmentEditingSettings implements IEditorSettings<Appointment> 
         _creationDateField.setText(_dateConverter.toString(content == null ? Calendar.getInstance().getTime() : content.getCreationDate()));
         _plannedStartField.setText(_dateConverter.toString(content == null ? Calendar.getInstance().getTime() : content.getPlannedDateTimeFrom()));
         _plannedEndField.setText(_dateConverter.toString(content == null ? Calendar.getInstance().getTime() : content.getPlannedDateTimeTo()));
-        _idField.setText(content == null ? null : (content.getID() == null) ? "" : content.getID() + "");
+        _idField.setText(content==null?0+"":content.getId() + "");
         _statusBox.getSelectionModel().select(content == null ? null : content.getStatus());
-        _customerComboBox.getSelectionModel().select(content.getCustomer());
-        _productComboBox.getSelectionModel().select(content.getProduct());
+        _customerComboBox.getSelectionModel().select(content == null ? null : content.getCustomer());
+        _productComboBox.getSelectionModel().select(content == null ? null : content.getProduct());
         _plannedPartsAndServicesList.setItems(content == null ? null : content.getObservablePlannedPartsAndServices());
         _usedPartsAndServicesList.setItems(content == null ? null : content.getObservableUsedPartsAndServices());
 
-        _plannedPartsAndServiceEditor.initialWithContent(content.getPlannedPartsAndServices());
-        _usedPartsAndServiceEditor.initialWithContent(content.getUsedPartsAndServices());
+        if (content != null) {
+            _plannedPartsAndServiceEditor.initialWithContent(content.getPlannedPartsAndServices());
+            _usedPartsAndServiceEditor.initialWithContent(content.getUsedPartsAndServices());
+        }
     }
 
     @Override

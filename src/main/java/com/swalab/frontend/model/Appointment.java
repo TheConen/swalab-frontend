@@ -1,6 +1,7 @@
 package com.swalab.frontend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.swalab.frontend.api.INamedIDArtefact;
 import com.swalab.frontend.api.IObjectDataSourceArtefact;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,7 +11,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-public class Appointment implements IObjectDataSourceArtefact<Appointment> {
+public class Appointment implements IObjectDataSourceArtefact<Appointment> , INamedIDArtefact {
 
     private long id;
     private Customer customer;
@@ -161,8 +162,7 @@ public class Appointment implements IObjectDataSourceArtefact<Appointment> {
         this.realDateTo = realDateTo;
     }
 
-    // TODO one common system for all ids: object Long or primitive data type long
-    public Long getID(){
+    public long getId(){
         return id;
     }
 

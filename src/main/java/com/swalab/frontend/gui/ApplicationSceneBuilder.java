@@ -2,7 +2,9 @@ package com.swalab.frontend.gui;
 
 import com.swalab.frontend.FrontendApplication;
 import com.swalab.frontend.controller.SynchController;
-import com.swalab.frontend.model.Technician;
+import com.swalab.frontend.model.*;
+import com.swalab.frontend.util.AutomatedSceneSwitcher;
+import com.swalab.frontend.util.HyperlinkRefresher;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Parent;
@@ -38,6 +40,9 @@ public class ApplicationSceneBuilder {
     private Parent createWindowContent() {
         BorderPane pane = new BorderPane();
 
+        AutomatedSceneSwitcher sceneSwitcher = new AutomatedSceneSwitcher();
+        HyperlinkRefresher hyperlinkRefresher = new HyperlinkRefresher(sceneSwitcher);
+
         // create button navigation for the top
         // Taps
         BorderPane buttonPane = new BorderPane();
@@ -58,20 +63,24 @@ public class ApplicationSceneBuilder {
         synchronizationBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
 
         ToggleButton appointmentsButton = new ToggleButton("Appointments");
-        _appointmentPaneContent = new AppointmentOverview(_synchController);
+        _appointmentPaneContent = new AppointmentOverview(_synchController,hyperlinkRefresher);
         appointmentsButton.setOnAction(ae -> changeContent(pane, _appointmentPaneContent));
+        sceneSwitcher.addElements(Appointment.class,_appointmentPaneContent,appointmentsButton);
 
         ToggleButton taskButton = new ToggleButton("Tasks");
         _taskPaneContent = new TaskPaneContent(_synchController);
         taskButton.setOnAction(ae -> changeContent(pane, _taskPaneContent));
+        sceneSwitcher.addElements(AbstractTaskAndNote.class,_taskPaneContent,taskButton);
 
         ToggleButton customerButton = new ToggleButton("Customer");
         _customerPaneContent = new CustomerPaneContent(_synchController);
         customerButton.setOnAction(ae -> changeContent(pane, _customerPaneContent));
+        sceneSwitcher.addElements(Customer.class,_customerPaneContent,customerButton);
 
         ToggleButton ordersAndPartsButton = new ToggleButton("Orders and Parts");
         _ordersAndPartPaneContent = new OrdersAndPartsPaneContent(_synchController);
         ordersAndPartsButton.setOnAction(ae -> changeContent(pane, _ordersAndPartPaneContent));
+        sceneSwitcher.addElements(AbstractTaskAndNote.class,_ordersAndPartPaneContent,ordersAndPartsButton);
 
         navigationBox.getChildren().addAll(appointmentsButton, taskButton, customerButton, ordersAndPartsButton);
 

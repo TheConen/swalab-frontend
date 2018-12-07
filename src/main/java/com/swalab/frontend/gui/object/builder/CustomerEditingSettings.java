@@ -49,7 +49,7 @@ public class CustomerEditingSettings implements IEditorSettings<Customer> {
         _addressField.setText(content == null ? null : content.getAddress());
         //_productList.setItems(content == null ? null : content.getObservableProducts());
         //_appointmentList.setItems(content == null ? null : content.getObservableAppointmentHistoryList());
-        _idField.setText(content == null ? null : content.getID() + "");
+        _idField.setText(content == null ? null : content.getId() + "");
     }
 
     @Override

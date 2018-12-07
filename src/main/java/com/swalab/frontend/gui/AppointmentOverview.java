@@ -9,6 +9,7 @@ import com.swalab.frontend.gui.composites.PartsAndServiceEditor;
 import com.swalab.frontend.gui.composites.StatusCombobox;
 import com.swalab.frontend.gui.object.builder.AppointmentEditingSettings;
 import com.swalab.frontend.model.*;
+import com.swalab.frontend.util.HyperlinkRefresher;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -17,14 +18,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.util.StringConverter;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 public class AppointmentOverview extends AbstractPaneContent<Appointment> {
 
     private final DateConverter _dateConverter;
+    private final HyperlinkRefresher _hyperlinkRefresher;
     private ListView<Appointment> _listView;
     private Label _descriptionLabel;
     private Label _creationDateLabel;
@@ -45,12 +45,14 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
     private ComboBox<Customer> _customerComboBox;
     private PartsAndServiceEditor _usedPartsAndServiceEditor;
     private PartsAndServiceEditor _plannedPartsAndServiceEditor;
+    private Hyperlink _link;
 
-    public AppointmentOverview(SynchController synchController) {
+    public AppointmentOverview(SynchController synchController, HyperlinkRefresher hyperlinkRefresher) {
         super(synchController);
         _dateConverter = new DateConverter();
         _usedPartsAndServiceEditor.setSyncController(synchController);
         _plannedPartsAndServiceEditor.setSyncController(synchController);
+        _hyperlinkRefresher=hyperlinkRefresher;
     }
 
     @Override
@@ -69,7 +71,6 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         pane.setBorder(createBorder());
         _listView = createListView();
         pane.setCenter(_listView);
-        _listView.getItems().add(new Appointment(new Customer(), "Description", new Product("Product name", "Product description", 0l, new Date(), "", new ArrayList<>()), new Date(), Status.OPEN, new ArrayList<>(), new Date(), new Date(), new ArrayList(), new Date(), new Date()));
 
         HBox buttonBox = new HBox(5);
         buttonBox.setPadding(new Insets(3, 3, 3, 3));
@@ -106,6 +107,9 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         _plannedEndLabel = new Label();
         _customerLabel = new Label();
         _productLabel = new Label();
+
+        _link=new Hyperlink();
+
         _plannedPartsAndServicesList = new ListView<>();
         _plannedPartsAndServicesList.setPlaceholder(new Label("No appointment selected or no data available"));
         _plannedPartsAndServicesList.setCellFactory(new NamedArtefactBasedListCellFactory<>());
@@ -176,10 +180,10 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         AppointmentEditingSettings settings = new AppointmentEditingSettings(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, _customerComboBox, productComboBox, _plannedPartsAndServicesList, _usedPartsAndServicesList, _usedPartsAndServiceEditor, idField, _plannedPartsAndServiceEditor);
         _editor = new InlineEditor<>(_listView, settings, this);
         _editor.addPermanentVisible(descriptionLabel, creationDateLabel, statusLabel, plannedStartLabel, plannedEndLabel, customerLabel, productLabel, plannedPartsAndServicesLabel, usedPartsAndServicesLabel);
-        _editor.addViewerColumnNode(_descriptionLabel, _creationDateLabel, _statusLabel, _plannedStartLabel, _plannedEndLabel, _customerLabel, _productLabel, _plannedPartsAndServicesList, _usedPartsAndServicesList);
+        _editor.addViewerColumnNode(_descriptionLabel, _creationDateLabel, _statusLabel, _plannedStartLabel, _plannedEndLabel, _customerLabel, _productLabel, _plannedPartsAndServicesList, _usedPartsAndServicesList,_link);
         _editor.addEditorColumnNode(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, _customerComboBox, productComboBox);
-        _editor.addEditorColumnNode(_plannedPartsAndServiceEditor,3,1);
-        _editor.addEditorColumnNode(_usedPartsAndServiceEditor,3,1);
+        _editor.addEditorColumnNode(_plannedPartsAndServiceEditor, 3, 1);
+        _editor.addEditorColumnNode(_usedPartsAndServiceEditor, 3, 1);
         _editor.createAndAddDefaultButton();
         _editor.addIDField(idField);
         return _editor;
@@ -207,6 +211,7 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
             _productLabel.setText(item.getProduct().getName());
             _plannedPartsAndServicesList.setItems(item.getObservablePlannedPartsAndServices());
             _usedPartsAndServicesList.setItems(item.getObservableUsedPartsAndServices());
+            _hyperlinkRefresher.refreshHyperlink(_link,item.getCustomer(),Customer.class);
         }
     }
 
@@ -215,6 +220,16 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         defaultListElementSelection(_listView);
         _editor.setEditorMode(false);
         _listView.requestFocus();
+    }
+
+    @Override
+    public Optional<Appointment> getElementById(long id) {
+        return _listView.getItems().stream().filter(appointment -> appointment.getId() == id).findFirst();
+    }
+
+    @Override
+    public <S> void select(S finding) {
+        _listView.getSelectionModel().select((Appointment) finding);
     }
 
     @Override

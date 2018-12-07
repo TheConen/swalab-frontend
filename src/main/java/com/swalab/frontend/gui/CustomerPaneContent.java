@@ -18,6 +18,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class CustomerPaneContent extends AbstractPaneContent<Customer> {
@@ -49,7 +50,6 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
         pane.setPrefWidth(200);
         pane.setBorder(createBorder());
         _listView = createListView();
-        _listView.getItems().addAll(new Customer("name", "geolocation", "phone", "mail", "web", "address", new ArrayList<>()));
         pane.setCenter(_listView);
 
         Button creationButton = new Button("+ Customer");
@@ -102,7 +102,7 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
 
 
         CustomerEditingSettings customerBuilder = new CustomerEditingSettings(_nameField, _geolocationField, _phoneField, _mailField, _webField, _addressField, null, null, idField);
-        _editor = new InlineEditor<>(_listView, customerBuilder,this);
+        _editor = new InlineEditor<>(_listView, customerBuilder, this);
 
         _editor.addPermanentVisible(nameLabel, geolocationLabel, phoneLabel, mailLabel, webLabel, addressLabel, productlabel, appointmentLabel);
         _editor.addViewerColumnNode(_nameLabel, _geolocationLabel, _phoneLabel, _mailLabel, _webLabel, _addressLabel, _productList, _appointmentList);
@@ -147,6 +147,16 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
         defaultListElementSelection(_listView);
         _editor.setEditorMode(false);
         _listView.requestFocus();
+    }
+
+    @Override
+    public Optional<Customer> getElementById(long id) {
+        return _listView.getItems().stream().filter(customer -> customer.getId() == id).findFirst();
+    }
+
+    @Override
+    public <S> void select(S finding) {
+        _listView.getSelectionModel().select((Customer) finding);
     }
 
     @Override

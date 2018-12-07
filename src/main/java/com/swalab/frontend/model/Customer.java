@@ -1,6 +1,7 @@
 package com.swalab.frontend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.swalab.frontend.api.INamedIDArtefact;
 import com.swalab.frontend.api.IObjectDataSourceArtefact;
 import com.swalab.frontend.util.IdGenerator;
 import javafx.collections.FXCollections;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Customer implements IObjectDataSourceArtefact<Customer> {
+public class Customer implements IObjectDataSourceArtefact<Customer>, INamedIDArtefact {
 
     private long id = IdGenerator.getNewId();
     private String name;
@@ -109,7 +110,7 @@ public class Customer implements IObjectDataSourceArtefact<Customer> {
         this.appointmentHistoryList = appointmentHistoryList;
     }
 
-    public long getID() {
+    public long getId() {
         return id;
     }
 

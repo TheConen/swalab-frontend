@@ -7,10 +7,7 @@ import com.swalab.frontend.converter.ProgressStatusConverter;
 import com.swalab.frontend.gui.composites.InlineEditor;
 import com.swalab.frontend.gui.composites.StatusCombobox;
 import com.swalab.frontend.gui.object.builder.TaskAndNoteSettings;
-import com.swalab.frontend.model.AbstractTaskAndNote;
-import com.swalab.frontend.model.Status;
-import com.swalab.frontend.model.Task;
-import com.swalab.frontend.model.Technician;
+import com.swalab.frontend.model.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -23,6 +20,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 import java.util.Date;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -50,9 +48,6 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
     @Override
     public Parent createMainWindowContent() {
         ObservableList<AbstractTaskAndNote> list = FXCollections.observableArrayList();
-        list.add(new Task("title", "description", Status.OPEN, new Date(System.currentTimeMillis())));
-        list.add(new Task("title2", "description", Status.IN_PROGRESS, new Date(System.currentTimeMillis())));
-        //list.add(new Note("Note", "Note description", new Date(System.currentTimeMillis())));
 
         BorderPane pane = new BorderPane();
         pane.setPrefWidth(200);
@@ -199,6 +194,16 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         defaultListElementSelection(_listView);
         _editor.setEditorMode(false);
         _listView.requestFocus();
+    }
+
+    @Override
+    public Optional<AbstractTaskAndNote> getElementById(long id) {
+        return _listView.getItems().stream().filter(taskAndNote -> taskAndNote.getID() == id).findFirst();
+    }
+
+    @Override
+    public <S> void select(S finding) {
+        _listView.getSelectionModel().select((AbstractTaskAndNote) finding);
     }
 
 

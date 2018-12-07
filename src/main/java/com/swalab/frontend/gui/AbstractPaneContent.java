@@ -16,6 +16,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public abstract class AbstractPaneContent<T extends IObjectDataSourceArtefact> implements IUpdateableWindowDescription<T> {
@@ -108,4 +109,19 @@ public abstract class AbstractPaneContent<T extends IObjectDataSourceArtefact> i
     public Node getDescriptionWindowContent() {
         return _descriptionWindowContent;
     }
+
+    /**
+     * calculates a certain object from the main model of the scene by the id
+     * @param id
+     * @param <S> generic type of the object. it must be compatible with the managed object type
+     * @return the found object or null
+     */
+    public abstract <S> Optional<S> getElementById(long id);
+
+    /**
+     * selects a given object as the data source of the scene
+     * @param finding
+     * @param <S> generic type of the object. it must be compatible with the managed object type
+     */
+    public abstract <S> void select(S finding);
 }

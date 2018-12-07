@@ -14,7 +14,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.util.StringConverter;
 
-import java.util.Date;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -51,7 +50,6 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
         pane.setBorder(createBorder());
         _listView = createListView();
         pane.setCenter(_listView);
-        _listView.getItems().add(new WarehousePartAndOrder(0l, "Description", new Date(), new PartWithQuantity(new AvailablePart("Part name", "Part description"), 10, "units"), Status.OPEN));
 
         HBox buttonBox = new HBox();
         buttonBox.setSpacing(5);
@@ -163,6 +161,16 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
         defaultListElementSelection(_listView);
         _editor.setEditorMode(false);
         _listView.requestFocus();
+    }
+
+    @Override
+    public Optional<WarehousePartAndOrder> getElementById(long id) {
+        return _listView.getItems().stream().filter(warehousePartAndOrder-> warehousePartAndOrder.getID() == id).findFirst();
+    }
+
+    @Override
+    public <S> void select(S finding) {
+        _listView.getSelectionModel().select((WarehousePartAndOrder) finding);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.swalab.frontend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.swalab.frontend.api.INamedArtefact;
+import com.swalab.frontend.api.INamedIDArtefact;
 import com.swalab.frontend.api.IObjectDataSourceArtefact;
 import com.swalab.frontend.util.IdGenerator;
 import javafx.collections.FXCollections;
@@ -93,7 +94,7 @@ public class Product implements INamedArtefact {
         this.id = id;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 }
