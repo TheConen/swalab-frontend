@@ -2,6 +2,8 @@ package com.swalab.frontend;
 
 import com.swalab.frontend.gui.ApplicationSceneBuilder;
 import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -45,20 +47,26 @@ public class FrontendApplication extends Application {
 
     private Parent createLoginMask(Stage primaryStage) {
         GridPane pane = new GridPane();
+        pane.setPadding(new Insets(3,3,3,3));
         pane.setHgap(5);
         pane.setVgap(5);
+        EventHandler submitHandler= ae-> {
+            Scene scene = new Scene(_applicationSceneBuilder.buildAndInitializeWorkingSites(), 800, 600);
+            primaryStage.setScene(scene);
+        };
         Label userName = new Label("Username");
-        TextField textField = new TextField();
+        TextField textField = new TextField("noJs@swa.lab");
+        textField.setOnAction(submitHandler);
         Label passwordLabel = new Label("Password");
         PasswordField passwordField = new PasswordField();
+        passwordField.setOnAction(submitHandler);
+        passwordField.setText("secure?");
         Button loginButton = new Button("Login");
         pane.addColumn(1, userName, passwordLabel);
         pane.addColumn(2, textField, passwordField, loginButton);
         _applicationSceneBuilder = new ApplicationSceneBuilder(this);
-        loginButton.setOnAction(ae -> {
-            Scene scene = new Scene(_applicationSceneBuilder.buildAndInitializeWorkingSites(), 800, 600);
-            primaryStage.setScene(scene);
-        });
+        loginButton.setOnAction(submitHandler);
+
 
         return pane;
     }
