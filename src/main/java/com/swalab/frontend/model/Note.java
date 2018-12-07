@@ -1,5 +1,6 @@
 package com.swalab.frontend.model;
 
+import java.util.Comparator;
 import java.util.Date;
 
 public class Note extends AbstractTaskAndNote {

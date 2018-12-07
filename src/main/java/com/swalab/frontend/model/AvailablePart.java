@@ -1,7 +1,10 @@
 package com.swalab.frontend.model;
 
 import com.swalab.frontend.api.INamedArtefact;
+import com.swalab.frontend.api.IObjectDataSourceArtefact;
 import com.swalab.frontend.util.IdGenerator;
+
+import java.util.Comparator;
 
 public class AvailablePart implements INamedArtefact {
 
@@ -41,4 +44,5 @@ public class AvailablePart implements INamedArtefact {
     public void setId(Long id) {
         this.id = id;
     }
+
 }

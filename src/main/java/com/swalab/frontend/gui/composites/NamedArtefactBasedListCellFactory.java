@@ -1,6 +1,7 @@
 package com.swalab.frontend.gui.composites;
 
 import com.swalab.frontend.api.INamedArtefact;
+import com.swalab.frontend.api.IObjectDataSourceArtefact;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;

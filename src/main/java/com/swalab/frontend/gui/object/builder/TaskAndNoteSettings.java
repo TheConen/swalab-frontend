@@ -52,7 +52,7 @@ public class TaskAndNoteSettings implements IEditorSettings<AbstractTaskAndNote>
         } else {
             _nameField.setText(content.getName());
             _descriptionField.setText(content.getDescription());
-            _creationField.setText(content.getCreationDate().toGMTString());
+            _creationField.setText(_dateConverter.toString(content.getCreationDate()));
             _idField.setText(content.getID() + "");
             if (content instanceof Task) {
                 Status status = ((Task) content).getStatus();

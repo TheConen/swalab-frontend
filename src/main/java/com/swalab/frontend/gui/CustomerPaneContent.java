@@ -88,7 +88,7 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
         _addressLabel = new Label();
         _productList = new ListView<>();
         _productList.setPlaceholder(new Label("No customer selected or the customer doesn't have any of our products"));
-        _productList.setCellFactory(new NamedArtefactBasedListCellFactory<>());
+        _productList.setCellFactory(new NamedArtefactBasedListCellFactory<Product>());
         _appointmentList = new ListView<>();
         _appointmentList.setPlaceholder(new Label("No customer selected or the customer doesn't have any appointments"));
 

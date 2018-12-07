@@ -1,6 +1,6 @@
 package com.swalab.frontend.gui;
 
-import com.swalab.frontend.api.INamedArtefact;
+import com.swalab.frontend.api.IObjectDataSourceArtefact;
 import com.swalab.frontend.api.IUpdateableWindowDescription;
 import com.swalab.frontend.controller.SynchController;
 import com.swalab.frontend.gui.composites.NamedArtefactBasedListCellFactory;
@@ -18,7 +18,7 @@ import javafx.scene.paint.Color;
 
 import java.util.function.Consumer;
 
-public abstract class AbstractPaneContent<T extends INamedArtefact> implements IUpdateableWindowDescription<T> {
+public abstract class AbstractPaneContent<T extends IObjectDataSourceArtefact> implements IUpdateableWindowDescription<T> {
 
     private final Parent _descriptionWindowContent;
     private final Parent _mainWindowContent;

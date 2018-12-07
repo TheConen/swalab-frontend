@@ -1,15 +1,16 @@
 package com.swalab.frontend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.swalab.frontend.api.INamedArtefact;
+import com.swalab.frontend.api.IObjectDataSourceArtefact;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-public class Appointment implements INamedArtefact {
+public class Appointment implements IObjectDataSourceArtefact<Appointment> {
 
     private long id;
     private Customer customer;
@@ -167,5 +168,10 @@ public class Appointment implements INamedArtefact {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public Comparator<Appointment> getComparator() {
+        return (Comparator<Appointment>)(o1,o2)->o1.getCreationDate().compareTo(o2.getCreationDate());
     }
 }
