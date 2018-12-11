@@ -18,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.util.StringConverter;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -215,6 +216,11 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         defaultListElementSelection(_listView);
         _editor.setEditorMode(false);
         _listView.requestFocus();
+    }
+
+    @Override
+    public Comparator<Appointment> getComparator() {
+        return (Comparator<Appointment>)(o1,o2)->o1.getCreationDate().compareTo(o2.getCreationDate());
     }
 
     @Override

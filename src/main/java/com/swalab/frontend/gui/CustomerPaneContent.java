@@ -18,6 +18,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.function.Consumer;
 
 public class CustomerPaneContent extends AbstractPaneContent<Customer> {
@@ -147,6 +148,11 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
         defaultListElementSelection(_listView);
         _editor.setEditorMode(false);
         _listView.requestFocus();
+    }
+
+    @Override
+    public Comparator<Customer> getComparator() {
+        return (Comparator<Customer>) (c0, c1) -> c0.getName().compareTo(c1.getName());
     }
 
     @Override

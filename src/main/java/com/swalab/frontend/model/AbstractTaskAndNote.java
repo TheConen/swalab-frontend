@@ -3,6 +3,7 @@ package com.swalab.frontend.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.swalab.frontend.api.INamedArtefact;
 import com.swalab.frontend.api.IObjectDataSourceArtefact;
 import com.swalab.frontend.util.IdGenerator;
 
@@ -14,7 +15,7 @@ import java.util.Date;
         @JsonSubTypes.Type(value = Note.class, name = "note"),
         @JsonSubTypes.Type(value = Task.class, name = "task")
 })
-public abstract class AbstractTaskAndNote implements IObjectDataSourceArtefact {
+public abstract class AbstractTaskAndNote implements INamedArtefact {
 
     private long id = IdGenerator.getNewId();
     private String title;
@@ -28,12 +29,6 @@ public abstract class AbstractTaskAndNote implements IObjectDataSourceArtefact {
     }
 
     public AbstractTaskAndNote() {
-    }
-
-    @Override
-    @JsonIgnore
-    public Comparator<AbstractTaskAndNote> getComparator() {
-        return (Comparator<AbstractTaskAndNote>) (o1, o2) -> o1.getCreationDate().compareTo(o2.getCreationDate());
     }
 
     @Override

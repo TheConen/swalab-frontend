@@ -22,6 +22,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -199,6 +200,11 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         defaultListElementSelection(_listView);
         _editor.setEditorMode(false);
         _listView.requestFocus();
+    }
+
+    @Override
+    public Comparator<AbstractTaskAndNote> getComparator() {
+        return (Comparator<AbstractTaskAndNote>) (o1, o2) -> o1.getCreationDate().compareTo(o2.getCreationDate());
     }
 
 

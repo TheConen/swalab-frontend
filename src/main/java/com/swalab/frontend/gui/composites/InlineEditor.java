@@ -32,7 +32,7 @@ public class InlineEditor<T> extends GridPane {
 
     public InlineEditor(ListView<T> listView, IEditorSettings objectBuilder, IUpdateableWindowDescription<T> updateableWindowDescription) {
         super();
-        _updateableWindowDescription=updateableWindowDescription;
+        _updateableWindowDescription = updateableWindowDescription;
         _listView = listView;
         _listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<T>() {
             @Override
@@ -78,13 +78,13 @@ public class InlineEditor<T> extends GridPane {
 
     public void addEditorColumnNode(Node... nodes) {
         for (Node node : nodes) {
-            addEditorColumnNode(node,1,1);
+            addEditorColumnNode(node, 1, 1);
         }
     }
 
-    public void addEditorColumnNode(Node node,int colSpan,int rowSpan) {
+    public void addEditorColumnNode(Node node, int colSpan, int rowSpan) {
         _editorColumnNodeList.add(node);
-        add(node, 2, _editorColumnNodeList.size(),colSpan,rowSpan);
+        add(node, 2, _editorColumnNodeList.size(), colSpan, rowSpan);
         node.setVisible(false);
         node.setManaged(false);
     }
@@ -106,9 +106,9 @@ public class InlineEditor<T> extends GridPane {
             node.setManaged(isEditorMode);
         }
         _currentSubject = _listView.getSelectionModel().getSelectedItem();
-        if(!isEditorMode){
+        if (!isEditorMode) {
             _updateableWindowDescription.updateDescriptionContent(_currentSubject);
-        }else{
+        } else {
             _updateableWindowDescription.clearEditorEnvironment();
         }
         _objectBuilder.setDefaultValues(_currentSubject);

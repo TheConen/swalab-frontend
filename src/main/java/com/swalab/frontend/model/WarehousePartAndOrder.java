@@ -1,13 +1,14 @@
 package com.swalab.frontend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.swalab.frontend.api.INamedArtefact;
 import com.swalab.frontend.api.IObjectDataSourceArtefact;
 import com.swalab.frontend.util.IdGenerator;
 
 import java.util.Comparator;
 import java.util.Date;
 
-public class WarehousePartAndOrder implements IObjectDataSourceArtefact<WarehousePartAndOrder> {
+public class WarehousePartAndOrder implements INamedArtefact {
 
     private long id = IdGenerator.getNewId();
     private long orderNumber;
@@ -31,12 +32,6 @@ public class WarehousePartAndOrder implements IObjectDataSourceArtefact<Warehous
     @JsonIgnore
     public String getName() {
         return part.getAvailablePart().getName();
-    }
-
-    @Override
-    @JsonIgnore
-    public Comparator getComparator() {
-        return (Comparator<WarehousePartAndOrder>) (o1, o2) -> o1.getName().compareTo(o2.getName());
     }
 
     public long getOrderNumber() {

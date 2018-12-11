@@ -14,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.util.StringConverter;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -163,6 +164,11 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
         defaultListElementSelection(_listView);
         _editor.setEditorMode(false);
         _listView.requestFocus();
+    }
+
+    @Override
+    public Comparator<WarehousePartAndOrder> getComparator() {
+        return (Comparator<WarehousePartAndOrder>) (o1, o2) -> o1.getName().compareTo(o2.getName());
     }
 
     @Override

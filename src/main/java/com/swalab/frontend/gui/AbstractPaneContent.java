@@ -1,5 +1,6 @@
 package com.swalab.frontend.gui;
 
+import com.swalab.frontend.api.INamedArtefact;
 import com.swalab.frontend.api.IObjectDataSourceArtefact;
 import com.swalab.frontend.api.IUpdateableWindowDescription;
 import com.swalab.frontend.controller.SynchController;
@@ -16,9 +17,11 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.function.Consumer;
 
-public abstract class AbstractPaneContent<T extends IObjectDataSourceArtefact> implements IUpdateableWindowDescription<T> {
+public abstract class AbstractPaneContent<T extends INamedArtefact> implements IUpdateableWindowDescription<T> {
 
     private final Parent _descriptionWindowContent;
     private final Parent _mainWindowContent;
@@ -51,6 +54,9 @@ public abstract class AbstractPaneContent<T extends IObjectDataSourceArtefact> i
             }
         });
         listView.setCellFactory(new NamedArtefactBasedListCellFactory<T>());
+        listView.itemsProperty().addListener(
+                (value, old, current) -> Collections.sort(current, getComparator())
+        );
         return listView;
     }
 
@@ -108,4 +114,9 @@ public abstract class AbstractPaneContent<T extends IObjectDataSourceArtefact> i
     public Node getDescriptionWindowContent() {
         return _descriptionWindowContent;
     }
+
+    /**
+     * @return the specific comparator for a scene
+     */
+    public abstract Comparator<T> getComparator();
 }

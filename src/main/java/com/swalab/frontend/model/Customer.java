@@ -1,6 +1,7 @@
 package com.swalab.frontend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.swalab.frontend.api.INamedArtefact;
 import com.swalab.frontend.api.IObjectDataSourceArtefact;
 import com.swalab.frontend.util.IdGenerator;
 import javafx.collections.FXCollections;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Customer implements IObjectDataSourceArtefact<Customer> {
+public class Customer implements INamedArtefact{
 
     private long id = IdGenerator.getNewId();
     private String name;
@@ -117,9 +118,4 @@ public class Customer implements IObjectDataSourceArtefact<Customer> {
         this.id = id;
     }
 
-    @Override
-    @JsonIgnore
-    public Comparator<Customer> getComparator() {
-        return (Comparator<Customer>) (c0, c1) -> c0.getName().compareTo(c1.getName());
-    }
 }
