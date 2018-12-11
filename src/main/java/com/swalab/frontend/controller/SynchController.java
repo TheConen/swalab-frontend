@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swalab.frontend.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.util.Callback;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -32,6 +34,7 @@ public class SynchController {
     private String username;
     private RestTemplate restTemplate;
     private List<Consumer<Technician>> _models;
+    private Callback<String, Void> _updateCallback;
 
     /**
      * Instantiates a new Synch controller.
@@ -167,7 +170,7 @@ public class SynchController {
             wasSuccessful = getDataFromServer();
         }
 
-        if(!wasSuccessful || currentTechnician == null) {
+        if (!wasSuccessful || currentTechnician == null) {
             String email = "";
             String name = "";
             String password = "";
@@ -208,26 +211,40 @@ public class SynchController {
 
     /**
      * saves the data depending on the application state from a local file or the server
+     *
      * @node if the application works online, the data is online stored
      */
     public void persistData() {
-        if(isOffline()){
+        String location = null;
+        if (isOffline()) {
+            location = "local";
             saveDataToFile();
-        }else{
+        } else {
+            location = "online";
             sendDataToServer();
         }
+        Formatter formatter = new Formatter();
+        String result = formatter.format("The current state was %s persisted successfully", location).toString();
+        _updateCallback.call(result);
     }
 
     /**
      * loads the data depending on the application state from a local file or the server
+     *
      * @node if the application works online, the data is online stored
      */
     public void loadData() {
-        if(isOffline()){
+        String location = null;
+        if (isOffline()) {
+            location = "local";
             loadDateFromFile();
-        }else{
+        } else {
+            location = "online";
             getDataFromServer();
         }
+        Formatter formatter = new Formatter();
+        String result = formatter.format("The current state was successfully loaded from a %s source", location).toString();
+        _updateCallback.call(result);
     }
 
 
@@ -238,19 +255,21 @@ public class SynchController {
      */
     public ObservableList<AvailablePart> getAvailableParts() {
         List<AvailablePart> availableParts = new ArrayList<AvailablePart>();
-        if(isOffline()) {
+        if (isOffline()) {
             ObjectMapper mapper = new ObjectMapper();
             File file = new File("availableParts.json");
             if (file.isFile()) {
                 try {
-                    availableParts = mapper.readValue(file, new TypeReference<ArrayList<AvailablePart>>() {});
+                    availableParts = mapper.readValue(file, new TypeReference<ArrayList<AvailablePart>>() {
+                    });
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         } else {
             String url = baseUrl + "/availablepart/all";
-            ResponseEntity<List<AvailablePart>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<AvailablePart>>() {});
+            ResponseEntity<List<AvailablePart>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<AvailablePart>>() {
+            });
             int responseCode = responseEntity.getStatusCodeValue();
             if (200 <= responseCode && responseCode <= 399) {
                 availableParts = responseEntity.getBody();
@@ -264,7 +283,11 @@ public class SynchController {
             }
         }
         ObservableList<AvailablePart> observableList = FXCollections.observableArrayList();
-        availableParts.stream().forEach(e->observableList.add(e));
+        availableParts.stream().forEach(e -> observableList.add(e));
         return observableList;
+    }
+
+    public void setUpdateCallback(Callback<String, Void> callback) {
+        _updateCallback = callback;
     }
 }
