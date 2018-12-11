@@ -2,10 +2,8 @@ package com.swalab.frontend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.swalab.frontend.api.INamedArtefact;
-import com.swalab.frontend.api.IObjectDataSourceArtefact;
 import com.swalab.frontend.util.IdGenerator;
 
-import java.util.Comparator;
 import java.util.Date;
 
 public class WarehousePartAndOrder implements INamedArtefact {

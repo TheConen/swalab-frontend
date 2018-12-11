@@ -1,7 +1,6 @@
 package com.swalab.frontend.gui;
 
 import com.swalab.frontend.api.INamedArtefact;
-import com.swalab.frontend.api.IObjectDataSourceArtefact;
 import com.swalab.frontend.api.IUpdateableWindowDescription;
 import com.swalab.frontend.controller.SynchController;
 import com.swalab.frontend.gui.composites.NamedArtefactBasedListCellFactory;

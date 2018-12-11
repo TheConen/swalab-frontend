@@ -2,13 +2,11 @@ package com.swalab.frontend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.swalab.frontend.api.INamedArtefact;
-import com.swalab.frontend.api.IObjectDataSourceArtefact;
 import com.swalab.frontend.util.IdGenerator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class Customer implements INamedArtefact{

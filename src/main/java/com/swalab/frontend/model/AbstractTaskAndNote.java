@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.swalab.frontend.api.INamedArtefact;
-import com.swalab.frontend.api.IObjectDataSourceArtefact;
 import com.swalab.frontend.util.IdGenerator;
 
-import java.util.Comparator;
 import java.util.Date;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")

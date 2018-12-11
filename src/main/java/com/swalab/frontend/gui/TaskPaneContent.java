@@ -13,8 +13,6 @@ import com.swalab.frontend.model.Task;
 import com.swalab.frontend.model.Technician;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
