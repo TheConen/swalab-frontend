@@ -9,6 +9,8 @@ import com.swalab.frontend.model.WarehousePartAndOrder;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
+import java.util.Calendar;
+
 
 public class WarehousePartAndOrderEditingSettings implements IEditorSettings<WarehousePartAndOrder> {
 
@@ -53,7 +55,7 @@ public class WarehousePartAndOrderEditingSettings implements IEditorSettings<War
     @Override
     public void setDefaultValues(WarehousePartAndOrder content) {
         _descriptionField.setText(content == null ? null : content.getDescription());
-        _orderDateField.setText(content == null ? null : _dateConverter.toString(content.getOrderDate()));
+        _orderDateField.setText(content == null ? _dateConverter.toString(Calendar.getInstance().getTime()) : _dateConverter.toString(content.getOrderDate()));
         _statusComboBox.getSelectionModel().select(content == null ? null : content.getStatus());
         _idField.setText(content == null ? null : content.getID() + "");
         _orderNumberField.setText(content == null ? null : content.getOrderNumber() + "");
