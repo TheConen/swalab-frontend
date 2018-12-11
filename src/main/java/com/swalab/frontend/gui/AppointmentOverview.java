@@ -70,7 +70,6 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         pane.setBorder(createBorder());
         _listView = createListView();
         pane.setCenter(_listView);
-        _listView.getItems().add(new Appointment(new Customer(), "Description", new Product("Product name", "Product description", 0l, new Date(), "", new ArrayList<>()), new Date(), Status.OPEN, new ArrayList<>(), new Date(), new Date(), new ArrayList(), new Date(), new Date()));
 
         HBox buttonBox = new HBox(5);
         buttonBox.setPadding(new Insets(3, 3, 3, 3));

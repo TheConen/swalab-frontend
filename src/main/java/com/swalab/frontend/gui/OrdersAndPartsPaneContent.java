@@ -52,7 +52,6 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
         pane.setBorder(createBorder());
         _listView = createListView();
         pane.setCenter(_listView);
-        _listView.getItems().add(new WarehousePartAndOrder(0l, "Description", new Date(), new PartWithQuantity(new AvailablePart("Part name", "Part description"), 10, "units"), Status.OPEN));
 
         HBox buttonBox = new HBox();
         buttonBox.setSpacing(5);

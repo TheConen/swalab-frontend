@@ -17,7 +17,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.function.Consumer;
 
@@ -50,7 +49,6 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
         pane.setPrefWidth(200);
         pane.setBorder(createBorder());
         _listView = createListView();
-        _listView.getItems().addAll(new Customer("name", "geolocation", "phone", "mail", "web", "address", new ArrayList<>()));
         pane.setCenter(_listView);
 
         Button creationButton = new Button("+ Customer");

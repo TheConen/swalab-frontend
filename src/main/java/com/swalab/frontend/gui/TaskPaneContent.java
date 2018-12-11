@@ -50,16 +50,10 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
 
     @Override
     public Parent createMainWindowContent() {
-        ObservableList<AbstractTaskAndNote> list = FXCollections.observableArrayList();
-        list.add(new Task("title", "description", Status.OPEN, new Date(System.currentTimeMillis())));
-        list.add(new Task("title2", "description", Status.IN_PROGRESS, new Date(System.currentTimeMillis())));
-        //list.add(new Note("Note", "Note description", new Date(System.currentTimeMillis())));
-
         BorderPane pane = new BorderPane();
         pane.setPrefWidth(200);
         pane.setBorder(createBorder());
         _listView = createListView();
-        _listView.setItems(list);
         _listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<AbstractTaskAndNote>() {
             @Override
             public void changed(ObservableValue<? extends AbstractTaskAndNote> observableValue, AbstractTaskAndNote oldValue, AbstractTaskAndNote newValue) {

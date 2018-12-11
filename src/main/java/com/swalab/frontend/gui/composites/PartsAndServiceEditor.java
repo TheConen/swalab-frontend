@@ -32,7 +32,7 @@ public class PartsAndServiceEditor extends GridPane {
         });
 
         addRow(0, typeLabel, quantityLabel, utilLabel, addButton);
-        _currentAdditionalElements =new ArrayList<>();
+        _currentAdditionalElements = new ArrayList<>();
     }
 
     private void insertNewEntry(PartWithQuantity part) {
@@ -78,6 +78,7 @@ public class PartsAndServiceEditor extends GridPane {
     }
 
     public void initialWithContent(List<PartWithQuantity> partsAndServicesList) {
+        if (partsAndServicesList == null) return;
         for (PartWithQuantity partWithQuantity : partsAndServicesList) {
             insertNewEntry(partWithQuantity);
         }

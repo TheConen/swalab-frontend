@@ -69,13 +69,13 @@ public class AppointmentEditingSettings implements IEditorSettings<Appointment> 
         _plannedEndField.setText(_dateConverter.toString(content == null ? Calendar.getInstance().getTime() : content.getPlannedDateTimeTo()));
         _idField.setText(content == null ? null : (content.getID() == null) ? "" : content.getID() + "");
         _statusBox.getSelectionModel().select(content == null ? null : content.getStatus());
-        _customerComboBox.getSelectionModel().select(content.getCustomer());
-        _productComboBox.getSelectionModel().select(content.getProduct());
+        _customerComboBox.getSelectionModel().select(content == null ? null : content.getCustomer());
+        _productComboBox.getSelectionModel().select(content == null ? null : content.getProduct());
         _plannedPartsAndServicesList.setItems(content == null ? null : content.getObservablePlannedPartsAndServices());
         _usedPartsAndServicesList.setItems(content == null ? null : content.getObservableUsedPartsAndServices());
 
-        _plannedPartsAndServiceEditor.initialWithContent(content.getPlannedPartsAndServices());
-        _usedPartsAndServiceEditor.initialWithContent(content.getUsedPartsAndServices());
+        _plannedPartsAndServiceEditor.initialWithContent(content == null ? null : content.getPlannedPartsAndServices());
+        _usedPartsAndServiceEditor.initialWithContent(content == null ? null : content.getUsedPartsAndServices());
     }
 
     @Override
