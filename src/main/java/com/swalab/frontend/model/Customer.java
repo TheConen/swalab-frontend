@@ -118,7 +118,8 @@ public class Customer implements IObjectDataSourceArtefact<Customer> {
     }
 
     @Override
+    @JsonIgnore
     public Comparator<Customer> getComparator() {
-        return (Comparator<Customer>)(c0,c1)->c0.getName().compareTo(c1.getName());
+        return (Comparator<Customer>) (c0, c1) -> c0.getName().compareTo(c1.getName());
     }
 }

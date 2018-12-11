@@ -171,6 +171,7 @@ public class Appointment implements IObjectDataSourceArtefact<Appointment> {
     }
 
     @Override
+    @JsonIgnore
     public Comparator<Appointment> getComparator() {
         return (Comparator<Appointment>)(o1,o2)->o1.getCreationDate().compareTo(o2.getCreationDate());
     }

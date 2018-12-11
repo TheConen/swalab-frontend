@@ -1,5 +1,7 @@
 package com.swalab.frontend.api;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Comparator;
 
 /**
@@ -7,5 +9,6 @@ import java.util.Comparator;
  */
 public interface IObjectDataSourceArtefact<T>  extends INamedArtefact{
 
+    @JsonIgnore
     Comparator<T> getComparator();
 }

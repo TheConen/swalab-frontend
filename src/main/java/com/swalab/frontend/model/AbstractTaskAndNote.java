@@ -31,8 +31,9 @@ public abstract class AbstractTaskAndNote implements IObjectDataSourceArtefact {
     }
 
     @Override
-    public Comparator<AbstractTaskAndNote> getComparator(){
-        return (Comparator<AbstractTaskAndNote>)(o1,o2)->o1.getCreationDate().compareTo(o2.getCreationDate());
+    @JsonIgnore
+    public Comparator<AbstractTaskAndNote> getComparator() {
+        return (Comparator<AbstractTaskAndNote>) (o1, o2) -> o1.getCreationDate().compareTo(o2.getCreationDate());
     }
 
     @Override
@@ -65,7 +66,7 @@ public abstract class AbstractTaskAndNote implements IObjectDataSourceArtefact {
         this.creationDate = creationDate;
     }
 
-    public long getID(){
+    public long getID() {
         return id;
     }
 

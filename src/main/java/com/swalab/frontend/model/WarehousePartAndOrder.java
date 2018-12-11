@@ -34,6 +34,7 @@ public class WarehousePartAndOrder implements IObjectDataSourceArtefact<Warehous
     }
 
     @Override
+    @JsonIgnore
     public Comparator getComparator() {
         return (Comparator<WarehousePartAndOrder>) (o1, o2) -> o1.getName().compareTo(o2.getName());
     }
@@ -78,7 +79,7 @@ public class WarehousePartAndOrder implements IObjectDataSourceArtefact<Warehous
         this.status = status;
     }
 
-    public long getID(){
+    public long getID() {
         return id;
     }
 
