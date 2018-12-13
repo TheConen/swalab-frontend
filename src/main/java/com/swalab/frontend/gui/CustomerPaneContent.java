@@ -10,13 +10,16 @@ import com.swalab.frontend.model.Product;
 import com.swalab.frontend.model.Technician;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -25,9 +28,9 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
 
     private Label _nameLabel;
     private Label _geolocationLabel;
-    private Label _mailLabel;
+    private Hyperlink _mailLabel;
     private Label _phoneLabel;
-    private Label _webLabel;
+    private Hyperlink _webLabel;
     private Label _addressLabel;
     private TextField _nameField;
     private TextField _geolocationField;
@@ -73,7 +76,7 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
         Label nameLabel = new Label("Name");
         Label geolocationLabel = new Label("Geolocation");
         Label phoneLabel = new Label("Phone");
-        Label mailLabel = new Label("Phone");
+        Label mailLabel = new Label("Mail");
         Label webLabel = new Label("Web");
         Label addressLabel = new Label("Address");
         Label productlabel = new Label("Products");
@@ -83,8 +86,34 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
         _nameLabel = new Label();
         _geolocationLabel = new Label();
         _phoneLabel = new Label();
-        _mailLabel = new Label();
-        _webLabel = new Label();
+        _mailLabel = new Hyperlink();
+        _mailLabel.setOnAction(ae -> {
+            if (Desktop.isDesktopSupported()) {
+                Desktop dt = Desktop.getDesktop();
+                if (dt.isSupported(Desktop.Action.MAIL)) {
+                    File f = new File(_mailLabel.getText());
+                    try {
+                        dt.mail(f.toURI());
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
+        _webLabel = new Hyperlink();
+        _webLabel.setOnAction(ae -> {
+            if (Desktop.isDesktopSupported()) {
+                Desktop dt = Desktop.getDesktop();
+                if (dt.isSupported(Desktop.Action.BROWSE)) {
+                    File f = new File(_mailLabel.getText());
+                    try {
+                        dt.browse(f.toURI());
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
         _addressLabel = new Label();
         _productList = new ListView<>();
         _productList.setPlaceholder(new Label("No customer selected or the customer doesn't have any of our products"));
