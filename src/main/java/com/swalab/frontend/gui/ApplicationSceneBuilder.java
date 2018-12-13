@@ -3,6 +3,7 @@ package com.swalab.frontend.gui;
 import com.swalab.frontend.FrontendApplication;
 import com.swalab.frontend.controller.SynchController;
 import com.swalab.frontend.model.Technician;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Parent;
@@ -12,6 +13,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.util.Callback;
 
 import java.util.function.Consumer;
 
@@ -51,9 +53,17 @@ public class ApplicationSceneBuilder {
         buttonPane.setRight(synchronizationBox);
         synchronizationBox.setPadding(new Insets(3, 3, 3, 3));
         Button toServerSyncButton = new Button("Local ->");
-        toServerSyncButton.setOnAction(ae -> _synchController.persistData());
+        toServerSyncButton.setOnAction(ae -> {
+            pane.setDisable(true);
+            _synchController.persistData();
+            pane.setDisable(false);
+        });
         Button fromServerSyncButton = new Button("-> Local");
-        fromServerSyncButton.setOnAction(ae -> _synchController.loadData());
+        fromServerSyncButton.setOnAction(ae -> {
+            pane.setDisable(true);
+            _synchController.loadData();
+            pane.setDisable(false);
+        });
         synchronizationBox.getChildren().addAll(toServerSyncButton, fromServerSyncButton);
         synchronizationBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
 
@@ -83,15 +93,49 @@ public class ApplicationSceneBuilder {
         changeContent(pane, _appointmentPaneContent);
 
         // just further information at the bottom line
-        HBox footline = new HBox(2);
-        footline.setBorder(createBorder());
-        pane.setBottom(footline);
+        BorderPane footPane = new BorderPane();
+        footPane.setPadding(new Insets(3, 3, 3, 3));
+        pane.setBottom(footPane);
+        HBox userLine = new HBox(2);
+        footPane.setBorder(createBorder());
+        footPane.setLeft(userLine);
         String user = System.getProperty("user.name");
         Label userDescriptionLabel = new Label("Logged in as: ");
         Label userLabel = new Label(user);
         Consumer<Technician> consumer = t -> userLabel.setText(t.getName());
         _synchController.registerModelForUpdate(consumer);
-        footline.getChildren().addAll(userDescriptionLabel, userLabel);
+        userLine.getChildren().addAll(userDescriptionLabel, userLabel);
+
+        HBox syncBox = new HBox();
+        syncBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+        Label syncStatusLabel = new Label();
+        syncBox.getChildren().add(syncStatusLabel);
+        footPane.setRight(syncBox);
+
+        Callback<String, Void> callback = new Callback<String, Void>() {
+            private int _ctr = 0;
+
+            @Override
+            public Void call(String status) {
+                syncStatusLabel.setText(status);
+                int value = _ctr;
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException ex) {
+                        // do nothing
+                    } finally {
+                        if (_ctr == value) {
+                            Platform.runLater(() -> syncStatusLabel.setText(""));
+                        }
+                    }
+                }
+                ).start();
+                return null;
+            }
+        };
+
+        _synchController.setUpdateCallback(callback);
 
 
         return pane;
