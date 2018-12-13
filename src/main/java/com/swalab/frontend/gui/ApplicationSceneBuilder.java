@@ -3,6 +3,7 @@ package com.swalab.frontend.gui;
 import com.swalab.frontend.FrontendApplication;
 import com.swalab.frontend.controller.SynchController;
 import com.swalab.frontend.model.Technician;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Parent;
@@ -93,7 +94,7 @@ public class ApplicationSceneBuilder {
 
         // just further information at the bottom line
         BorderPane footPane = new BorderPane();
-        footPane.setPadding(new Insets(3,3,3,3));
+        footPane.setPadding(new Insets(3, 3, 3, 3));
         pane.setBottom(footPane);
         HBox userLine = new HBox(2);
         footPane.setBorder(createBorder());
@@ -107,15 +108,29 @@ public class ApplicationSceneBuilder {
 
         HBox syncBox = new HBox();
         syncBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
-        Label syncStatusLabel = new Label("Sync Status");
+        Label syncStatusLabel = new Label();
         syncBox.getChildren().add(syncStatusLabel);
         footPane.setRight(syncBox);
 
-        Callback<String,Void> callback=new Callback<String,Void>(){
+        Callback<String, Void> callback = new Callback<String, Void>() {
+            private int _ctr = 0;
 
             @Override
             public Void call(String status) {
                 syncStatusLabel.setText(status);
+                int value = _ctr;
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException ex) {
+                        // do nothing
+                    } finally {
+                        if (_ctr == value) {
+                            Platform.runLater(() -> syncStatusLabel.setText(""));
+                        }
+                    }
+                }
+                ).start();
                 return null;
             }
         };
