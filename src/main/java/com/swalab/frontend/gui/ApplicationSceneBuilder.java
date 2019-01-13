@@ -20,7 +20,7 @@ import java.util.function.Consumer;
 public class ApplicationSceneBuilder {
     private static SynchController _synchController;
     private final FrontendApplication _frontendApplication;
-    private AbstractPaneContent _taskPaneContent;
+    private TaskPaneContent _taskPaneContent;
     private AbstractPaneContent _customerPaneContent;
     private AbstractPaneContent _appointmentPaneContent;
     private OrdersAndPartsPaneContent _ordersAndPartPaneContent;
@@ -136,6 +136,7 @@ public class ApplicationSceneBuilder {
         };
 
         _synchController.setUpdateCallback(callback);
+        _taskPaneContent.setUpdateCallback(callback);
 
 
         return pane;

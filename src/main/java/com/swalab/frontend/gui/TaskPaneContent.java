@@ -19,6 +19,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.util.Callback;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -40,10 +41,11 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
     private Label _statusDescriptionLabel;
     private ProgressStatusConverter _statusConverter;
     private InlineEditor<AbstractTaskAndNote> _editor;
+    private Callback<String, Void> _callback;
 
     public TaskPaneContent(SynchController synchController) {
         super(synchController);
-        _dateConverter=new DateConverter();
+        _dateConverter = new DateConverter();
     }
 
     @Override
@@ -79,7 +81,7 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         //    _editor.setEditorMode(true);
         //});
 
-       // modificationBox.getChildren().add(taskCreationButton);
+        // modificationBox.getChildren().add(taskCreationButton);
         //modificationBox.getChildren().add(noteCreationButton);
 
         pane.setBottom(modificationBox);
@@ -113,10 +115,17 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
 
         _creationField.setDisable(true);
 
-        TextField idField=new TextField();
+        _statusBox.setOnAction(ae -> {
+            Status selectedItem = _statusBox.getSelectionModel().getSelectedItem();
+            if (selectedItem == Status.FINISHED) {
+                _callback.call("Formular will be printed...");
+            }
+        });
 
-        IEditorSettings editorSettings = new TaskAndNoteSettings(_nameField, _descriptionField, _creationField, _statusBox,idField);
-        _editor = new InlineEditor<>(_listView, editorSettings,this);
+        TextField idField = new TextField();
+
+        IEditorSettings editorSettings = new TaskAndNoteSettings(_nameField, _descriptionField, _creationField, _statusBox, idField);
+        _editor = new InlineEditor<>(_listView, editorSettings, this);
         _editor.addPermanentVisible(nameLabel, descriptionLabel, creationLabel, _statusDescriptionLabel);
         _editor.addViewerColumnNode(_nameLabel, _descriptionLabel, _creationLabel, _statusLabel);
         _editor.addEditorColumnNode(_nameField, _descriptionField, _creationField, _statusBox);
@@ -203,5 +212,9 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
     @Override
     public void clearEditorEnvironment() {
         // do nothing
+    }
+
+    public void setUpdateCallback(Callback<String, Void> callback) {
+        _callback = callback;
     }
 }
