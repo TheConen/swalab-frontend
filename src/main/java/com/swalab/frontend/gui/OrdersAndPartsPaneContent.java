@@ -58,7 +58,7 @@ public class OrdersAndPartsPaneContent extends AbstractPaneContent<WarehousePart
         pane.setBottom(buttonBox);
 
         Button creationButton = new Button("+ Order");
-        buttonBox.getChildren().add(creationButton);
+        //uttonBox.getChildren().add(creationButton);
         creationButton.setOnAction(ae -> {
             _listView.getSelectionModel().select(null);
             _editor.setEditorMode(true);

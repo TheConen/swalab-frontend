@@ -59,7 +59,7 @@ public class CustomerPaneContent extends AbstractPaneContent<Customer> {
         HBox buttonBox = new HBox();
         buttonBox.setSpacing(5);
         buttonBox.setPadding(new Insets(3, 3, 3, 3));
-        buttonBox.getChildren().add(creationButton);
+        //buttonBox.getChildren().add(creationButton);
 
         pane.setBottom(buttonBox);
 

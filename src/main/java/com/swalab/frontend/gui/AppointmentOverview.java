@@ -77,7 +77,7 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
             _editor.setEditorMode(true);
         });
 
-        buttonBox.getChildren().add(creationButton);
+       // buttonBox.getChildren().add(creationButton);
         pane.setBottom(buttonBox);
         return pane;
     }

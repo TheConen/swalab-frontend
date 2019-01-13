@@ -79,7 +79,7 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         //    _editor.setEditorMode(true);
         //});
 
-        modificationBox.getChildren().add(taskCreationButton);
+       // modificationBox.getChildren().add(taskCreationButton);
         //modificationBox.getChildren().add(noteCreationButton);
 
         pane.setBottom(modificationBox);
