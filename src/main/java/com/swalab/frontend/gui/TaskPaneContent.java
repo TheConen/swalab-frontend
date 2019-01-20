@@ -68,21 +68,21 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
         pane.setCenter(_listView);
 
         HBox modificationBox = new HBox();
-        modificationBox.setSpacing(5);
-        modificationBox.setPadding(new Insets(3, 3, 3, 3));
-        Button taskCreationButton = new Button("+ Task");
-        taskCreationButton.setOnAction(ae -> {
-            _listView.getSelectionModel().select(null);
-            _editor.setEditorMode(true);
-        });
-        //Button noteCreationButton = new Button("+ Note");
-        //noteCreationButton.setOnAction(ae -> {
+        //modificationBox.setSpacing(5);
+        //modificationBox.setPadding(new Insets(3, 3, 3, 3));
+        //Button taskCreationButton = new Button("+ Task");
+        //taskCreationButton.setOnAction(ae -> {
         //    _listView.getSelectionModel().select(null);
         //    _editor.setEditorMode(true);
         //});
+        Button noteCreationButton = new Button("+ Note");
+        noteCreationButton.setOnAction(ae -> {
+            _listView.getSelectionModel().select(null);
+            _editor.setEditorMode(true);
+        });
 
-        // modificationBox.getChildren().add(taskCreationButton);
-        //modificationBox.getChildren().add(noteCreationButton);
+        //modificationBox.getChildren().add(taskCreationButton);
+        modificationBox.getChildren().add(noteCreationButton);
 
         pane.setBottom(modificationBox);
 
