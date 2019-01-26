@@ -2,6 +2,7 @@ package com.swalab.frontend.gui.composites;
 
 import com.swalab.frontend.api.IEditorSettings;
 import com.swalab.frontend.api.IUpdateableWindowDescription;
+import com.swalab.frontend.api.IPostSaveAction;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.HPos;
@@ -26,12 +27,19 @@ public class InlineEditor<T> extends GridPane {
     private final ListView<T> _listView;
     private final IEditorSettings<T> _objectBuilder;
     private final IUpdateableWindowDescription<T> _updateableWindowDescription;
+    private IPostSaveAction _postSaveAction;
     private TextField _idField;
     private Function<Boolean, Boolean> _postShowingFunction;
     private T _currentSubject;
 
+    public InlineEditor(IPostSaveAction saveAction, ListView<T> listView, IEditorSettings objectBuilder, IUpdateableWindowDescription<T> updateableWindowDescription) {
+        this(listView, objectBuilder, updateableWindowDescription);
+        _postSaveAction = saveAction;
+    }
+
     public InlineEditor(ListView<T> listView, IEditorSettings objectBuilder, IUpdateableWindowDescription<T> updateableWindowDescription) {
         super();
+        _postSaveAction = null;
         _updateableWindowDescription = updateableWindowDescription;
         _listView = listView;
         _listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<T>() {
@@ -179,11 +187,15 @@ public class InlineEditor<T> extends GridPane {
                 _objectBuilder.updateContent(_currentSubject);
                 setEditorMode(false);
             }
+            if (_postSaveAction != null) {
+                _postSaveAction.executeCustomizedPostSaveAction();
+            }
         });
         editorButtons.getChildren().addAll(saveButton, aboardButton);
 
         addEditorColumnNode(editorButtons);
     }
+
 
     private boolean isObjectCreationRequiered() {
         String text = _idField.getText();

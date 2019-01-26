@@ -1,6 +1,7 @@
 package com.swalab.frontend.gui;
 
 import com.swalab.frontend.api.IEditorSettings;
+import com.swalab.frontend.api.IPostSaveAction;
 import com.swalab.frontend.controller.SynchController;
 import com.swalab.frontend.converter.DateConverter;
 import com.swalab.frontend.converter.ProgressStatusConverter;
@@ -26,7 +27,7 @@ import java.util.Date;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
+public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> implements IPostSaveAction {
 
     private final DateConverter _dateConverter;
     private Label _nameLabel;
@@ -115,17 +116,10 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
 
         _creationField.setDisable(true);
 
-        _statusBox.setOnAction(ae -> {
-            Status selectedItem = _statusBox.getSelectionModel().getSelectedItem();
-            if (selectedItem == Status.FINISHED) {
-                _callback.call("Formular will be printed...");
-            }
-        });
-
         TextField idField = new TextField();
 
         IEditorSettings editorSettings = new TaskAndNoteSettings(_nameField, _descriptionField, _creationField, _statusBox, idField);
-        _editor = new InlineEditor<>(_listView, editorSettings, this);
+        _editor = new InlineEditor<>(this, _listView, editorSettings, this);
         _editor.addPermanentVisible(nameLabel, descriptionLabel, creationLabel, _statusDescriptionLabel);
         _editor.addViewerColumnNode(_nameLabel, _descriptionLabel, _creationLabel, _statusLabel);
         _editor.addEditorColumnNode(_nameField, _descriptionField, _creationField, _statusBox);
@@ -216,5 +210,13 @@ public class TaskPaneContent extends AbstractPaneContent<AbstractTaskAndNote> {
 
     public void setUpdateCallback(Callback<String, Void> callback) {
         _callback = callback;
+    }
+
+    @Override
+    public void executeCustomizedPostSaveAction() {
+        Status selectedItem = _statusBox.getSelectionModel().getSelectedItem();
+        if (selectedItem == Status.FINISHED) {
+            _callback.call("Formular will be printed...");
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.swalab.frontend.gui;
 
+import com.swalab.frontend.api.IPostSaveAction;
 import com.swalab.frontend.controller.SynchController;
 import com.swalab.frontend.converter.DateConverter;
 import com.swalab.frontend.converter.ProgressStatusConverter;
@@ -15,13 +16,14 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class AppointmentOverview extends AbstractPaneContent<Appointment> {
+public class AppointmentOverview extends AbstractPaneContent<Appointment> implements IPostSaveAction {
 
     private final DateConverter _dateConverter;
     private ListView<Appointment> _listView;
@@ -44,6 +46,7 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
     private ComboBox<Customer> _customerComboBox;
     private PartsAndServiceEditor _usedPartsAndServiceEditor;
     private PartsAndServiceEditor _plannedPartsAndServiceEditor;
+    private Callback<String, Void> _callback;
 
     public AppointmentOverview(SynchController synchController) {
         super(synchController);
@@ -77,7 +80,7 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
             _editor.setEditorMode(true);
         });
 
-       // buttonBox.getChildren().add(creationButton);
+        // buttonBox.getChildren().add(creationButton);
         pane.setBottom(buttonBox);
         return pane;
     }
@@ -116,6 +119,7 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
         _plannedStartField = new TextField();
         _plannedEndField = new TextField();
         _statusComboBox = new StatusCombobox(_statusStringConverter);
+
         _customerComboBox = new ComboBox<>();
         ComboBox<Product> productComboBox = new ComboBox<>();
         productComboBox.setConverter(new StringConverter<>() {
@@ -172,12 +176,12 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
 
         _creationDateField.setDisable(true);
         AppointmentEditingSettings settings = new AppointmentEditingSettings(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, _customerComboBox, productComboBox, _plannedPartsAndServicesList, _usedPartsAndServicesList, _usedPartsAndServiceEditor, idField, _plannedPartsAndServiceEditor);
-        _editor = new InlineEditor<>(_listView, settings, this);
+        _editor = new InlineEditor<>(this,_listView, settings, this);
         _editor.addPermanentVisible(descriptionLabel, creationDateLabel, statusLabel, plannedStartLabel, plannedEndLabel, customerLabel, productLabel, plannedPartsAndServicesLabel, usedPartsAndServicesLabel);
         _editor.addViewerColumnNode(_descriptionLabel, _creationDateLabel, _statusLabel, _plannedStartLabel, _plannedEndLabel, _customerLabel, _productLabel, _plannedPartsAndServicesList, _usedPartsAndServicesList);
         _editor.addEditorColumnNode(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, _customerComboBox, productComboBox);
-        _editor.addEditorColumnNode(_plannedPartsAndServiceEditor,3,1);
-        _editor.addEditorColumnNode(_usedPartsAndServiceEditor,3,1);
+        _editor.addEditorColumnNode(_plannedPartsAndServiceEditor, 3, 1);
+        _editor.addEditorColumnNode(_usedPartsAndServiceEditor, 3, 1);
         _editor.createAndAddDefaultButton();
         _editor.addIDField(idField);
         return _editor;
@@ -217,12 +221,24 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> {
 
     @Override
     public Comparator<Appointment> getComparator() {
-        return (Comparator<Appointment>)(o1,o2)->o1.getCreationDate().compareTo(o2.getCreationDate());
+        return (Comparator<Appointment>) (o1, o2) -> o1.getCreationDate().compareTo(o2.getCreationDate());
     }
 
     @Override
     public void clearEditorEnvironment() {
         _plannedPartsAndServiceEditor.clear();
         _usedPartsAndServiceEditor.clear();
+    }
+
+    public void setUpdateCallback(Callback<String, Void> callback) {
+        _callback = callback;
+    }
+
+    @Override
+    public void executeCustomizedPostSaveAction() {
+        Status selectedItem = _statusComboBox.getSelectionModel().getSelectedItem();
+        if (selectedItem == Status.FINISHED) {
+            _callback.call("Formular will be printed...");
+        }
     }
 }

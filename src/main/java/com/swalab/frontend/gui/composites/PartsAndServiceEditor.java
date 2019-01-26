@@ -7,11 +7,9 @@ import com.swalab.frontend.model.PartWithQuantity;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.util.Callback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +38,31 @@ public class PartsAndServiceEditor extends GridPane {
 
     private void insertNewEntry(PartWithQuantity part) {
         ComboBox<AvailablePart> typeCombo = new ComboBox<>();
-        typeCombo.setItems(_syncController.getAvailableParts());
+
+        Callback<ListView<AvailablePart>, ListCell<AvailablePart>> cellFactory = new Callback<ListView<AvailablePart>, ListCell<AvailablePart>>() {
+            @Override
+            public ListCell<AvailablePart> call(ListView<AvailablePart> l) {
+                return new ListCell<AvailablePart>() {
+                    @Override
+                    protected void updateItem(AvailablePart item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item == null || empty) {
+                           setText("");
+                        } else {
+                            setText(item.getName());
+                        }
+                    }
+                } ;
+            }
+        };
+
+// Just set the button cell here:
+        typeCombo.setButtonCell(cellFactory.call(null));
+        typeCombo.setCellFactory(cellFactory);
         typeCombo.setConverter(new AvailablePartConverter(typeCombo));
+
+
+        typeCombo.setItems(_syncController.getAvailableParts());
         TextField quantityField = new TextField();
         TextField unitField = new TextField();
         Button removeButton = new Button("Remove");

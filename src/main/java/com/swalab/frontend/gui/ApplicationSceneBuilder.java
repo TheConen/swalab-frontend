@@ -22,7 +22,7 @@ public class ApplicationSceneBuilder {
     private final FrontendApplication _frontendApplication;
     private TaskPaneContent _taskPaneContent;
     private AbstractPaneContent _customerPaneContent;
-    private AbstractPaneContent _appointmentPaneContent;
+    private AppointmentOverview _appointmentPaneContent;
     private OrdersAndPartsPaneContent _ordersAndPartPaneContent;
 
     public ApplicationSceneBuilder(FrontendApplication frontendApplication) {
@@ -137,6 +137,7 @@ public class ApplicationSceneBuilder {
 
         _synchController.setUpdateCallback(callback);
         _taskPaneContent.setUpdateCallback(callback);
+        _appointmentPaneContent.setUpdateCallback(callback);
 
 
         return pane;
