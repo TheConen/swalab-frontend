@@ -15,6 +15,9 @@ public class DateConverter extends StringConverter<Date> {
 
     @Override
     public String toString(Date date) {
+        if(date==null){
+            return "";
+        }
         return _dateFormat.format(date);
     }
 

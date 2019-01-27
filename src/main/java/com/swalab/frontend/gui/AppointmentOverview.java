@@ -47,6 +47,10 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> implem
     private PartsAndServiceEditor _usedPartsAndServiceEditor;
     private PartsAndServiceEditor _plannedPartsAndServiceEditor;
     private Callback<String, Void> _callback;
+    private Label _realTimeEndLabel;
+    private Label _realTimeFromLabel;
+    private TextField _realTimeEndField;
+    private TextField _realTimeStartField;
 
     public AppointmentOverview(SynchController synchController) {
         super(synchController);
@@ -92,6 +96,8 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> implem
         Label statusLabel = new Label("Status");
         Label plannedStartLabel = new Label("Planned begin");
         Label plannedEndLabel = new Label("Planned end");
+        Label realTimeFromLabel=new Label("Real begin");
+        Label realTimeEndLabel=new Label("Real end");
         Label customerLabel = new Label("Customer");
         Label productLabel = new Label("Product");
         Label plannedPartsAndServicesLabel = new Label("Planned parts and services");
@@ -107,6 +113,8 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> implem
         _plannedEndLabel = new Label();
         _customerLabel = new Label();
         _productLabel = new Label();
+        _realTimeFromLabel=new Label();
+        _realTimeEndLabel=new Label();
         _plannedPartsAndServicesList = new ListView<>();
         _plannedPartsAndServicesList.setPlaceholder(new Label("No appointment selected or no data available"));
         _plannedPartsAndServicesList.setCellFactory(new NamedArtefactBasedListCellFactory<>());
@@ -118,6 +126,8 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> implem
         _creationDateField = new TextField();
         _plannedStartField = new TextField();
         _plannedEndField = new TextField();
+        _realTimeStartField=new TextField();
+        _realTimeEndField=new TextField();
         _statusComboBox = new StatusCombobox(_statusStringConverter);
 
         _customerComboBox = new ComboBox<>();
@@ -175,11 +185,11 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> implem
         TextField idField = new TextField();
 
         _creationDateField.setDisable(true);
-        AppointmentEditingSettings settings = new AppointmentEditingSettings(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, _customerComboBox, productComboBox, _plannedPartsAndServicesList, _usedPartsAndServicesList, _usedPartsAndServiceEditor, idField, _plannedPartsAndServiceEditor);
+        AppointmentEditingSettings settings = new AppointmentEditingSettings(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, _realTimeStartField,_realTimeEndField,_customerComboBox, productComboBox, _plannedPartsAndServicesList, _usedPartsAndServicesList, _usedPartsAndServiceEditor, idField, _plannedPartsAndServiceEditor);
         _editor = new InlineEditor<>(this,_listView, settings, this);
-        _editor.addPermanentVisible(descriptionLabel, creationDateLabel, statusLabel, plannedStartLabel, plannedEndLabel, customerLabel, productLabel, plannedPartsAndServicesLabel, usedPartsAndServicesLabel);
-        _editor.addViewerColumnNode(_descriptionLabel, _creationDateLabel, _statusLabel, _plannedStartLabel, _plannedEndLabel, _customerLabel, _productLabel, _plannedPartsAndServicesList, _usedPartsAndServicesList);
-        _editor.addEditorColumnNode(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField, _customerComboBox, productComboBox);
+        _editor.addPermanentVisible(descriptionLabel, creationDateLabel, statusLabel, plannedStartLabel, plannedEndLabel,realTimeFromLabel,realTimeEndLabel, customerLabel, productLabel, plannedPartsAndServicesLabel, usedPartsAndServicesLabel);
+        _editor.addViewerColumnNode(_descriptionLabel, _creationDateLabel, _statusLabel, _plannedStartLabel, _plannedEndLabel,_realTimeFromLabel,_realTimeEndLabel, _customerLabel, _productLabel, _plannedPartsAndServicesList, _usedPartsAndServicesList);
+        _editor.addEditorColumnNode(_descriptionField, _creationDateField, _statusComboBox, _plannedStartField, _plannedEndField,_realTimeStartField,_realTimeEndField, _customerComboBox, productComboBox);
         _editor.addEditorColumnNode(_plannedPartsAndServiceEditor, 3, 1);
         _editor.addEditorColumnNode(_usedPartsAndServiceEditor, 3, 1);
         _editor.createAndAddDefaultButton();
@@ -195,6 +205,8 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> implem
             _statusLabel.setText(null);
             _plannedStartLabel.setText(null);
             _plannedEndLabel.setText(null);
+            _realTimeFromLabel.setText(null);
+            _realTimeEndLabel.setText(null);
             _customerLabel.setText(null);
             _productLabel.setText(null);
             _plannedPartsAndServicesList.setItems(null);
@@ -205,6 +217,8 @@ public class AppointmentOverview extends AbstractPaneContent<Appointment> implem
             _statusLabel.setText(_statusStringConverter.toString(item.getStatus()));
             _plannedStartLabel.setText(_dateConverter.toString(item.getPlannedDateTimeFrom()));
             _plannedEndLabel.setText(_dateConverter.toString(item.getPlannedDateTimeTo()));
+            _realTimeFromLabel.setText(_dateConverter.toString(item.getRealDateFrom()));
+            _realTimeEndLabel.setText(_dateConverter.toString(item.getRealDateTo()));
             _customerLabel.setText(item.getCustomer().getName());
             _productLabel.setText(item.getProduct().getName());
             _plannedPartsAndServicesList.setItems(item.getObservablePlannedPartsAndServices());
