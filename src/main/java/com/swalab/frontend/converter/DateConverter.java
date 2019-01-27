@@ -5,12 +5,13 @@ import javafx.util.StringConverter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Locale;
 
 public class DateConverter extends StringConverter<Date> {
     private DateFormat _dateFormat;
 
     public DateConverter(){
-        _dateFormat=DateFormat.getDateInstance();
+        _dateFormat=DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.GERMANY);
     }
 
     @Override
